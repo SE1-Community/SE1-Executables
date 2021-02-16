@@ -87,7 +87,7 @@ void CServersMenu::Initialize_t(void)
   mgServerFilter[0].mg_strTip = TRANS("filter by server");
   mgServerFilter[1].mg_strTip = TRANS("filter by map");
   mgServerFilter[2].mg_strTip = TRANS("filter by ping (ie. <200)");
-  mgServerFilter[3].mg_strTip = TRANS("filter by players (ie. >=2)");
+  mgServerFilter[3].mg_strTip = TRANS("filter by players (ie. >= 2)");
   mgServerFilter[4].mg_strTip = TRANS("filter by game (ie. coop)");
   mgServerFilter[5].mg_strTip = TRANS("filter by mod");
   mgServerFilter[6].mg_strTip = TRANS("filter by version");

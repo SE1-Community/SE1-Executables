@@ -115,7 +115,7 @@ extern BOOL _bVarChanged = FALSE;
 
 extern void PlayMenuSound(CSoundData *psd)
 {
-  if (_psoMenuSound!=NULL && !_psoMenuSound->IsPlaying()) {
+  if (_psoMenuSound != NULL && !_psoMenuSound->IsPlaying()) {
     _psoMenuSound->Play(psd, SOF_NONGAME);
   }
 }
@@ -162,7 +162,7 @@ void StartMenus(char *str)
   // stop all IFeel effects
   IFeel_StopEffect(NULL);
   if (pgmCurrentMenu == &_pGUIM->gmMainMenu || pgmCurrentMenu == &_pGUIM->gmInGameMenu) {
-    if (_gmRunningGameMode==GM_NONE) {
+    if (_gmRunningGameMode == GM_NONE) {
     pgmCurrentMenu = &_pGUIM->gmMainMenu;
     } else {
     pgmCurrentMenu = &_pGUIM->gmInGameMenu;
@@ -170,37 +170,37 @@ void StartMenus(char *str)
   }
 
   // start main menu, or last active one
-  if (pgmCurrentMenu!=NULL) {
+  if (pgmCurrentMenu != NULL) {
     ChangeToMenu(pgmCurrentMenu);
   } else {
-    if (_gmRunningGameMode==GM_NONE) {
+    if (_gmRunningGameMode == GM_NONE) {
       ChangeToMenu(&_pGUIM->gmMainMenu);
     } else {
       ChangeToMenu(&_pGUIM->gmInGameMenu);
     }
   }
-  if (CTString(str)=="load") {
+  if (CTString(str) == "load") {
     StartCurrentLoadMenu();
   _pGUIM->gmLoadSaveMenu.gm_pgmParentMenu = NULL;
   }
-  if (CTString(str)=="save") {
+  if (CTString(str) == "save") {
     StartCurrentSaveMenu();
   _pGUIM->gmLoadSaveMenu.gm_pgmParentMenu = NULL;
   FixupBackButton(&_pGUIM->gmLoadSaveMenu);
   }
-  if (CTString(str)=="controls") {
+  if (CTString(str) == "controls") {
     void StartControlsMenuFromOptions(void);
     StartControlsMenuFromOptions();
   _pGUIM->gmControls.gm_pgmParentMenu = NULL;
   FixupBackButton(&_pGUIM->gmControls);
   }
-  if (CTString(str)=="join") {
+  if (CTString(str) == "join") {
     void StartSelectPlayersMenuFromOpen(void);
     StartSelectPlayersMenuFromOpen();
   _pGUIM->gmSelectPlayersMenu.gm_pgmParentMenu = &_pGUIM->gmMainMenu;
   FixupBackButton(&_pGUIM->gmSelectPlayersMenu);
   }
-  if (CTString(str)=="hiscore") {
+  if (CTString(str) == "hiscore") {
   ChangeToMenu(&_pGUIM->gmHighScoreMenu);
   _pGUIM->gmHighScoreMenu.gm_pgmParentMenu = &_pGUIM->gmMainMenu;
   FixupBackButton(&_pGUIM->gmHighScoreMenu);
@@ -213,12 +213,12 @@ void StartMenus(char *str)
 void StopMenus( BOOL bGoToRoot /*=TRUE*/)
 {
   ClearThumbnail();
-  if (pgmCurrentMenu!=NULL && bMenuActive) {
+  if (pgmCurrentMenu != NULL && bMenuActive) {
     pgmCurrentMenu->EndMenu();
   }
   bMenuActive = FALSE;
   if (bGoToRoot) {
-    if (_gmRunningGameMode==GM_NONE) {
+    if (_gmRunningGameMode == GM_NONE) {
     pgmCurrentMenu = &_pGUIM->gmMainMenu;
     } else {
     pgmCurrentMenu = &_pGUIM->gmInGameMenu;
@@ -459,7 +459,7 @@ void MenuGoToParent(void)
   // if there is no parent menu
   if (pgmCurrentMenu->gm_pgmParentMenu == NULL) {
     // if in game
-    if (_gmRunningGameMode!=GM_NONE) {
+    if (_gmRunningGameMode != GM_NONE) {
       // exit menus
       StopMenus();
     // if no game is running
@@ -478,8 +478,8 @@ void MenuOnKeyDown( int iVKey)
 {
 
   // check if mouse buttons used
-  _bMouseUsedLast = (iVKey==VK_LBUTTON || iVKey==VK_RBUTTON || iVKey==VK_MBUTTON 
-    || iVKey==10 || iVKey==11);
+  _bMouseUsedLast = (iVKey == VK_LBUTTON || iVKey == VK_RBUTTON || iVKey == VK_MBUTTON 
+    || iVKey == 10 || iVKey == 11);
 
   // ignore mouse when editing
   if (_bEditingString && _bMouseUsedLast) {
@@ -491,7 +491,7 @@ void MenuOnKeyDown( int iVKey)
   BOOL bHandled = FALSE;
 
   // if not a mouse button, or mouse is over some gadget
-  if (!_bMouseUsedLast || _pmgUnderCursor!=NULL) {
+  if (!_bMouseUsedLast || _pmgUnderCursor != NULL) {
     // ask current menu to handle the key
     bHandled = pgmCurrentMenu->OnKeyDown( iVKey);
   }
@@ -499,8 +499,8 @@ void MenuOnKeyDown( int iVKey)
   // if not handled
   if (!bHandled) {
     // if escape or right mouse pressed
-    if (iVKey==VK_ESCAPE || iVKey==VK_RBUTTON) {
-      if (pgmCurrentMenu==&_pGUIM->gmLoadSaveMenu && _pGUIM->gmLoadSaveMenu.gm_bNoEscape) {
+    if (iVKey == VK_ESCAPE || iVKey == VK_RBUTTON) {
+      if (pgmCurrentMenu == &_pGUIM->gmLoadSaveMenu && _pGUIM->gmLoadSaveMenu.gm_bNoEscape) {
         return;
       }
       // go to parent menu if possible
@@ -522,7 +522,7 @@ void MenuOnMouseMove(PIX pixI, PIX pixJ)
 {
   static PIX pixLastI = 0;
   static PIX pixLastJ = 0;
-  if (pixLastI==pixI && pixLastJ==pixJ) {
+  if (pixLastI == pixI && pixLastJ == pixJ) {
     return;
   }
   pixLastI = pixI;
@@ -565,22 +565,22 @@ void MenuUpdateMouseFocus(void)
   }
 
   // if there is some under cursor
-  if (_pmgUnderCursor!=NULL) {
+  if (_pmgUnderCursor != NULL) {
     _pmgUnderCursor->OnMouseOver(_pixCursorPosI, _pixCursorPosJ);
     // if the one under cursor has no neighbours
-    if (_pmgUnderCursor->mg_pmgLeft ==NULL 
-      &&_pmgUnderCursor->mg_pmgRight==NULL 
-      &&_pmgUnderCursor->mg_pmgUp   ==NULL 
-      &&_pmgUnderCursor->mg_pmgDown ==NULL) {
+    if (_pmgUnderCursor->mg_pmgLeft == NULL 
+      &&_pmgUnderCursor->mg_pmgRight == NULL 
+      &&_pmgUnderCursor->mg_pmgUp   == NULL 
+      &&_pmgUnderCursor->mg_pmgDown == NULL) {
       // it cannot be focused
       _pmgUnderCursor = NULL;
       return;
     }
 
     // if the one under cursor is not active and not disappearing
-    if (pmgActive!=_pmgUnderCursor && _pmgUnderCursor->mg_bVisible) {
+    if (pmgActive != _pmgUnderCursor && _pmgUnderCursor->mg_bVisible) {
       // change focus
-      if (pmgActive!=NULL) {
+      if (pmgActive != NULL) {
         pmgActive->OnKillFocus();
       }
       _pmgUnderCursor->OnSetFocus();
@@ -701,7 +701,7 @@ BOOL DoMenu( CDrawPort *pdp)
     // put logo(s) to main menu (if logos exist)
   if (pgmCurrentMenu == &_pGUIM->gmMainMenu)
     {
-      if (_ptoLogoODI!=NULL) {
+      if (_ptoLogoODI != NULL) {
         CTextureData &td = (CTextureData&)*_ptoLogoODI->GetData();
         #define LOGOSIZE 50
         const PIX pixLogoWidth  = LOGOSIZE * dpMenu.dp_fWideAdjustment;
@@ -713,7 +713,7 @@ BOOL DoMenu( CDrawPort *pdp)
         dpMenu.PutTexture( _ptoLogoODI, PIXaabbox2D( PIX2D( pixI0, pixJ0),PIX2D( pixI1, pixJ1)));
         #undef LOGOSIZE
       }  
-      if (_ptoLogoCT!=NULL) {
+      if (_ptoLogoCT != NULL) {
         CTextureData &td = (CTextureData&)*_ptoLogoCT->GetData();
         #define LOGOSIZE 50
         const PIX pixLogoWidth  = LOGOSIZE * dpMenu.dp_fWideAdjustment;
@@ -738,7 +738,7 @@ BOOL DoMenu( CDrawPort *pdp)
           PIX2D( pixCenterI, pixHeightJ),PIX2D( pixCenterI+pixSizeI, pixHeightJ+pixSizeJ)));
       }
   } else if (pgmCurrentMenu == &_pGUIM->gmAudioOptionsMenu) {
-      if (_ptoLogoEAX!=NULL) {
+      if (_ptoLogoEAX != NULL) {
         CTextureData &td = (CTextureData&)*_ptoLogoEAX->GetData();
         const INDEX iSize = 95;
         const PIX pixLogoWidth  = iSize * dpMenu.dp_fWideAdjustment;
@@ -761,7 +761,7 @@ BOOL DoMenu( CDrawPort *pdp)
       pixJ0 = (240-THUMBW/2)*fScaleH;
       pixI1 = pixI0+ THUMBW*fThumbScaleW;
       pixJ1 = pixJ0+ THUMBH*fScaleH;
-      if (_toThumbnail.GetData()!=NULL)
+      if (_toThumbnail.GetData() != NULL)
       { // show thumbnail with shadow and border
         dpMenu.Fill( pixI0+pixOfs, pixJ0+pixOfs, THUMBW*fThumbScaleW, THUMBH*fScaleH, C_BLACK|128);
         dpMenu.PutTexture( &_toThumbnail, PIXaabbox2D( PIX2D( pixI0, pixJ0), PIX2D( pixI1, pixJ1)), C_WHITE|255);
@@ -782,7 +782,7 @@ BOOL DoMenu( CDrawPort *pdp)
   if (pgmCurrentMenu->gm_bPopup) {
 
     // render parent menu first
-    if (pgmCurrentMenu->gm_pgmParentMenu!=NULL) {
+    if (pgmCurrentMenu->gm_pgmParentMenu != NULL) {
       _pGame->MenuPreRenderMenu(pgmCurrentMenu->gm_pgmParentMenu->gm_strName);
       FOREACHINLIST( CMenuGadget, mg_lnNode, pgmCurrentMenu->gm_pgmParentMenu->gm_lhGadgets, itmg) {
         if (itmg->mg_bVisible) {
@@ -821,7 +821,7 @@ BOOL DoMenu( CDrawPort *pdp)
     if (itmg->mg_bVisible) {
       bStilInMenus = TRUE;
       itmg->Render( &dpMenu);
-      if (FloatBoxToPixBox(&dpMenu, itmg->mg_boxOnScreen)>=PIX2D(_pixCursorPosI, _pixCursorPosJ)) {
+      if (FloatBoxToPixBox(&dpMenu, itmg->mg_boxOnScreen) >= PIX2D(_pixCursorPosI, _pixCursorPosJ)) {
         _pmgUnderCursor = itmg;
       }
     }
@@ -849,7 +849,7 @@ BOOL DoMenu( CDrawPort *pdp)
   }
 
   // if editing
-  if (_bEditingString && pmgActive!=NULL) {
+  if (_bEditingString && pmgActive != NULL) {
     // dim the menu  bit
     dpMenu.Fill(C_BLACK|0x40);
     // render the edit gadget again
@@ -857,7 +857,7 @@ BOOL DoMenu( CDrawPort *pdp)
   }
   
   // if there is some active gadget and it has tips
-  if (pmgActive!=NULL && (pmgActive->mg_strTip!="" || _bEditingString)) {
+  if (pmgActive != NULL && (pmgActive->mg_strTip != "" || _bEditingString)) {
     CTString strTip = pmgActive->mg_strTip;
     if (_bEditingString) {
       strTip = TRANS("Enter - OK, Escape - Cancel");
@@ -897,8 +897,8 @@ extern void FixupBackButton(CGameMenu *pgm)
     bHasBack = FALSE;
   }
 
-  if (pgm->gm_pgmParentMenu==NULL) {
-    if (_gmRunningGameMode==GM_NONE) {
+  if (pgm->gm_pgmParentMenu == NULL) {
+    if (_gmRunningGameMode == GM_NONE) {
       bHasBack = FALSE;
     } else {
       bResume = TRUE;

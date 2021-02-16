@@ -34,7 +34,7 @@ public:
   CMGButton gm_mgCustomOptions;
   CMGButton gm_mgAddonOptions;
 
-	void Initialize_t(void);
+  void Initialize_t(void);
 };
 
 #endif  /* include-once check. */

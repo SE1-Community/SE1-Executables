@@ -52,11 +52,11 @@ void InitializeGame(void)
 
     CPrintF(TRANS("Loading game library '%s'...\n"), (const char *)fnmExpanded);
     HMODULE hGame = LoadLibraryA(fnmExpanded);
-    if (hGame==NULL) {
+    if (hGame == NULL) {
       ThrowF_t("%s", GetWindowsError(GetLastError()));
     }
     CGame* (*GAME_Create)(void) = (CGame* (*)(void))GetProcAddress(hGame, "GAME_Create");
-    if (GAME_Create==NULL) {
+    if (GAME_Create == NULL) {
       ThrowF_t("%s", GetWindowsError(GetLastError()));
     }
     _pGame = GAME_Create();
@@ -130,7 +130,7 @@ static void LoadingHook_t(CProgressHookInfo *pphi)
     ThrowF_t(TRANS("User break!"));
   }
   // if not first or final update, and not enough time passed
-  if (pphi->phi_fCompleted!=0 && pphi->phi_fCompleted!=1 &&
+  if (pphi->phi_fCompleted != 0 && pphi->phi_fCompleted != 1 &&
      (tvNow-tvLast).GetSeconds() < REFRESHTIME) {
     // do nothing
     return;
@@ -183,7 +183,7 @@ BOOL Init(int argc, char* argv[])
 {
   _bDedicatedServer = TRUE;
 
-  if (argc!=1+1 && argc!=2+1) {
+  if (argc != 1+1 && argc != 2+1) {
     // NOTE: this cannot be translated - translations are not loaded yet
     printf("Usage: DedicatedServer <configname> [<modname>]\n"
       "This starts a server reading configs from directory 'Scripts\\Dedicated\\<configname>\\'\n");
@@ -195,7 +195,7 @@ BOOL Init(int argc, char* argv[])
 
   ded_strConfig = CTString("Scripts\\Dedicated\\")+argv[1]+"\\";
 
-  if (argc==2+1) {
+  if (argc == 2+1) {
     _fnmMod = CTString("Mods\\")+argv[2]+"\\";
   }
 
@@ -252,7 +252,7 @@ BOOL Init(int argc, char* argv[])
   SetConsoleCtrlHandler(HandlerRoutine, TRUE);
 
   // if there is a mod
-  if (_fnmMod!="") {
+  if (_fnmMod != "") {
     // execute the mod startup script
     _pShell->Execute(CTString("include \"Scripts\\Mod_startup.ini\";"));
   }
@@ -292,7 +292,7 @@ void RoundBegin(void)
     // if start script doesn't exist
     } else {
       // if this is first round
-      if (iRound==1) {
+      if (iRound == 1) {
         // error
         CPrintF(TRANS("No scripts present!\n"));
         _bRunning = FALSE;
@@ -307,7 +307,7 @@ void RoundBegin(void)
   ExecScript(strBegScript);
 
   // start the level specified there
-  if (ded_strLevel=="") {
+  if (ded_strLevel == "") {
     CPrintF(TRANS("ERROR: No next level specified!\n"));
     _bRunning = FALSE;
   } else {

@@ -35,7 +35,7 @@ CTString GetNonEmptyLine_t(CTStream &strm)
    if (str.RemovePrefix("//")) {  // skip comments
      continue;
    }
-   if (str!="") {
+   if (str != "") {
      str.TrimSpacesRight();
      return str;
    }
@@ -63,7 +63,7 @@ void FixupFileName_t(CTString &strFnm)
 
 void CheckPVS_t(CVarSetting *pvs)
 {
-  if (pvs==NULL) {
+  if (pvs == NULL) {
     ThrowF_t("Gadget expected");
   }
 }
@@ -89,9 +89,9 @@ void ParseCFG_t(CTStream &strm)
       CheckPVS_t(pvs);
       strLine.TrimSpacesLeft();
       strLine.TrimSpacesRight();
-      if (strLine=="Toggle") {
+      if (strLine == "Toggle") {
         pvs->vs_bSeparator = FALSE;
-      } else if (strLine=="Separator") {
+      } else if (strLine == "Separator") {
         pvs->vs_bSeparator = TRUE;
       }
     } else if (strLine.RemovePrefix("Schedule:")) {
@@ -118,9 +118,9 @@ void ParseCFG_t(CTStream &strm)
       CheckPVS_t(pvs);
       strLine.TrimSpacesLeft();
       strLine.TrimSpacesRight();
-      if (strLine=="Fill") {
+      if (strLine == "Fill") {
         pvs->vs_iSlider = 1;
-      } else if (strLine=="Ratio") {
+      } else if (strLine == "Ratio") {
         pvs->vs_iSlider = 2;
       } else {
         pvs->vs_iSlider = 0;
@@ -129,10 +129,10 @@ void ParseCFG_t(CTStream &strm)
       CheckPVS_t(pvs);
       strLine.TrimSpacesLeft();
       strLine.TrimSpacesRight();
-      if (strLine=="No") {
+      if (strLine == "No") {
         pvs->vs_bCanChangeInGame = FALSE;
       } else {
-        ASSERT( strLine=="Yes");
+        ASSERT( strLine == "Yes");
         pvs->vs_bCanChangeInGame = TRUE;
       }
     } else if (strLine.RemovePrefix("String:")) {
@@ -194,14 +194,14 @@ void FlushVarSettings(BOOL bApply)
   if (bApply) {
     FOREACHINLIST(CVarSetting, vs_lnNode, _lhVarSettings, itvs) {
       CVarSetting &vs = *itvs;
-      if (vs.vs_iValue!=vs.vs_iOrgValue) {
+      if (vs.vs_iValue != vs.vs_iOrgValue) {
         CTString strCmd;
         _pShell->SetValue(vs.vs_strVar, vs.vs_astrValues[vs.vs_iValue]);
 
-        if (vs.vs_strSchedule!="") {
+        if (vs.vs_strSchedule != "") {
           BOOL bSheduled = FALSE;
           for (INDEX i=0; i<astrScheduled.Count(); i++) {
-            if (astrScheduled[i]==vs.vs_strSchedule) {
+            if (astrScheduled[i] == vs.vs_strSchedule) {
               bSheduled = TRUE;
               break;
             }
@@ -253,7 +253,7 @@ BOOL CVarSetting::Validate(void)
   }
 
   vs_ctValues = Min(vs_astrValues.Count(), vs_astrTexts.Count());
-  if (vs_ctValues<=0) {
+  if (vs_ctValues <= 0) {
     ASSERT(FALSE);
     return FALSE;
   }

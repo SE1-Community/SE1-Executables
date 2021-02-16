@@ -36,17 +36,17 @@ CTString GetNextParam(void)
   // strip leading spaces/tabs
   _strCmd.TrimSpacesLeft();
   // if nothing left
-  if (_strCmd=="") {
+  if (_strCmd == "") {
     // no word to return
     return "";
   }
 
   // if the first char is quote
-  if (_strCmd[0]=='"') {
+  if (_strCmd[0] == '"') {
     // find first next quote
     const char *pchClosingQuote = strchr(_strCmd+1, '"');
     // if not found
-    if (pchClosingQuote==NULL) {
+    if (pchClosingQuote == NULL) {
       // error in command line
       cmd_strOutput+=CTString(0, TRANS("Command line error!\n"));
       // finish parsing
@@ -102,39 +102,39 @@ void ParseCommandLine(CTString strCmd)
 
   FOREVER {
     CTString strWord = GetNextParam();
-    if (strWord=="") {
+    if (strWord == "") {
       cmd_strOutput+="\n";
       return;
-    } else if (strWord=="+level") {
+    } else if (strWord == "+level") {
       cmd_strWorld = GetNextParam();
-    } else if (strWord=="+server") {
+    } else if (strWord == "+server") {
       cmd_bServer = TRUE;
-    } else if (strWord=="+quickjoin") {
+    } else if (strWord == "+quickjoin") {
       cmd_bQuickJoin = TRUE;
-    } else if (strWord=="+game") {
+    } else if (strWord == "+game") {
       CTString strMod = GetNextParam();
-      if (strMod!="SeriousSam") { // (we ignore default mod - always use base dir in that case)
+      if (strMod != "SeriousSam") { // (we ignore default mod - always use base dir in that case)
         _fnmMod = "Mods\\"+strMod+"\\";
       }
-    } else if (strWord=="+cdpath") {
+    } else if (strWord == "+cdpath") {
       _fnmCDPath = GetNextParam();
-    } else if (strWord=="+password") {
+    } else if (strWord == "+password") {
       cmd_strPassword = GetNextParam();
-    } else if (strWord=="+connect") {
+    } else if (strWord == "+connect") {
       cmd_strServer = GetNextParam();
       const char *pcColon = strchr(cmd_strServer, ':');
-      if (pcColon!=NULL) {
+      if (pcColon != NULL) {
         CTString strServer;
         CTString strPort;
         cmd_strServer.Split(pcColon-cmd_strServer, strServer, strPort);
         cmd_strServer = strServer;
         strPort.ScanF(":%d", &cmd_iPort);
       }
-    } else if (strWord=="+script") {
+    } else if (strWord == "+script") {
       cmd_strScript = GetNextParam();
-    } else if (strWord=="+goto") {
+    } else if (strWord == "+goto") {
       GetNextParam().ScanF("%d", &cmd_iGoToMarker);
-    } else if (strWord=="+logfile") {
+    } else if (strWord == "+logfile") {
       _strLogFile = GetNextParam();
     } else {
       cmd_strOutput+=CTString(0, TRANS("  Unknown option: '%s'\n"), strWord);

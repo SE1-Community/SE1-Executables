@@ -30,7 +30,7 @@ static PIX _pixLastSizeI, _pixLastSizeJ;
 
 // window procedure active while window changes are occuring
 LRESULT WindowProc_WindowChanging( HWND hWnd, UINT message, 
-			    WPARAM wParam, LPARAM lParam )
+          WPARAM wParam, LPARAM lParam )
 {
     switch (message ) {
     case WM_PAINT: {
@@ -66,7 +66,7 @@ LRESULT WindowProc_WindowChanging( HWND hWnd, UINT message,
 
 // window procedure active normally
 LRESULT WindowProc_Normal( HWND hWnd, UINT message, 
-			    WPARAM wParam, LPARAM lParam )
+          WPARAM wParam, LPARAM lParam )
 {
   switch (message ) {
 
@@ -78,7 +78,7 @@ LRESULT WindowProc_Normal( HWND hWnd, UINT message,
     case SC_RESTORE:
     case SC_MAXIMIZE:
       // relay to application
-  	  PostMessage(NULL, message, wParam & ~0x0F, lParam);
+      PostMessage(NULL, message, wParam & ~0x0F, lParam);
       // do not allow automatic resizing
       return 0;
       break;
@@ -91,7 +91,7 @@ LRESULT WindowProc_Normal( HWND hWnd, UINT message,
   // when close box is clicked
   case WM_CLOSE:
     // relay to application
-  	PostMessage(NULL, message, wParam, lParam);
+    PostMessage(NULL, message, wParam, lParam);
     // do not pass to default wndproc
     return 0;
 
@@ -103,7 +103,7 @@ LRESULT WindowProc_Normal( HWND hWnd, UINT message,
   case WM_KILLFOCUS:
   case WM_ACTIVATEAPP:
     // relay to application
-  	PostMessage(NULL, message, wParam, lParam);
+    PostMessage(NULL, message, wParam, lParam);
     // pass to default wndproc
     break;
   }
@@ -114,7 +114,7 @@ LRESULT WindowProc_Normal( HWND hWnd, UINT message,
 
 // main window procedure
 LRESULT CALLBACK WindowProc( HWND hWnd, UINT message, 
-			    WPARAM wParam, LPARAM lParam )
+          WPARAM wParam, LPARAM lParam )
 {
   // dispatch to proper window procedure
   if (_bWindowChanging) {
@@ -152,7 +152,7 @@ void MainWindow_Init(void)
 
   // load bitmaps
   _hbmSplash = LoadBitmapA(_hInstance, (char*)IDB_SPLASH);
-  ASSERT(_hbmSplash!=NULL);
+  ASSERT(_hbmSplash != NULL);
   GetObject(_hbmSplash, sizeof(BITMAP), (LPSTR) &_bmSplash); 
   // here was loading and setting of no-windows-mouse-cursor
 }
@@ -168,7 +168,7 @@ void MainWindow_End(void)
 void CloseMainWindow(void)
 {
   // if window exists
-  if (_hwndMain!=NULL) {
+  if (_hwndMain != NULL) {
     // destroy it
     DestroyWindow(_hwndMain);
     _hwndMain = NULL;
@@ -196,22 +196,22 @@ void ResetMainWindowNormal(void)
 // open the main application window for windowed mode
 void OpenMainWindowNormal( PIX pixSizeI, PIX pixSizeJ)
 {
-  ASSERT(_hwndMain==NULL);
+  ASSERT(_hwndMain == NULL);
 
   // create a window, invisible initially
   _hwndMain = CreateWindowExA(
-	  WS_EX_APPWINDOW,
-	  APPLICATION_NAME,
-	  "",   // title
+    WS_EX_APPWINDOW,
+    APPLICATION_NAME,
+    "",   // title
     WS_OVERLAPPED|WS_CAPTION|WS_MINIMIZEBOX|WS_MAXIMIZEBOX|WS_SYSMENU,
-	  10,10,
-	  100,100,  // window size
-	  NULL,
-	  NULL,
-	  _hInstance,
-	  NULL);
+    10,10,
+    100,100,  // window size
+    NULL,
+    NULL,
+    _hInstance,
+    NULL);
   // didn't make it?
-  if (_hwndMain==NULL) FatalError(TRANS("Cannot open main window!"));
+  if (_hwndMain == NULL) FatalError(TRANS("Cannot open main window!"));
   SE_UpdateWindowHandle( _hwndMain);
 
   // set window title
@@ -226,7 +226,7 @@ void OpenMainWindowNormal( PIX pixSizeI, PIX pixSizeJ)
 // open the main application window for fullscreen mode
 void OpenMainWindowFullScreen( PIX pixSizeI, PIX pixSizeJ)
 {
-  ASSERT( _hwndMain==NULL);
+  ASSERT( _hwndMain == NULL);
   // create a window, invisible initially
   _hwndMain = CreateWindowExA(
     WS_EX_TOPMOST | WS_EX_APPWINDOW,
@@ -240,7 +240,7 @@ void OpenMainWindowFullScreen( PIX pixSizeI, PIX pixSizeJ)
     _hInstance,
     NULL);
   // didn't make it?
-  if (_hwndMain==NULL) FatalError(TRANS("Cannot open main window!"));
+  if (_hwndMain == NULL) FatalError(TRANS("Cannot open main window!"));
   SE_UpdateWindowHandle( _hwndMain);
 
   // set window title and show it
@@ -253,21 +253,21 @@ void OpenMainWindowFullScreen( PIX pixSizeI, PIX pixSizeJ)
 // open the main application window invisible
 void OpenMainWindowInvisible(void)
 {
-  ASSERT(_hwndMain==NULL);
+  ASSERT(_hwndMain == NULL);
   // create a window, invisible initially
   _hwndMain = CreateWindowExA(
-	  WS_EX_APPWINDOW,
-	  APPLICATION_NAME,
-	  "",   // title
+    WS_EX_APPWINDOW,
+    APPLICATION_NAME,
+    "",   // title
     WS_POPUP,
-	  0,0,
-	  10, 10,  // window size
-	  NULL,
-	  NULL,
-	  _hInstance,
-	  NULL);
+    0,0,
+    10, 10,  // window size
+    NULL,
+    NULL,
+    _hInstance,
+    NULL);
   // didn't make it?
-  if (_hwndMain==NULL) {
+  if (_hwndMain == NULL) {
     DWORD dwError = GetLastError();
     CTString strErrorMessage(TRANS("Cannot open main window!"));
     CTString strError;

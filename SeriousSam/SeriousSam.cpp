@@ -54,9 +54,9 @@ extern FLOAT sam_fPlayerOffset = 0.0f;
 extern INDEX sam_bFullScreenActive = FALSE;
 extern INDEX sam_iScreenSizeI = 1024;  // current size of the window
 extern INDEX sam_iScreenSizeJ = 768;  // current size of the window
-extern INDEX sam_iDisplayDepth  = 0;  // 0==default, 1==16bit, 2==32bit
+extern INDEX sam_iDisplayDepth  = 0;  // 0 == default, 1 == 16bit, 2 == 32bit
 extern INDEX sam_iDisplayAdapter = 0; 
-extern INDEX sam_iGfxAPI = 0;         // 0==OpenGL
+extern INDEX sam_iGfxAPI = 0;         // 0 == OpenGL
 extern INDEX sam_bFirstStarted = FALSE;
 extern FLOAT sam_tmDisplayModeReport = 5.0f;
 extern INDEX sam_bShowAllLevels = FALSE;
@@ -74,7 +74,7 @@ static INDEX _iDisplayModeChangeFlag = 0;
 static TICK _llDisplayModeChanged = CTimer::InTicks(100.0f); // when display mode was last changed
 
 // rendering preferences for automatic settings
-extern INDEX sam_iVideoSetup = 1;  // 0==speed, 1==normal, 2==quality, 3==custom
+extern INDEX sam_iVideoSetup = 1;  // 0 == speed, 1 == normal, 2 == quality, 3 == custom
 // automatic adjustment of audio quality
 extern BOOL sam_bAutoAdjustAudio = TRUE;
 
@@ -180,7 +180,7 @@ static void DirectoryLockOn(void)
     FILE_ATTRIBUTE_NORMAL|FILE_FLAG_DELETE_ON_CLOSE,  // file attributes
     NULL);
   // if failed
-  if (_hLock==NULL || GetLastError()!=0) {
+  if (_hLock == NULL || GetLastError() != 0) {
     // report warning
     CPrintF(TRANS("WARNING: SeriousSam didn't shut down properly last time!\n"));
   }
@@ -188,7 +188,7 @@ static void DirectoryLockOn(void)
 static void DirectoryLockOff(void)
 {
   // if lock is open
-  if (_hLock!=NULL) {
+  if (_hLock != NULL) {
     // close it
     CloseHandle(_hLock);
   }
@@ -202,12 +202,12 @@ static BOOL _bInputEnabled = FALSE;
 void UpdateInputEnabledState(void)
 {
   // do nothing if window is invalid
-  if (_hwndMain==NULL) return;
+  if (_hwndMain == NULL) return;
 
   // input should be enabled if application is active
   // and no menu is active and no console is active
-  BOOL bShouldBeEnabled = (!IsIconic(_hwndMain) && !bMenuActive && _pGame->gm_csConsoleState==CS_OFF
-                       && (_pGame->gm_csComputerState==CS_OFF || _pGame->gm_csComputerState==CS_ONINBACKGROUND))
+  BOOL bShouldBeEnabled = (!IsIconic(_hwndMain) && !bMenuActive && _pGame->gm_csConsoleState == CS_OFF
+                       && (_pGame->gm_csComputerState == CS_OFF || _pGame->gm_csComputerState == CS_ONINBACKGROUND))
                        || _bDefiningKey;
 
   // if should be turned off
@@ -229,9 +229,9 @@ void UpdateInputEnabledState(void)
 // automaticaly manage pause toggling
 void UpdatePauseState(void)
 {
-  BOOL bShouldPause = (_gmRunningGameMode==GM_SINGLE_PLAYER) && (bMenuActive || 
-                       _pGame->gm_csConsoleState ==CS_ON || _pGame->gm_csConsoleState ==CS_TURNINGON || _pGame->gm_csConsoleState ==CS_TURNINGOFF ||
-                       _pGame->gm_csComputerState==CS_ON || _pGame->gm_csComputerState==CS_TURNINGON || _pGame->gm_csComputerState==CS_TURNINGOFF);
+  BOOL bShouldPause = (_gmRunningGameMode == GM_SINGLE_PLAYER) && (bMenuActive || 
+                       _pGame->gm_csConsoleState == CS_ON || _pGame->gm_csConsoleState == CS_TURNINGON || _pGame->gm_csConsoleState == CS_TURNINGOFF ||
+                       _pGame->gm_csComputerState == CS_ON || _pGame->gm_csComputerState == CS_TURNINGON || _pGame->gm_csComputerState == CS_TURNINGOFF);
   _pNetwork->SetLocalPause(bShouldPause);
 }
 
@@ -249,7 +249,7 @@ void LimitFrameRate(void)
   sam_iMaxFPSInactive = ClampDn( (INDEX)sam_iMaxFPSInactive, 1L);
   INDEX iMaxFPS = sam_iMaxFPSActive;
   if (IsIconic(_hwndMain)) iMaxFPS = sam_iMaxFPSInactive;
-  if (_pGame->gm_CurrentSplitScreenCfg==CGame::SSC_DEDICATED) {
+  if (_pGame->gm_CurrentSplitScreenCfg == CGame::SSC_DEDICATED) {
     iMaxFPS = ClampDn(iMaxFPS, 60L); // never go very slow if dedicated server
   }
   TIME tmWantedDelta = 1.0f / iMaxFPS;
@@ -279,7 +279,7 @@ void StartNextDemo(void)
   _lhAutoDemos.AddTail(pli->li_lnNode);
 
   // if intro
-  if (pli->li_fnLevel==sam_strIntroLevel) {
+  if (pli->li_fnLevel == sam_strIntroLevel) {
     // start intro
     _gmRunningGameMode = GM_NONE;
     _pGame->gm_aiStartLocalPlayers[0] = 0;
@@ -317,7 +317,7 @@ void StartNextDemo(void)
     }
   }
 
-  if (_gmRunningGameMode==GM_NONE) {
+  if (_gmRunningGameMode == GM_NONE) {
     _bInAutoPlayLoop = FALSE;
   }
 }
@@ -327,7 +327,7 @@ BOOL _bCDPathFound = FALSE;
 BOOL FileExistsOnHD(const CTString &strFile)
 {
   FILE *f = fopen(_fnmApplicationPath+strFile, "rb");
-  if (f!=NULL) {
+  if (f != NULL) {
     fclose(f);
     return TRUE;
   } else {
@@ -338,7 +338,7 @@ BOOL FileExistsOnHD(const CTString &strFile)
 void TrimString(char *str)
 {
   int i = strlen(str);
-  if (str[i-1]=='\n' || str[i-1]=='\r') {
+  if (str[i-1] == '\n' || str[i-1] == '\r') {
     str[i-1]=0;
   }
 }
@@ -360,7 +360,7 @@ void LoadAndForceTexture(CTextureObject &to, CTextureObject *&pto, const CTFileN
     CTextureData *ptd = (CTextureData*)to.GetData();
     ptd->Force( TEX_CONSTANT);
     ptd = ptd->td_ptdBaseTexture;
-    if (ptd!=NULL) ptd->Force( TEX_CONSTANT);
+    if (ptd != NULL) ptd->Force( TEX_CONSTANT);
     pto = &to;
   } catch( char *pchrError) {
     (void*)pchrError;
@@ -381,11 +381,11 @@ void InitializeGame(void)
 
     CPrintF(TRANS("Loading game library '%s'...\n"), (const char *)fnmExpanded);
     HMODULE hGame = LoadLibraryA(fnmExpanded);
-    if (hGame==NULL) {
+    if (hGame == NULL) {
       ThrowF_t("%s", GetWindowsError(GetLastError()));
     }
     CGame* (*GAME_Create)(void) = (CGame* (*)(void))GetProcAddress(hGame, "GAME_Create");
-    if (GAME_Create==NULL) {
+    if (GAME_Create == NULL) {
       ThrowF_t("%s", GetWindowsError(GetLastError()));
     }
     _pGame = GAME_Create();
@@ -498,7 +498,7 @@ BOOL Init( HINSTANCE hInstance, int nCmdShow, CTString strCmdLine)
   }
 
   // execute script given on command line
-  if (cmd_strScript!="") {
+  if (cmd_strScript != "") {
     CPrintF("Command line script: '%s'\n", cmd_strScript);
     CTString strCmd;
     strCmd.PrintF("include \"%s\"", cmd_strScript);
@@ -518,7 +518,7 @@ BOOL Init( HINSTANCE hInstance, int nCmdShow, CTString strCmdLine)
   InitializeMenus();      
   
   // if there is a mod
-  if (_fnmMod!="") {
+  if (_fnmMod != "") {
     // execute the mod startup script
     _pShell->Execute(CTString("include \"Scripts\\Mod_startup.ini\";"));
   }
@@ -542,12 +542,12 @@ BOOL Init( HINSTANCE hInstance, int nCmdShow, CTString strCmdLine)
   
   HideSplashScreen();
 
-  if (cmd_strPassword!="") {
+  if (cmd_strPassword != "") {
     _pShell->SetString("net_strConnectPassword", cmd_strPassword);
   }
 
   // if connecting to server from command line
-  if (cmd_strServer!="") {
+  if (cmd_strServer != "") {
     CTString strPort = "";
     if (cmd_iPort>0) {
       _pShell->SetINDEX("net_iPort", cmd_iPort);
@@ -563,11 +563,11 @@ BOOL Init( HINSTANCE hInstance, int nCmdShow, CTString strCmdLine)
       StartMenus("join");
     }
   // if starting world from command line
-  } else if (cmd_strWorld!="") {
+  } else if (cmd_strWorld != "") {
     CPrintF(TRANS("Command line world: '%s'\n"), cmd_strWorld);
     // try to start the game with that level
     try {
-      if (cmd_iGoToMarker>=0) {
+      if (cmd_iGoToMarker >= 0) {
         CPrintF(TRANS("Command line marker: %d\n"), cmd_iGoToMarker);
         CTString strCommand;
         strCommand.PrintF("cht_iGoToMarker = %d;", cmd_iGoToMarker);
@@ -600,7 +600,7 @@ void End(void)
   ClearDemosList();
 
   // destroy the main window and its canvas
-  if (pvpViewPort!=NULL) {
+  if (pvpViewPort != NULL) {
     _pGfx->DestroyWindowCanvas( pvpViewPort);
     pvpViewPort = NULL;
     pdpNormal   = NULL;
@@ -640,18 +640,18 @@ void PrintDisplayModeInfo(void)
   strRes.PrintF( "%dx%dx%s", slDPWidth, slDPHeight, _pGfx->gl_dmCurrentDisplayMode.DepthString());
   if (dm.IsDualHead())   strRes += TRANS(" DualMonitor");
   if (dm.IsWideScreen()) strRes += TRANS(" WideScreen");
-       if (_pGfx->gl_eCurrentAPI==GAT_OGL) strRes += " (OpenGL)";
+       if (_pGfx->gl_eCurrentAPI == GAT_OGL) strRes += " (OpenGL)";
 #ifdef SE1_D3D
-  else if (_pGfx->gl_eCurrentAPI==GAT_D3D) strRes += " (Direct3D)";
+  else if (_pGfx->gl_eCurrentAPI == GAT_D3D) strRes += " (Direct3D)";
 #endif // SE1_D3D
 
   CTString strDescr;
   strDescr.PrintF("\n%s (%s)\n", _strPreferencesDescription, RenderingPreferencesDescription(sam_iVideoSetup));
   strRes+=strDescr;
   // tell if application is started for the first time, or failed to set mode
-  if (_iDisplayModeChangeFlag==0) {
+  if (_iDisplayModeChangeFlag == 0) {
     strRes += TRANS("Display mode set by default!");
-  } else if (_iDisplayModeChangeFlag==2) {
+  } else if (_iDisplayModeChangeFlag == 2) {
     strRes += TRANS("Last mode set failed!");
   }
 
@@ -668,8 +668,8 @@ void DoGame(void)
   // set flag if not in game
   if (!_pGame->gm_bGameOn) _gmRunningGameMode = GM_NONE;
 
-  if (_gmRunningGameMode==GM_DEMO  && _pNetwork->IsDemoPlayFinished()
-    ||_gmRunningGameMode==GM_INTRO && _pNetwork->IsGameFinished()) {
+  if (_gmRunningGameMode == GM_DEMO  && _pNetwork->IsDemoPlayFinished()
+    ||_gmRunningGameMode == GM_INTRO && _pNetwork->IsGameFinished()) {
     _pGame->StopGame();
     _gmRunningGameMode = GM_NONE;
 
@@ -698,24 +698,24 @@ void DoGame(void)
     Credits_Off();
     sam_iStartCredits = 0;
   }
-  if (_gmRunningGameMode==GM_NONE) {
+  if (_gmRunningGameMode == GM_NONE) {
     Credits_Off();
     sam_iStartCredits = 0;
   }
 
   // redraw the view
-  if (!IsIconic(_hwndMain) && pdp!=NULL && pdp->Lock())
+  if (!IsIconic(_hwndMain) && pdp != NULL && pdp->Lock())
   {
-    if (_gmRunningGameMode!=GM_NONE && !bMenuActive ) {
+    if (_gmRunningGameMode != GM_NONE && !bMenuActive ) {
       // handle pretouching of textures and shadowmaps
       pdp->Unlock();
-      _pGame->GameRedrawView( pdp, (_pGame->gm_csConsoleState!=CS_OFF || bMenuActive)?0:GRV_SHOWEXTRAS);
+      _pGame->GameRedrawView( pdp, (_pGame->gm_csConsoleState != CS_OFF || bMenuActive)?0:GRV_SHOWEXTRAS);
       pdp->Lock();
       _pGame->ComputerRender(pdp);
       pdp->Unlock();
       CDrawPort dpScroller(pdp, TRUE);
       dpScroller.Lock();
-      if (Credits_Render(&dpScroller)==0) {
+      if (Credits_Render(&dpScroller) == 0) {
         Credits_Off();
       }
       dpScroller.Unlock();
@@ -742,7 +742,7 @@ void DoGame(void)
     pdp->Unlock();
 
     // clear upper and lower parts of screen if in wide screen mode
-    if (pdp==pdpWideScreen && pdpNormal->Lock()) {
+    if (pdp == pdpWideScreen && pdpNormal->Lock()) {
       const PIX pixWidth  = pdpWideScreen->GetWidth();
       const PIX pixHeight = (pdpNormal->GetHeight() - pdpWideScreen->GetHeight()) /2;
       const PIX pixJOfs   = pixHeight + pdpWideScreen->GetHeight()-1;
@@ -770,7 +770,7 @@ void RenderStarfield(CDrawPort *pdp, FLOAT fStrength)
 {
   CTextureData *ptd = (CTextureData *)_toStarField.GetData();
   // skip if no texture
-  if (ptd==NULL) return;
+  if (ptd == NULL) return;
 
   PIX pixSizeI = pdp->GetWidth();
   PIX pixSizeJ = pdp->GetHeight();
@@ -818,7 +818,7 @@ void QuitScreenLoop(void)
   // while it is still running
   FOREVER {
     FLOAT fVolume = RenderQuitScreen(pdp, pvpViewPort);
-    if (fVolume<=0) {
+    if (fVolume <= 0) {
       return;
     }
     // assure we can listen to non-3d sounds
@@ -828,9 +828,9 @@ void QuitScreenLoop(void)
     MSG msg;
     while (PeekMessage(&msg, NULL, 0, 0, PM_REMOVE)) {
       // if it is not a keyboard or mouse message
-      if (msg.message==WM_LBUTTONDOWN||
-         msg.message==WM_RBUTTONDOWN||
-         msg.message==WM_KEYDOWN) {
+      if (msg.message == WM_LBUTTONDOWN||
+         msg.message == WM_RBUTTONDOWN||
+         msg.message == WM_KEYDOWN) {
         return;
       }
     }
@@ -853,16 +853,16 @@ int SubMain( HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLine, int 
 //  bMenuActive    = FALSE;
 //  bMenuRendering = FALSE;
   // while it is still running
-  while (_bRunning && _fnmModToLoad=="")
+  while (_bRunning && _fnmModToLoad == "")
   {
     // while there are any messages in the message queue
     MSG msg;
     while (PeekMessage( &msg, NULL, 0, 0, PM_REMOVE)) {
       // if it is not a mouse message
-      if (!(msg.message>=WM_MOUSEFIRST && msg.message<=WM_MOUSELAST) ) {
+      if (!(msg.message >= WM_MOUSEFIRST && msg.message <= WM_MOUSELAST) ) {
         // if not system key messages
-        if (!(msg.message==WM_KEYDOWN && msg.wParam==VK_F10
-            ||msg.message==WM_SYSKEYDOWN)) {
+        if (!(msg.message == WM_KEYDOWN && msg.wParam == VK_F10
+            ||msg.message == WM_SYSKEYDOWN)) {
           // dispatch it
           TranslateMessage(&msg);
           DispatchMessage(&msg);
@@ -870,7 +870,7 @@ int SubMain( HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLine, int 
       }
 
       // system commands (also send by the application itself)
-      if (msg.message==WM_SYSCOMMAND)
+      if (msg.message == WM_SYSCOMMAND)
       {
         switch (msg.wParam & ~0x0F) {
         // if should minimize
@@ -879,7 +879,7 @@ int SubMain( HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLine, int 
           _bWindowChanging  = TRUE;
           _bReconsiderInput = TRUE;
           // if allowed, not already paused and only in single player game mode
-          if (sam_bPauseOnMinimize && !_pNetwork->IsPaused() && _gmRunningGameMode==GM_SINGLE_PLAYER) {
+          if (sam_bPauseOnMinimize && !_pNetwork->IsPaused() && _gmRunningGameMode == GM_SINGLE_PLAYER) {
             // pause game
             _pNetwork->TogglePause();
           }
@@ -925,23 +925,23 @@ int SubMain( HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLine, int 
       }
 
       // toggle full-screen on alt-enter
-      if (msg.message==WM_SYSKEYDOWN && msg.wParam==VK_RETURN && !IsIconic(_hwndMain)) {
+      if (msg.message == WM_SYSKEYDOWN && msg.wParam == VK_RETURN && !IsIconic(_hwndMain)) {
         StartNewMode( (GfxAPIType)sam_iGfxAPI, sam_iDisplayAdapter, sam_iScreenSizeI, sam_iScreenSizeJ,
                       (enum DisplayDepth)sam_iDisplayDepth, !sam_bFullScreenActive);
       }
 
       // if application should stop
-      if (msg.message==WM_QUIT || msg.message==WM_CLOSE) {
+      if (msg.message == WM_QUIT || msg.message == WM_CLOSE) {
         // stop running
         _bRunning = FALSE;
         _bQuitScreen = FALSE;
       }
 
       // if application is deactivated or minimized
-      if ((msg.message==WM_ACTIVATE && (LOWORD(msg.wParam)==WA_INACTIVE || HIWORD(msg.wParam)))
-       ||  msg.message==WM_CANCELMODE
-       ||  msg.message==WM_KILLFOCUS
-       || (msg.message==WM_ACTIVATEAPP && !msg.wParam)) {
+      if ((msg.message == WM_ACTIVATE && (LOWORD(msg.wParam) == WA_INACTIVE || HIWORD(msg.wParam)))
+       ||  msg.message == WM_CANCELMODE
+       ||  msg.message == WM_KILLFOCUS
+       || (msg.message == WM_ACTIVATEAPP && !msg.wParam)) {
         // if application is running and in full screen mode
         if (!_bWindowChanging && _bRunning) {
           // minimize if in full screen 
@@ -951,32 +951,32 @@ int SubMain( HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLine, int 
         }
       }
       // if application is activated or minimized
-      else if ((msg.message==WM_ACTIVATE && (LOWORD(msg.wParam)==WA_ACTIVE || LOWORD(msg.wParam)==WA_CLICKACTIVE))
-            ||  msg.message==WM_SETFOCUS
-            || (msg.message==WM_ACTIVATEAPP && msg.wParam)) {
+      else if ((msg.message == WM_ACTIVATE && (LOWORD(msg.wParam) == WA_ACTIVE || LOWORD(msg.wParam) == WA_CLICKACTIVE))
+            ||  msg.message == WM_SETFOCUS
+            || (msg.message == WM_ACTIVATEAPP && msg.wParam)) {
         // enable input back again if needed
         _bReconsiderInput = TRUE;
       }
 
-      if (msg.message==WM_KEYDOWN && msg.wParam==VK_ESCAPE && 
-        (_gmRunningGameMode==GM_DEMO || _gmRunningGameMode==GM_INTRO)) {
+      if (msg.message == WM_KEYDOWN && msg.wParam == VK_ESCAPE && 
+        (_gmRunningGameMode == GM_DEMO || _gmRunningGameMode == GM_INTRO)) {
         _pGame->StopGame();
         _gmRunningGameMode=GM_NONE;
       }
 
-      if (_pGame->gm_csConsoleState==CS_TALK && msg.message==WM_KEYDOWN && msg.wParam==VK_ESCAPE) {
+      if (_pGame->gm_csConsoleState == CS_TALK && msg.message == WM_KEYDOWN && msg.wParam == VK_ESCAPE) {
         _pGame->gm_csConsoleState = CS_OFF;
         msg.message=WM_NULL;
       }
 
-      BOOL bMenuForced = (_gmRunningGameMode==GM_NONE && 
-        (_pGame->gm_csConsoleState==CS_OFF || _pGame->gm_csConsoleState==CS_TURNINGOFF));
-      BOOL bMenuToggle = (msg.message==WM_KEYDOWN && msg.wParam==VK_ESCAPE 
-        && (_pGame->gm_csComputerState==CS_OFF || _pGame->gm_csComputerState==CS_ONINBACKGROUND));
+      BOOL bMenuForced = (_gmRunningGameMode == GM_NONE && 
+        (_pGame->gm_csConsoleState == CS_OFF || _pGame->gm_csConsoleState == CS_TURNINGOFF));
+      BOOL bMenuToggle = (msg.message == WM_KEYDOWN && msg.wParam == VK_ESCAPE 
+        && (_pGame->gm_csComputerState == CS_OFF || _pGame->gm_csComputerState == CS_ONINBACKGROUND));
       if (!bMenuActive) {
         if (bMenuForced || bMenuToggle) {
           // if console is active
-          if (_pGame->gm_csConsoleState==CS_ON || _pGame->gm_csConsoleState==CS_TURNINGON) {
+          if (_pGame->gm_csConsoleState == CS_ON || _pGame->gm_csConsoleState == CS_TURNINGON) {
             // deactivate it
             _pGame->gm_csConsoleState = CS_TURNINGOFF;
             _iAddonExecState = 0;
@@ -994,7 +994,7 @@ int SubMain( HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLine, int 
       }
 
       // if neither menu nor console is running
-      if (!bMenuActive && (_pGame->gm_csConsoleState==CS_OFF || _pGame->gm_csConsoleState==CS_TURNINGOFF)) {
+      if (!bMenuActive && (_pGame->gm_csConsoleState == CS_OFF || _pGame->gm_csConsoleState == CS_TURNINGOFF)) {
         // if current menu is not root
         if (!IsMenusInRoot()) {
           // start current menu
@@ -1020,25 +1020,25 @@ int SubMain( HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLine, int 
       }
 
       // interpret console key presses
-      if (_iAddonExecState==0) {
-        if (msg.message==WM_KEYDOWN) {
+      if (_iAddonExecState == 0) {
+        if (msg.message == WM_KEYDOWN) {
           _pGame->ConsoleKeyDown(msg);
-          if (_pGame->gm_csConsoleState!=CS_ON) {
+          if (_pGame->gm_csConsoleState != CS_ON) {
             _pGame->ComputerKeyDown(msg);
           }
-        } else if (msg.message==WM_KEYUP) {
+        } else if (msg.message == WM_KEYUP) {
           // special handler for talk (not to invoke return key bind)
-          if (msg.wParam==VK_RETURN && _pGame->gm_csConsoleState==CS_TALK) _pGame->gm_csConsoleState = CS_OFF;
-        } else if (msg.message==WM_CHAR) {
+          if (msg.wParam == VK_RETURN && _pGame->gm_csConsoleState == CS_TALK) _pGame->gm_csConsoleState = CS_OFF;
+        } else if (msg.message == WM_CHAR) {
           _pGame->ConsoleChar(msg);
         }
-        if (msg.message==WM_LBUTTONDOWN
-          ||msg.message==WM_RBUTTONDOWN
-          ||msg.message==WM_LBUTTONDBLCLK
-          ||msg.message==WM_RBUTTONDBLCLK
-          ||msg.message==WM_LBUTTONUP
-          ||msg.message==WM_RBUTTONUP) {
-          if (_pGame->gm_csConsoleState!=CS_ON) {
+        if (msg.message == WM_LBUTTONDOWN
+          ||msg.message == WM_RBUTTONDOWN
+          ||msg.message == WM_LBUTTONDBLCLK
+          ||msg.message == WM_RBUTTONDBLCLK
+          ||msg.message == WM_LBUTTONUP
+          ||msg.message == WM_RBUTTONUP) {
+          if (_pGame->gm_csConsoleState != CS_ON) {
             _pGame->ComputerKeyDown(msg);
           }
         }
@@ -1046,39 +1046,39 @@ int SubMain( HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLine, int 
       // if menu is active and no input on
       if (bMenuActive && !_pInput->IsInputEnabled()) {
         // pass keyboard/mouse messages to menu
-        if (msg.message==WM_KEYDOWN) {
+        if (msg.message == WM_KEYDOWN) {
           MenuOnKeyDown( msg.wParam);
-        } else if (msg.message==WM_LBUTTONDOWN || msg.message==WM_LBUTTONDBLCLK) {
+        } else if (msg.message == WM_LBUTTONDOWN || msg.message == WM_LBUTTONDBLCLK) {
           MenuOnKeyDown(VK_LBUTTON);
-        } else if (msg.message==WM_RBUTTONDOWN || msg.message==WM_RBUTTONDBLCLK) {
+        } else if (msg.message == WM_RBUTTONDOWN || msg.message == WM_RBUTTONDBLCLK) {
           MenuOnKeyDown(VK_RBUTTON);
-        } else if (msg.message==WM_MOUSEMOVE) {
+        } else if (msg.message == WM_MOUSEMOVE) {
           MenuOnMouseMove(LOWORD(msg.lParam), HIWORD(msg.lParam));
 #ifndef WM_MOUSEWHEEL
  #define WM_MOUSEWHEEL 0x020A
 #endif
-        } else if (msg.message==WM_MOUSEWHEEL) {
+        } else if (msg.message == WM_MOUSEWHEEL) {
           SWORD swDir = SWORD(UWORD(HIWORD(msg.wParam)));
           if (swDir>0) {
             MenuOnKeyDown(11);
           } else if (swDir<0) {
             MenuOnKeyDown(10);
           }
-        } else if (msg.message==WM_CHAR) {
+        } else if (msg.message == WM_CHAR) {
           MenuOnChar(msg);
         }
       }
 
       // if toggling console
-      BOOL bConsoleKey = sam_bToggleConsole || msg.message==WM_KEYDOWN && 
-        (MapVirtualKey(msg.wParam, 0)==41 // scan code for '~'
-        || msg.wParam==VK_F1 || (msg.wParam==VK_ESCAPE && _iAddonExecState==3));
+      BOOL bConsoleKey = sam_bToggleConsole || msg.message == WM_KEYDOWN && 
+        (MapVirtualKey(msg.wParam, 0) == 41 // scan code for '~'
+        || msg.wParam == VK_F1 || (msg.wParam == VK_ESCAPE && _iAddonExecState == 3));
       if (bConsoleKey && !_bDefiningKey)
       {
         sam_bToggleConsole = FALSE;
-        if (_iAddonExecState==3) _iAddonExecState = 0;
+        if (_iAddonExecState == 3) _iAddonExecState = 0;
         // if it is up, or pulling up
-        if (_pGame->gm_csConsoleState==CS_OFF || _pGame->gm_csConsoleState==CS_TURNINGOFF) {
+        if (_pGame->gm_csConsoleState == CS_OFF || _pGame->gm_csConsoleState == CS_TURNINGOFF) {
           // start it moving down and disable menu
           _pGame->gm_csConsoleState = CS_TURNINGON;
           // stop all IFeel effects
@@ -1087,27 +1087,27 @@ int SubMain( HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLine, int 
             StopMenus(FALSE);
           }
         // if it is down, or dropping down
-        } else if (_pGame->gm_csConsoleState==CS_ON || _pGame->gm_csConsoleState==CS_TURNINGON) {
+        } else if (_pGame->gm_csConsoleState == CS_ON || _pGame->gm_csConsoleState == CS_TURNINGON) {
           // start it moving up
           _pGame->gm_csConsoleState = CS_TURNINGOFF;
         }
       }
 
-      if (_pShell->GetINDEX("con_bTalk") && _pGame->gm_csConsoleState==CS_OFF) {
+      if (_pShell->GetINDEX("con_bTalk") && _pGame->gm_csConsoleState == CS_OFF) {
         _pShell->SetINDEX("con_bTalk", FALSE);
         _pGame->gm_csConsoleState = CS_TALK;
       }
 
       // if pause pressed
-      if (msg.message==WM_KEYDOWN && msg.wParam==VK_PAUSE) {
+      if (msg.message == WM_KEYDOWN && msg.wParam == VK_PAUSE) {
         // toggle pause
         _pNetwork->TogglePause();
       }
 
       // if command sent from external application
-      if (msg.message==WM_COMMAND) {
+      if (msg.message == WM_COMMAND) {
         // if teleport player
-        if (msg.wParam==1001) {
+        if (msg.wParam == 1001) {
           // teleport player
           TeleportPlayer(msg.lParam);
           // restore
@@ -1116,18 +1116,18 @@ int SubMain( HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLine, int 
       }
 
       // if demo is playing
-      if (_gmRunningGameMode==GM_DEMO ||
-          _gmRunningGameMode==GM_INTRO ) {
+      if (_gmRunningGameMode == GM_DEMO ||
+          _gmRunningGameMode == GM_INTRO ) {
         // check if escape is pressed
-        BOOL bEscape = (msg.message==WM_KEYDOWN && msg.wParam==VK_ESCAPE);
+        BOOL bEscape = (msg.message == WM_KEYDOWN && msg.wParam == VK_ESCAPE);
         // check if console-invoke key is pressed
-        BOOL bTilde = (msg.message==WM_KEYDOWN && 
-          (msg.wParam==VK_F1 || MapVirtualKey(msg.wParam, 0)==41));// scan code for '~'
+        BOOL bTilde = (msg.message == WM_KEYDOWN && 
+          (msg.wParam == VK_F1 || MapVirtualKey(msg.wParam, 0) == 41));// scan code for '~'
 
         // check if any key is pressed
         BOOL bAnyKey = (
-          (msg.message==WM_KEYDOWN && (msg.wParam==VK_SPACE || msg.wParam==VK_RETURN))|| 
-          msg.message==WM_LBUTTONDOWN||msg.message==WM_RBUTTONDOWN);
+          (msg.message == WM_KEYDOWN && (msg.wParam == VK_SPACE || msg.wParam == VK_RETURN))|| 
+          msg.message == WM_LBUTTONDOWN||msg.message == WM_RBUTTONDOWN);
 
         // if escape is pressed
         if (bEscape) {
@@ -1138,7 +1138,7 @@ int SubMain( HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLine, int 
         // if any other key is pressed except console invoking
         } else if (bAnyKey && !bTilde) {
           // if not in menu or in console
-          if (!bMenuActive && !bMenuRendering && _pGame->gm_csConsoleState==CS_OFF) {
+          if (!bMenuActive && !bMenuRendering && _pGame->gm_csConsoleState == CS_OFF) {
             // skip to next demo
             _pGame->StopGame();
             _gmRunningGameMode = GM_NONE;
@@ -1153,7 +1153,7 @@ int SubMain( HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLine, int 
     _bWindowChanging = FALSE;
 
     // get real cursor position
-    if (_pGame->gm_csComputerState!=CS_OFF && _pGame->gm_csComputerState!=CS_ONINBACKGROUND) {
+    if (_pGame->gm_csComputerState != CS_OFF && _pGame->gm_csComputerState != CS_ONINBACKGROUND) {
       POINT pt;
       ::GetCursorPos(&pt);
       ::ScreenToClient(_hwndMain, &pt);
@@ -1161,13 +1161,13 @@ int SubMain( HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLine, int 
     }
 
     // if addon is to be executed
-    if (_iAddonExecState==1) {
+    if (_iAddonExecState == 1) {
       // print header and start console
       CPrintF(TRANS("---- Executing addon: '%s'\n"), (const char*)_fnmAddonToExec);
       sam_bToggleConsole = TRUE;
       _iAddonExecState = 2;
     // if addon is ready for execution
-    } else if (_iAddonExecState==2 && _pGame->gm_csConsoleState == CS_ON) {
+    } else if (_iAddonExecState == 2 && _pGame->gm_csConsoleState == CS_ON) {
       // execute it
       CTString strCmd;
       strCmd.PrintF("include \"%s\"", (const char*)_fnmAddonToExec);
@@ -1194,30 +1194,30 @@ int SubMain( HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLine, int 
   _pInput->DisableInput();
   _pGame->StopGame();
   
-  if (_fnmModToLoad!="") {
+  if (_fnmModToLoad != "") {
   
     char strCmd [64] = {0};
-	char strParam [128] = {0};
-	STARTUPINFOA cif;
-	ZeroMemory(&cif,sizeof(STARTUPINFOA));
-	PROCESS_INFORMATION pi;
-	
-	strcpy_s(strCmd,"SeriousSam.exe");
-	strcpy_s(strParam," +game ");
-	strcat_s(strParam,_fnmModToLoad.FileName());
-	if (_strModServerJoin!="") {
-	  strcat_s(strParam," +connect ");
-	  strcat_s(strParam,_strModServerJoin);
-	  strcat_s(strParam," +quickjoin");
-    }	
+  char strParam [128] = {0};
+  STARTUPINFOA cif;
+  ZeroMemory(&cif,sizeof(STARTUPINFOA));
+  PROCESS_INFORMATION pi;
+  
+  strcpy_s(strCmd,"SeriousSam.exe");
+  strcpy_s(strParam," +game ");
+  strcat_s(strParam,_fnmModToLoad.FileName());
+  if (_strModServerJoin != "") {
+    strcat_s(strParam," +connect ");
+    strcat_s(strParam,_strModServerJoin);
+    strcat_s(strParam," +quickjoin");
+    }  
 
-	if (CreateProcessA(strCmd,strParam,NULL,NULL,FALSE,CREATE_DEFAULT_ERROR_MODE,NULL,NULL,&cif,&pi) == FALSE)
-	{
-	  MessageBox(0, L"error launching the Mod!\n", L"Serious Sam", MB_OK|MB_ICONERROR);		
-	}
+  if (CreateProcessA(strCmd,strParam,NULL,NULL,FALSE,CREATE_DEFAULT_ERROR_MODE,NULL,NULL,&cif,&pi) == FALSE)
+  {
+    MessageBox(0, L"error launching the Mod!\n", L"Serious Sam", MB_OK|MB_ICONERROR);    
+  }
   }
   // invoke quit screen if needed
-  if (_bQuitScreen && _fnmModToLoad=="") QuitScreenLoop();
+  if (_bQuitScreen && _fnmModToLoad == "") QuitScreenLoop();
   
   End();
   return TRUE;
@@ -1226,7 +1226,7 @@ int SubMain( HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLine, int 
 /*
 void CheckModReload(void)
 {
-  if (_fnmModToLoad!="") {
+  if (_fnmModToLoad != "") {
     CTString strCommand = _fnmApplicationExe.FileDir()+"SeriousSam.exe";
     //+mod "+_fnmModToLoad.FileName()+"\"";
     CTString strMod = _fnmModToLoad.FileName();
@@ -1235,7 +1235,7 @@ void CheckModReload(void)
     argv[1] = "+game";
     argv[2] = strMod;
     argv[3] = NULL;
-    if (_strModServerJoin!="") {
+    if (_strModServerJoin != "") {
       argv[3] = "+connect";
       argv[4] = _strModServerJoin;
       argv[5] = "+quickjoin";
@@ -1249,7 +1249,7 @@ void CheckModReload(void)
 void CheckTeaser(void)
 {
   CTFileName fnmTeaser = _fnmApplicationExe.FileDir()+CTString("AfterSam.exe");
-  if (fopen(fnmTeaser, "r")!=NULL) {
+  if (fopen(fnmTeaser, "r") != NULL) {
     Sleep(500);
     _execl(fnmTeaser, "\""+fnmTeaser+"\"", NULL);
   }
@@ -1257,7 +1257,7 @@ void CheckTeaser(void)
 
 void CheckBrowser(void)
 {
-  if (_strURLToVisit!="") {
+  if (_strURLToVisit != "") {
     RunBrowser(_strURLToVisit);
   }
 }
@@ -1297,7 +1297,7 @@ BOOL TryToSetDisplayMode( enum GfxAPIType eGfxAPI, INDEX iAdapter, PIX pixSizeI,
   
   // destroy canvas if existing
   _pGame->DisableLoadingHook();
-  if (pvpViewPort!=NULL) {
+  if (pvpViewPort != NULL) {
     _pGfx->DestroyWindowCanvas( pvpViewPort);
     pvpViewPort = NULL;
     pdpNormal = NULL;
@@ -1310,31 +1310,31 @@ BOOL TryToSetDisplayMode( enum GfxAPIType eGfxAPI, INDEX iAdapter, PIX pixSizeI,
   BOOL bSuccess;
   if (bFullScreenMode) {
 #ifdef SE1_D3D
-    if (eGfxAPI==GAT_D3D) OpenMainWindowFullScreen( pixSizeI, pixSizeJ);
+    if (eGfxAPI == GAT_D3D) OpenMainWindowFullScreen( pixSizeI, pixSizeJ);
 #endif // SE1_D3D
     bSuccess = _pGfx->SetDisplayMode( eGfxAPI, iAdapter, pixSizeI, pixSizeJ, eColorDepth);
-    if (bSuccess && eGfxAPI==GAT_OGL) OpenMainWindowFullScreen( pixSizeI, pixSizeJ);
+    if (bSuccess && eGfxAPI == GAT_OGL) OpenMainWindowFullScreen( pixSizeI, pixSizeJ);
   } else {
 #ifdef SE1_D3D
-    if (eGfxAPI==GAT_D3D) OpenMainWindowNormal( pixSizeI, pixSizeJ);
+    if (eGfxAPI == GAT_D3D) OpenMainWindowNormal( pixSizeI, pixSizeJ);
 #endif // SE1_D3D
     bSuccess = _pGfx->ResetDisplayMode( eGfxAPI);
-    if (bSuccess && eGfxAPI==GAT_OGL) OpenMainWindowNormal( pixSizeI, pixSizeJ);
+    if (bSuccess && eGfxAPI == GAT_OGL) OpenMainWindowNormal( pixSizeI, pixSizeJ);
 #ifdef SE1_D3D
-    if (bSuccess && eGfxAPI==GAT_D3D) ResetMainWindowNormal();
+    if (bSuccess && eGfxAPI == GAT_D3D) ResetMainWindowNormal();
 #endif // SE1_D3D
   }
 
   // if new mode was set
   if (bSuccess) {
     // create canvas
-    ASSERT( pvpViewPort==NULL);
-    ASSERT( pdpNormal==NULL);
+    ASSERT( pvpViewPort == NULL);
+    ASSERT( pdpNormal == NULL);
     _pGfx->CreateWindowCanvas( _hwndMain, &pvpViewPort, &pdpNormal);
 
     // erase context of both buffers (for the sake of wide-screen)
     pdp = pdpNormal;
-    if (pdp!=NULL && pdp->Lock()) {
+    if (pdp != NULL && pdp->Lock()) {
       pdp->Fill(C_BLACK|CT_OPAQUE);
       pdp->Unlock();
       pvpViewPort->SwapBuffers();
@@ -1354,7 +1354,7 @@ BOOL TryToSetDisplayMode( enum GfxAPIType eGfxAPI, INDEX iAdapter, PIX pixSizeI,
 
     // initial screen fill and swap, just to get context running
     BOOL bSuccess = FALSE;
-    if (pdp!=NULL && pdp->Lock()) {
+    if (pdp != NULL && pdp->Lock()) {
       pdp->Fill( LCDGetColor( C_dGREEN|CT_OPAQUE, "bcg fill"));
       pdp->Unlock();
       pvpViewPort->SwapBuffers();
@@ -1367,7 +1367,7 @@ BOOL TryToSetDisplayMode( enum GfxAPIType eGfxAPI, INDEX iAdapter, PIX pixSizeI,
     { // report error
       CPrintF( TRANS("This mode does not support hardware acceleration.\n"));
       // destroy canvas if existing
-      if (pvpViewPort!=NULL) {
+      if (pvpViewPort != NULL) {
         _pGame->DisableLoadingHook();
         _pGfx->DestroyWindowCanvas( pvpViewPort);
         pvpViewPort = NULL;

@@ -17,7 +17,7 @@ with this program; if not, write to the Free Software Foundation, Inc.,
 
 // list of settings data
 static CListHead _lhSettings;
-extern INDEX sam_iVideoSetup;  // 0==speed, 1==normal, 2==quality, 3==custom
+extern INDEX sam_iVideoSetup;  // 0 == speed, 1 == normal, 2 == quality, 3 == custom
 
 class CSettingsEntry {
 public:
@@ -45,13 +45,13 @@ BOOL CSettingsEntry::Matches( const CTString &strRenderer) const
 
 const char *RenderingPreferencesDescription(int iMode)
 {
-  if (iMode==0) {
+  if (iMode == 0) {
     return TRANS("speed");
-  } else if (iMode==1) {
+  } else if (iMode == 1) {
     return TRANS("normal");
-  } else if (iMode==2) {
+  } else if (iMode == 2) {
     return TRANS("quality");
-  } else if (iMode==3) {
+  } else if (iMode == 3) {
     return TRANS("custom");
   } else {
     ASSERT(FALSE);
@@ -73,7 +73,7 @@ void InitGLSettings(void)
   {
     strmFile.Open_t( CTString("Scripts\\GLSettings\\GLSettings.lst"), CTStream::OM_READ);
     INDEX iIndex = 0;
-	  do
+    do
     {
       achrLine    [0] = 0;
       achrRenderer[0] = 0;
@@ -82,7 +82,7 @@ void InitGLSettings(void)
       strmFile.GetLine_t( achrLine, 1024);
       sscanf( achrLine,
         "\"%1024[^\"]\"%*[^\"]\"%1024[^\"]\"%*[^\"]\"%1024[^\"]\"", achrRenderer, achrDesc, achrScript);
-      if (achrRenderer[0]==0) continue;
+      if (achrRenderer[0] == 0) continue;
 
       CSettingsEntry &se = *new CSettingsEntry;
       se.se_strRenderer    = achrRenderer;
@@ -90,7 +90,7 @@ void InitGLSettings(void)
       se.se_fnmScript      = CTString(achrScript);
       _lhSettings.AddTail( se.se_lnNode);
     }
-  	while (!strmFile.AtEOF());
+    while (!strmFile.AtEOF());
   }
 
   // ignore errors
@@ -128,7 +128,7 @@ extern void ApplyGLSettings(BOOL bForce)
   CSettingsEntry *pse = GetGLSettings( da.da_strRenderer);
 
   // if none found
-  if (pse==NULL) {
+  if (pse == NULL) {
     // error
     CPrintF(TRANS("No matching preferences found! Automatic adjustment disabled!\n"));
     return;
@@ -140,7 +140,7 @@ extern void ApplyGLSettings(BOOL bForce)
 
   if (!bForce) {
     // if same as last
-    if (pse->se_strDescription==_strLastRenderer && sam_iVideoSetup==_iLastPreferences) {
+    if (pse->se_strDescription == _strLastRenderer && sam_iVideoSetup == _iLastPreferences) {
       // do nothing
       CPrintF(TRANS("Similar to last, keeping same preferences.\n"));
       return;

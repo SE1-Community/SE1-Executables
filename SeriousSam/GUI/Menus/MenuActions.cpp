@@ -609,7 +609,7 @@ static INDEX sam_old_iScreenSizeJ;
 static INDEX sam_old_iDisplayDepth;
 static INDEX sam_old_iDisplayAdapter;
 static INDEX sam_old_iGfxAPI;
-static INDEX sam_old_iVideoSetup;  // 0==speed, 1==normal, 2==quality, 3==custom
+static INDEX sam_old_iVideoSetup;  // 0 == speed, 1 == normal, 2 == quality, 3 == custom
 
 static void FillResolutionsList(void)
 {

@@ -444,7 +444,7 @@ void StartSelectPlayersMenuFromOpen(void)
   gmCurrent.gm_pgmParentMenu = &_pGUIM->gmNetworkOpenMenu;
   ChangeToMenu(&gmCurrent);
 
-  /*if (sam_strNetworkSettings=="")*/ {
+  /*if (sam_strNetworkSettings == "")*/ {
     void StartNetworkSettingsMenu(void);
     StartNetworkSettingsMenu();
     _pGUIM->gmLoadSaveMenu.gm_bNoEscape = TRUE;
@@ -463,7 +463,7 @@ void StartSelectPlayersMenuFromServers(void)
   gmCurrent.gm_pgmParentMenu = &_pGUIM->gmServersMenu;
   ChangeToMenu(&gmCurrent);
 
-  /*if (sam_strNetworkSettings=="")*/ {
+  /*if (sam_strNetworkSettings == "")*/ {
     void StartNetworkSettingsMenu(void);
     StartNetworkSettingsMenu();
     _pGUIM->gmLoadSaveMenu.gm_bNoEscape = TRUE;

@@ -36,7 +36,7 @@ static FTICK _ftStart;
 
 FLOAT GetTime(void) {
   if (!_bUseRealTime) {
-    return  CTimer::InSeconds(_pTimer->LerpedGameTick() - _ftStart);
+    return CTimer::InSeconds(_pTimer->LerpedGameTick() - _ftStart);
   }
   return (_pTimer->GetHighPrecisionTimer() - _tvStart).GetSeconds();
 }
@@ -89,10 +89,10 @@ void Credits_On(INDEX iType)
 
   _astrCredits.PopAll();
   
-  if (iType==1) {
+  if (iType == 1) {
     _fSpeed = 1.0f;
     LoadOneFile(CTFILENAME("Data\\Intro.txt"));
-  } else if (iType==2) {
+  } else if (iType == 2) {
     _fSpeed = 2.0f;
     LoadOneFile(CTFILENAME("Data\\Credits.txt"));
     LoadOneFile(CTFILENAME("Data\\Credits_End.txt"));
@@ -162,7 +162,7 @@ FLOAT Credits_Render(CDrawPort *pdp)
   for (INDEX i = iLine1; i<iLine1+ctLinesOnScreen+1; i++) {
     CTString *pstr = &strEmpty;
     INDEX iLine = i;
-    if (iLine>=0 && iLine<ctLines) {
+    if (iLine >= 0 && iLine<ctLines) {
       pstr = &_astrCredits[iLine];
       bOver = FALSE;
     }

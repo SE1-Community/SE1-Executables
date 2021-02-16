@@ -24,10 +24,10 @@ with this program; if not, write to the Free Software Foundation, Inc.,
 #endif // _MSC_VER > 1000
 
 #ifndef __AFXWIN_H__
-	#error include 'stdafx.h' before including this file for PCH
+  #error include 'stdafx.h' before including this file for PCH
 #endif
 
-#include "resource.h"		// main symbols
+#include "resource.h"    // main symbols
 
 /////////////////////////////////////////////////////////////////////////////
 // CRConApp:
@@ -37,7 +37,7 @@ with this program; if not, write to the Free Software Foundation, Inc.,
 class CRConApp : public CWinApp
 {
 public:
-	CRConApp();
+  CRConApp();
 
   ULONG m_ulHost;
   UWORD m_uwPort;
@@ -45,20 +45,20 @@ public:
   CTString m_strPass;
 
 // Overrides
-	// ClassWizard generated virtual function overrides
-	//{{AFX_VIRTUAL(CRConApp)
-	public:
-	virtual BOOL InitInstance();
-	//}}AFX_VIRTUAL
+  // ClassWizard generated virtual function overrides
+  //{{AFX_VIRTUAL(CRConApp)
+  public:
+  virtual BOOL InitInstance();
+  //}}AFX_VIRTUAL
 
 // Implementation
-	virtual BOOL SubInitInstance();
+  virtual BOOL SubInitInstance();
 
-	//{{AFX_MSG(CRConApp)
-		// NOTE - the ClassWizard will add and remove member functions here.
-		//    DO NOT EDIT what you see in these blocks of generated code !
-	//}}AFX_MSG
-	DECLARE_MESSAGE_MAP()
+  //{{AFX_MSG(CRConApp)
+    // NOTE - the ClassWizard will add and remove member functions here.
+    //    DO NOT EDIT what you see in these blocks of generated code !
+  //}}AFX_MSG
+  DECLARE_MESSAGE_MAP()
 };
 
 extern CRConApp theApp;

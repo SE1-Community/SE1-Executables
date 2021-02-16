@@ -31,11 +31,11 @@ static char THIS_FILE[] = __FILE__;
 // CRConApp
 
 BEGIN_MESSAGE_MAP(CRConApp, CWinApp)
-	//{{AFX_MSG_MAP(CRConApp)
-		// NOTE - the ClassWizard will add and remove mapping macros here.
-		//    DO NOT EDIT what you see in these blocks of generated code!
-	//}}AFX_MSG
-	ON_COMMAND(ID_HELP, CWinApp::OnHelp)
+  //{{AFX_MSG_MAP(CRConApp)
+    // NOTE - the ClassWizard will add and remove mapping macros here.
+    //    DO NOT EDIT what you see in these blocks of generated code!
+  //}}AFX_MSG
+  ON_COMMAND(ID_HELP, CWinApp::OnHelp)
 END_MESSAGE_MAP()
 
 /////////////////////////////////////////////////////////////////////////////
@@ -43,8 +43,8 @@ END_MESSAGE_MAP()
 
 CRConApp::CRConApp()
 {
-	// TODO: add construction code here,
-	// Place all significant initialization in InitInstance
+  // TODO: add construction code here,
+  // Place all significant initialization in InitInstance
 }
 
 /////////////////////////////////////////////////////////////////////////////
@@ -80,14 +80,14 @@ BOOL CRConApp::SubInitInstance()
   m_strPass = strPass;
 
   CRConDlg dlg;
-	m_pMainWnd = &dlg;
+  m_pMainWnd = &dlg;
   dlg.m_strLog = (const char*)CTString(0, 
     "Serious Sam RCON v1.0\r\nServer: %s:%d\r\nReady for commands...\r\n", strHost, ulPort);
-	int nResponse = dlg.DoModal();
+  int nResponse = dlg.DoModal();
 
-	// Since the dialog has been closed, return FALSE so that we exit the
-	//  application, rather than start the application's message pump.
-	return FALSE;
+  // Since the dialog has been closed, return FALSE so that we exit the
+  //  application, rather than start the application's message pump.
+  return FALSE;
 }
 
 BOOL CRConApp::InitInstance()

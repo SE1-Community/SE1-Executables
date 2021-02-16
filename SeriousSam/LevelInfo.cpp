@@ -54,22 +54,22 @@ BOOL GetLevelInfo(CLevelInfo &li, const CTFileName &fnm)
     // skip initial chunk ids
     strm.ExpectID_t("BUIV"); // 'build version'
     INDEX iDummy;
-    strm>>iDummy; // the version number
+    strm >> iDummy; // the version number
     strm.ExpectID_t("WRLD"); // 'world'
     strm.ExpectID_t("WLIF"); // 'world info'
-    if (strm.PeekID_t()==CChunkID("DTRS")) {
+    if (strm.PeekID_t() == CChunkID("DTRS")) {
       strm.ExpectID_t("DTRS"); // 'world info'
     }
     // read the name
-    strm>>li.li_strName;
+    strm >> li.li_strName;
     // read the flags
-    strm>>li.li_ulSpawnFlags;
+    strm >> li.li_ulSpawnFlags;
 
     // translate name
     li.li_strName = TranslateConst(li.li_strName, 0);
 
     // if dummy name
-    if (li.li_strName=="") {
+    if (li.li_strName == "") {
       // use filename
       li.li_strName = fnm.FileName();
     }
@@ -259,7 +259,7 @@ void LoadDemosList(void)
 
   // add the intro to the start
   extern CTString sam_strIntroLevel;
-  if (sam_strIntroLevel!="") {
+  if (sam_strIntroLevel != "") {
     CLevelInfo *pli = new CLevelInfo;
     pli->li_fnLevel = sam_strIntroLevel;
     CPrintF("  %s\n", (const char *)pli->li_fnLevel);

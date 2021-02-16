@@ -116,21 +116,21 @@ void SortAndFilterServers(void)
     if (_strServerFilter[2] != "") {
       char strCompare[3] = { 0, 0, 0 };
       int iPing = 0;
-      _strServerFilter[2].ScanF("%2[<>=]%d", strCompare, &iPing);
+      _strServerFilter[2].ScanF("%2[< >= ]%d", strCompare, &iPing);
       if (strcmp(strCompare, "<") == 0 && !(int(ns.ns_tmPing * 1000)< iPing)) continue;
-      if (strcmp(strCompare, "<=") == 0 && !(int(ns.ns_tmPing * 1000) <= iPing)) continue;
+      if (strcmp(strCompare, " <= ") == 0 && !(int(ns.ns_tmPing * 1000) <= iPing)) continue;
       if (strcmp(strCompare, ">") == 0 && !(int(ns.ns_tmPing * 1000)> iPing)) continue;
-      if (strcmp(strCompare, ">=") == 0 && !(int(ns.ns_tmPing * 1000) >= iPing)) continue;
+      if (strcmp(strCompare, " >= ") == 0 && !(int(ns.ns_tmPing * 1000) >= iPing)) continue;
       if (strcmp(strCompare, "=") == 0 && !(int(ns.ns_tmPing * 1000) == iPing)) continue;
     }
     if (_strServerFilter[3] != "") {
       char strCompare[3] = { 0, 0, 0 };
       int iPlayers = 0;
-      _strServerFilter[3].ScanF("%2[<>=]%d", strCompare, &iPlayers);
+      _strServerFilter[3].ScanF("%2[< >= ]%d", strCompare, &iPlayers);
       if (strcmp(strCompare, "<") == 0 && !(ns.ns_ctPlayers< iPlayers)) continue;
-      if (strcmp(strCompare, "<=") == 0 && !(ns.ns_ctPlayers <= iPlayers)) continue;
+      if (strcmp(strCompare, " <= ") == 0 && !(ns.ns_ctPlayers <= iPlayers)) continue;
       if (strcmp(strCompare, ">") == 0 && !(ns.ns_ctPlayers> iPlayers)) continue;
-      if (strcmp(strCompare, ">=") == 0 && !(ns.ns_ctPlayers >= iPlayers)) continue;
+      if (strcmp(strCompare, " >= ") == 0 && !(ns.ns_ctPlayers >= iPlayers)) continue;
       if (strcmp(strCompare, "=") == 0 && !(ns.ns_ctPlayers == iPlayers)) continue;
     }
     if (_strServerFilter[4] != "" && !ns.ns_strGameType.Matches("*" + _strServerFilter[4] + "*")) continue;
@@ -388,25 +388,25 @@ BOOL CMGServerList::OnKeyDown(int iVKey)
     AdjustFirstOnScreen();
     break;
   case VK_LBUTTON:
-    /*    if (mg_pixMouseJ>=mg_pixHeaderMinJ && mg_pixMouseJ<=mg_pixHeaderMidJ
-    && mg_pixMouseI>=mg_pixHeaderI[0] && mg_pixMouseI<=mg_pixHeaderI[7]) {
+    /*    if (mg_pixMouseJ >= mg_pixHeaderMinJ && mg_pixMouseJ <= mg_pixHeaderMidJ
+    && mg_pixMouseI >= mg_pixHeaderI[0] && mg_pixMouseI <= mg_pixHeaderI[7]) {
     INDEX iNewSort = mg_iSort;
-    if (mg_pixMouseI<=mg_pixHeaderI[1]) {
+    if (mg_pixMouseI <= mg_pixHeaderI[1]) {
     iNewSort = 0;
-    } else if (mg_pixMouseI<=mg_pixHeaderI[2]) {
+    } else if (mg_pixMouseI <= mg_pixHeaderI[2]) {
     iNewSort = 1;
-    } else if (mg_pixMouseI<=mg_pixHeaderI[3]) {
+    } else if (mg_pixMouseI <= mg_pixHeaderI[3]) {
     iNewSort = 2;
-    } else if (mg_pixMouseI<=mg_pixHeaderI[4]) {
+    } else if (mg_pixMouseI <= mg_pixHeaderI[4]) {
     iNewSort = 3;
-    } else if (mg_pixMouseI<=mg_pixHeaderI[5]) {
+    } else if (mg_pixMouseI <= mg_pixHeaderI[5]) {
     iNewSort = 4;
-    } else if (mg_pixMouseI<=mg_pixHeaderI[6]) {
+    } else if (mg_pixMouseI <= mg_pixHeaderI[6]) {
     iNewSort = 5;
-    } else if (mg_pixMouseI<=mg_pixHeaderI[7]) {
+    } else if (mg_pixMouseI <= mg_pixHeaderI[7]) {
     iNewSort = 6;
     }
-    if (iNewSort==mg_iSort) {
+    if (iNewSort == mg_iSort) {
     mg_bSortDown = !mg_bSortDown;
     } else {
     mg_bSortDown = FALSE;
