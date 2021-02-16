@@ -105,7 +105,7 @@ FLOATaabbox2D BoxMediumLeft(FLOAT fRow)
     FLOAT2D(0.45f, _fBigStartJ+(fRow+1)*_fMediumSizeJ));
 }
 
-FLOATaabbox2D BoxPlayerSwitch(FLOAT fRow)
+FLOATaabbox2D BoxPlayerswitch (FLOAT fRow)
 {
   return FLOATaabbox2D(
     FLOAT2D(0.05f, _fBigStartJ+fRow*_fMediumSizeJ),
@@ -182,7 +182,7 @@ FLOATaabbox2D BoxChangePlayer(INDEX iTable, INDEX iButton)
 
 FLOATaabbox2D BoxInfoTable(INDEX iTable)
 {
-  switch(iTable) {
+  switch (iTable) {
   case 0:
   case 1:
   case 2:
@@ -201,7 +201,7 @@ FLOATaabbox2D BoxInfoTable(INDEX iTable)
 
 FLOATaabbox2D BoxArrow(enum ArrowDir ad)
 {
-  switch(ad) {
+  switch (ad) {
   default:
     ASSERT(FALSE);
   case AD_UP:

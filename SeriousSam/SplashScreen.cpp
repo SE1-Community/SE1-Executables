@@ -27,7 +27,7 @@ static HWND hwnd = NULL;
 static long FAR PASCAL SplashWindowProc( HWND hWnd, UINT message, 
 			    WPARAM wParam, LPARAM lParam )
 {
-  switch( message ) {
+  switch (message ) {
   case WM_PAINT: {
     PAINTSTRUCT ps;
     BeginPaint(hWnd, &ps); 
@@ -101,7 +101,7 @@ void ShowSplashScreen(HINSTANCE hInstance)
 	  hInstance,
 	  NULL);
 
-  if(!hwnd) {
+  if (!hwnd) {
 	  return;
   }
  

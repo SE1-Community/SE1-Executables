@@ -32,7 +32,7 @@ static PIX _pixLastSizeI, _pixLastSizeJ;
 LRESULT WindowProc_WindowChanging( HWND hWnd, UINT message, 
 			    WPARAM wParam, LPARAM lParam )
 {
-    switch( message ) {
+    switch (message ) {
     case WM_PAINT: {
       PAINTSTRUCT ps;
       BeginPaint(hWnd, &ps); 
@@ -68,11 +68,11 @@ LRESULT WindowProc_WindowChanging( HWND hWnd, UINT message,
 LRESULT WindowProc_Normal( HWND hWnd, UINT message, 
 			    WPARAM wParam, LPARAM lParam )
 {
-  switch( message ) {
+  switch (message ) {
 
   // system commands
   case WM_SYSCOMMAND: {
-    switch( wParam & ~0x0F) {
+    switch (wParam & ~0x0F) {
     // window resizing messages
     case SC_MINIMIZE:
     case SC_RESTORE:
@@ -117,7 +117,7 @@ LRESULT CALLBACK WindowProc( HWND hWnd, UINT message,
 			    WPARAM wParam, LPARAM lParam )
 {
   // dispatch to proper window procedure
-  if(_bWindowChanging) {
+  if (_bWindowChanging) {
     return WindowProc_WindowChanging(hWnd, message, wParam, lParam);
   } else {
     return WindowProc_Normal(hWnd, message, wParam, lParam);
@@ -168,7 +168,7 @@ void MainWindow_End(void)
 void CloseMainWindow(void)
 {
   // if window exists
-  if( _hwndMain!=NULL) {
+  if (_hwndMain!=NULL) {
     // destroy it
     DestroyWindow(_hwndMain);
     _hwndMain = NULL;
@@ -211,7 +211,7 @@ void OpenMainWindowNormal( PIX pixSizeI, PIX pixSizeJ)
 	  _hInstance,
 	  NULL);
   // didn't make it?
-  if( _hwndMain==NULL) FatalError(TRANS("Cannot open main window!"));
+  if (_hwndMain==NULL) FatalError(TRANS("Cannot open main window!"));
   SE_UpdateWindowHandle( _hwndMain);
 
   // set window title
@@ -240,7 +240,7 @@ void OpenMainWindowFullScreen( PIX pixSizeI, PIX pixSizeJ)
     _hInstance,
     NULL);
   // didn't make it?
-  if( _hwndMain==NULL) FatalError(TRANS("Cannot open main window!"));
+  if (_hwndMain==NULL) FatalError(TRANS("Cannot open main window!"));
   SE_UpdateWindowHandle( _hwndMain);
 
   // set window title and show it
@@ -267,7 +267,7 @@ void OpenMainWindowInvisible(void)
 	  _hInstance,
 	  NULL);
   // didn't make it?
-  if( _hwndMain==NULL) {
+  if (_hwndMain==NULL) {
     DWORD dwError = GetLastError();
     CTString strErrorMessage(TRANS("Cannot open main window!"));
     CTString strError;

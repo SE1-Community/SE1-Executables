@@ -50,7 +50,7 @@ void CRConDlg::DoDataExchange(CDataExchange* pDX)
 
   // keep the last line visible
   CEdit *pctrlLog = (CEdit *) (GetDlgItem(IDC_LOG));
-  if( pctrlLog != NULL)
+  if (pctrlLog != NULL)
   {
     int iLines=pctrlLog->GetLineCount();
     pctrlLog->LineScroll(iLines);
@@ -124,13 +124,13 @@ HCURSOR CRConDlg::OnQueryDragIcon()
 BOOL CRConDlg::PreTranslateMessage(MSG* pMsg) 
 {
 	// if we caught key down message
-  if( pMsg->message==WM_KEYDOWN)
+  if (pMsg->message==WM_KEYDOWN)
   {
-    if((int)pMsg->wParam==VK_RETURN)
+    if ((int)pMsg->wParam==VK_RETURN)
     {
       UpdateData(TRUE);
       CWnd *pwndCommand = GetDlgItem(IDC_COMMAND);
-      if(pwndCommand==CWnd::GetFocus()) {
+      if (pwndCommand==CWnd::GetFocus()) {
         CString strCommand;
         pwndCommand->GetWindowText(strCommand);
 

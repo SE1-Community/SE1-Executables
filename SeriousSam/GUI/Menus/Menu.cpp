@@ -101,8 +101,8 @@ static CTextureObject _toLogoMenuB;
   ltbmg.mg_iSelected = 0;\
   ltbmg.mg_strText = astr[ltbmg.mg_iSelected];
 
-#define PLACEMENT(x,y,z) CPlacement3D( FLOAT3D( x, y, z), \
-  ANGLE3D( AngleDeg(0.0f), AngleDeg(0.0f), AngleDeg(0.0f)))
+#define PLACEMENT(x,y,z) CPlacement3D( FLOAT3D(x, y, z), \
+  ANGLE3D(AngleDeg(0.0f), AngleDeg(0.0f), AngleDeg(0.0f)))
 
 // ptr to current menu
 CGameMenu *pgmCurrentMenu = NULL;
@@ -271,8 +271,8 @@ void InitializeMenus(void)
   ((CTextureData*)_toLogoMenuB.GetData())->Force(TEX_CONSTANT);
 
   // menu's relative placement
-  CPlacement3D plRelative = CPlacement3D( FLOAT3D( 0.0f, 0.0f, -9.0f), 
-                            ANGLE3D( AngleDeg(0.0f), AngleDeg(0.0f), AngleDeg(0.0f)));
+  CPlacement3D plRelative = CPlacement3D( FLOAT3D(0.0f, 0.0f, -9.0f), 
+                            ANGLE3D(AngleDeg(0.0f), AngleDeg(0.0f), AngleDeg(0.0f)));
   try
   {
     TRANSLATERADIOARRAY(astrNoYes);
@@ -457,7 +457,7 @@ void DestroyMenus( void)
 void MenuGoToParent(void)
 {
   // if there is no parent menu
-  if( pgmCurrentMenu->gm_pgmParentMenu == NULL) {
+  if (pgmCurrentMenu->gm_pgmParentMenu == NULL) {
     // if in game
     if (_gmRunningGameMode!=GM_NONE) {
       // exit menus
@@ -497,9 +497,9 @@ void MenuOnKeyDown( int iVKey)
   }
 
   // if not handled
-  if(!bHandled) {
+  if (!bHandled) {
     // if escape or right mouse pressed
-    if(iVKey==VK_ESCAPE || iVKey==VK_RBUTTON) {
+    if (iVKey==VK_ESCAPE || iVKey==VK_RBUTTON) {
       if (pgmCurrentMenu==&_pGUIM->gmLoadSaveMenu && _pGUIM->gmLoadSaveMenu.gm_bNoEscape) {
         return;
       }
@@ -538,7 +538,7 @@ void MenuUpdateMouseFocus(void)
   ScreenToClient(_hwndMain, &pt);
   extern INDEX sam_bWideScreen;
   extern CDrawPort *pdp;
-  if( sam_bWideScreen) {
+  if (sam_bWideScreen) {
     const PIX pixHeight = pdp->GetHeight();
     pt.y -= (pixHeight/0.75f-pixHeight)/2;
   }
@@ -558,7 +558,7 @@ void MenuUpdateMouseFocus(void)
   FOREACHINLIST( CMenuGadget, mg_lnNode, pgmCurrentMenu->gm_lhGadgets, itmg) {
     CMenuGadget &mg = *itmg;
     // if focused
-    if( itmg->mg_bFocused) {
+    if (itmg->mg_bFocused) {
       // remember it
       pmgActive = &itmg.Current();
     }
@@ -701,7 +701,7 @@ BOOL DoMenu( CDrawPort *pdp)
     // put logo(s) to main menu (if logos exist)
   if (pgmCurrentMenu == &_pGUIM->gmMainMenu)
     {
-      if( _ptoLogoODI!=NULL) {
+      if (_ptoLogoODI!=NULL) {
         CTextureData &td = (CTextureData&)*_ptoLogoODI->GetData();
         #define LOGOSIZE 50
         const PIX pixLogoWidth  = LOGOSIZE * dpMenu.dp_fWideAdjustment;
@@ -713,7 +713,7 @@ BOOL DoMenu( CDrawPort *pdp)
         dpMenu.PutTexture( _ptoLogoODI, PIXaabbox2D( PIX2D( pixI0, pixJ0),PIX2D( pixI1, pixJ1)));
         #undef LOGOSIZE
       }  
-      if( _ptoLogoCT!=NULL) {
+      if (_ptoLogoCT!=NULL) {
         CTextureData &td = (CTextureData&)*_ptoLogoCT->GetData();
         #define LOGOSIZE 50
         const PIX pixLogoWidth  = LOGOSIZE * dpMenu.dp_fWideAdjustment;
@@ -738,7 +738,7 @@ BOOL DoMenu( CDrawPort *pdp)
           PIX2D( pixCenterI, pixHeightJ),PIX2D( pixCenterI+pixSizeI, pixHeightJ+pixSizeJ)));
       }
   } else if (pgmCurrentMenu == &_pGUIM->gmAudioOptionsMenu) {
-      if( _ptoLogoEAX!=NULL) {
+      if (_ptoLogoEAX!=NULL) {
         CTextureData &td = (CTextureData&)*_ptoLogoEAX->GetData();
         const INDEX iSize = 95;
         const PIX pixLogoWidth  = iSize * dpMenu.dp_fWideAdjustment;
@@ -754,14 +754,14 @@ BOOL DoMenu( CDrawPort *pdp)
 #define THUMBW 96
 #define THUMBH 96
     // if there is a thumbnail
-    if( _bThumbnailOn) {
+    if (_bThumbnailOn) {
       const FLOAT fThumbScaleW = fScaleW * dpMenu.dp_fWideAdjustment;
       PIX pixOfs = 8*fScaleW;
       pixI0 = 8*fScaleW;
       pixJ0 = (240-THUMBW/2)*fScaleH;
       pixI1 = pixI0+ THUMBW*fThumbScaleW;
       pixJ1 = pixJ0+ THUMBH*fScaleH;
-      if( _toThumbnail.GetData()!=NULL)
+      if (_toThumbnail.GetData()!=NULL)
       { // show thumbnail with shadow and border
         dpMenu.Fill( pixI0+pixOfs, pixJ0+pixOfs, THUMBW*fThumbScaleW, THUMBH*fScaleH, C_BLACK|128);
         dpMenu.PutTexture( &_toThumbnail, PIXaabbox2D( PIX2D( pixI0, pixJ0), PIX2D( pixI1, pixJ1)), C_WHITE|255);
@@ -785,7 +785,7 @@ BOOL DoMenu( CDrawPort *pdp)
     if (pgmCurrentMenu->gm_pgmParentMenu!=NULL) {
       _pGame->MenuPreRenderMenu(pgmCurrentMenu->gm_pgmParentMenu->gm_strName);
       FOREACHINLIST( CMenuGadget, mg_lnNode, pgmCurrentMenu->gm_pgmParentMenu->gm_lhGadgets, itmg) {
-        if( itmg->mg_bVisible) {
+        if (itmg->mg_bVisible) {
           itmg->Render( &dpMenu);
         }
       }
@@ -818,7 +818,7 @@ BOOL DoMenu( CDrawPort *pdp)
   // for each menu gadget
   FOREACHINLIST( CMenuGadget, mg_lnNode, pgmCurrentMenu->gm_lhGadgets, itmg) {
     // if gadget is visible
-    if( itmg->mg_bVisible) {
+    if (itmg->mg_bVisible) {
       bStilInMenus = TRUE;
       itmg->Render( &dpMenu);
       if (FloatBoxToPixBox(&dpMenu, itmg->mg_boxOnScreen)>=PIX2D(_pixCursorPosI, _pixCursorPosJ)) {
@@ -836,7 +836,7 @@ BOOL DoMenu( CDrawPort *pdp)
     FOREACHINLIST( CMenuGadget, mg_lnNode, pgmCurrentMenu->gm_lhGadgets, itmg) {
       CMenuGadget &mg = *itmg;
       // if focused
-      if( itmg->mg_bFocused) {
+      if (itmg->mg_bFocused) {
         // it is active
         pmgActive = &itmg.Current();
         break;
@@ -943,7 +943,7 @@ void ChangeToMenu( CGameMenu *pgmNewMenu)
   // auto-clear old thumbnail when going out of menu
   ClearThumbnail();
 
-  if( pgmCurrentMenu != NULL) {
+  if (pgmCurrentMenu != NULL) {
     if (!pgmNewMenu->gm_bPopup) {
       pgmCurrentMenu->EndMenu();
     } else {

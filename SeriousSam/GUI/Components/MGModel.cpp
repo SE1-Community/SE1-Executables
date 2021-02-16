@@ -59,7 +59,7 @@ void CMGModel::Render(CDrawPort *pdp)
     );
   pr.AspectRatioL() = 1.0f;
   pr.FrontClipDistanceL() = 0.3f;
-  pr.ViewerPlacementL() = CPlacement3D(FLOAT3D(0, 0, 0), ANGLE3D(0, 0, 0));
+  pr.ViewerPlacementL() = CPlacement3D(FLOAT3D(0.0f, 0.0f, 0.0f), ANGLE3D(0.0f, 0.0f, 0.0f));
 
   // initialize remdering
   CAnyProjection3D apr;
@@ -71,7 +71,7 @@ void CMGModel::Render(CDrawPort *pdp)
   if (mg_moFloor.GetData() != NULL) {
     // set floor's position
     CPlacement3D pl = mg_plModel;
-    pl.pl_OrientationAngle = ANGLE3D(0, 0, 0);
+    pl.pl_OrientationAngle = ANGLE3D(0.0f, 0.0f, 0.0f);
     pl.pl_PositionVector = mg_plModel.pl_PositionVector;
     pl.pl_PositionVector(2) += mg_fFloorY;
     rmRenderModel.SetObjectPlacement(pl);
@@ -101,7 +101,7 @@ void CMGModel::Render(CDrawPort *pdp)
   CPlacement3D plLightPlacement = CPlacement3D(
     mg_plModel.pl_PositionVector +
     vShadowLightDir*mg_plModel.pl_PositionVector(3) * 5,
-    ANGLE3D(0, 0, 0));
+    ANGLE3D(0.0f, 0.0f, 0.0f));
   mg_moModel.RenderShadow(rmRenderModel, plLightPlacement, 200.0f, 200.0f, 1.0f, plFloorPlane);
   mg_moModel.RenderModel(rmRenderModel);
   EndModelRenderingView();

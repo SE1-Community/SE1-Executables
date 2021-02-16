@@ -60,9 +60,9 @@ int qsort_CompareFileInfos_NameDn(const void *elem1, const void *elem2);
 int qsort_CompareFileInfos_FileUp(const void *elem1, const void *elem2);
 int qsort_CompareFileInfos_FileDn(const void *elem1, const void *elem2);
 
-INDEX APIToSwitch(enum GfxAPIType gat);
+INDEX APIToswitch (enum GfxAPIType gat);
 enum GfxAPIType SwitchToAPI(INDEX i);
-INDEX DepthToSwitch(enum DisplayDepth dd);
+INDEX DepthToswitch (enum DisplayDepth dd);
 enum DisplayDepth SwitchToDepth(INDEX i);
 
 void ControlsMenuOn();

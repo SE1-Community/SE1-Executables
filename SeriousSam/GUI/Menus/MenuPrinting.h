@@ -27,7 +27,7 @@ FLOATaabbox2D BoxBigRight(FLOAT fRow);
 FLOATaabbox2D BoxSaveLoad(FLOAT fRow);
 FLOATaabbox2D BoxMediumRow(FLOAT fRow);
 FLOATaabbox2D BoxMediumLeft(FLOAT fRow);
-FLOATaabbox2D BoxPlayerSwitch(FLOAT fRow);
+FLOATaabbox2D BoxPlayerswitch (FLOAT fRow);
 FLOATaabbox2D BoxPlayerEdit(FLOAT fRow);
 FLOATaabbox2D BoxMediumMiddle(FLOAT fRow);
 FLOATaabbox2D BoxMediumRight(FLOAT fRow);

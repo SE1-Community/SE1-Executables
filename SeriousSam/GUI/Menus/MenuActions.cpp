@@ -723,11 +723,11 @@ extern void UpdateVideoOptionsButtons(INDEX iSelected)
   gmCurrent.gm_mgBitsPerPixelTrigger.mg_bEnabled = TRUE;
   if (gmCurrent.gm_mgFullScreenTrigger.mg_iSelected == 0) {
     gmCurrent.gm_mgBitsPerPixelTrigger.mg_bEnabled = FALSE;
-    gmCurrent.gm_mgBitsPerPixelTrigger.mg_iSelected = DepthToSwitch(DD_DEFAULT);
+    gmCurrent.gm_mgBitsPerPixelTrigger.mg_iSelected = DepthToswitch (DD_DEFAULT);
     gmCurrent.gm_mgBitsPerPixelTrigger.ApplyCurrentSelection();
   } else if (da.da_ulFlags&DAF_16BITONLY) {
     gmCurrent.gm_mgBitsPerPixelTrigger.mg_bEnabled = FALSE;
-    gmCurrent.gm_mgBitsPerPixelTrigger.mg_iSelected = DepthToSwitch(DD_16BIT);
+    gmCurrent.gm_mgBitsPerPixelTrigger.mg_iSelected = DepthToswitch (DD_16BIT);
     gmCurrent.gm_mgBitsPerPixelTrigger.ApplyCurrentSelection();
   }
 
@@ -754,9 +754,9 @@ extern void InitVideoOptionsButtons(void)
     gmCurrent.gm_mgFullScreenTrigger.mg_iSelected = 0;
   }
 
-  gmCurrent.gm_mgDisplayAPITrigger.mg_iSelected = APIToSwitch((GfxAPIType)(INDEX)sam_iGfxAPI);
+  gmCurrent.gm_mgDisplayAPITrigger.mg_iSelected = APIToswitch ((GfxAPIType)(INDEX)sam_iGfxAPI);
   gmCurrent.gm_mgDisplayAdaptersTrigger.mg_iSelected = sam_iDisplayAdapter;
-  gmCurrent.gm_mgBitsPerPixelTrigger.mg_iSelected = DepthToSwitch((enum DisplayDepth)(INDEX)sam_iDisplayDepth);
+  gmCurrent.gm_mgBitsPerPixelTrigger.mg_iSelected = DepthToswitch ((enum DisplayDepth)(INDEX)sam_iDisplayDepth);
 
   FillResolutionsList();
   SizeToResolution(sam_iScreenSizeI, sam_iScreenSizeJ, gmCurrent.gm_mgResolutionsTrigger.mg_iSelected);
@@ -984,7 +984,7 @@ static void SortByColumn(int i)
 static void SortByServer(void) { SortByColumn(0); }
 static void SortByMap(void)    { SortByColumn(1); }
 static void SortByPing(void)   { SortByColumn(2); }
-static void SortByPlayers(void){ SortByColumn(3); }
+static void SortByPlayers(void) { SortByColumn(3); }
 static void SortByGame(void)   { SortByColumn(4); }
 static void SortByMod(void)    { SortByColumn(5); }
 static void SortByVer(void)    { SortByColumn(6); }

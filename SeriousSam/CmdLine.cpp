@@ -71,7 +71,7 @@ CTString GetNextParam(void)
     // find first next space
     INDEX iSpace;
     INDEX ctChars = strlen(_strCmd);
-    for(iSpace=0; iSpace<ctChars; iSpace++) {
+    for (iSpace=0; iSpace<ctChars; iSpace++) {
       if (isspace(_strCmd[iSpace])) {
         break;
       }

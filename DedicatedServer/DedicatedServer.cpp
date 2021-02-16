@@ -97,7 +97,7 @@ void LimitFrameRate(void)
   // limit maximum frame rate
   ded_iMaxFPS = ClampDn( ded_iMaxFPS,   1L);
   TIME tmWantedDelta  = 1.0f / ded_iMaxFPS;
-  if( tmCurrentDelta<tmWantedDelta) Sleep( (tmWantedDelta-tmCurrentDelta)*1000.0f);
+  if (tmCurrentDelta<tmWantedDelta) Sleep( (tmWantedDelta-tmCurrentDelta)*1000.0f);
   
   // remember new time
   tvLast = _pTimer->GetHighPrecisionTimer();
@@ -345,7 +345,7 @@ void RoundEnd(void)
 void DoGame(void)
 {
   // do the main game loop
-  if( _pGame->gm_bGameOn) {
+  if (_pGame->gm_bGameOn) {
     _pGame->GameMainLoop();
 
     // if any player is connected
@@ -387,7 +387,7 @@ int SubMain(int argc, char* argv[])
 {
 
   // initialize
-  if( !Init(argc, argv)) {
+  if (!Init(argc, argv)) {
     End();
     return -1;
   }
@@ -403,7 +403,7 @@ int SubMain(int argc, char* argv[])
   RoundBegin();
 
   // while it is still running
-  while( _bRunning)
+  while (_bRunning)
   {
     // do the main game loop
     DoGame();

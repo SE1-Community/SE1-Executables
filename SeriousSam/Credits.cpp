@@ -58,7 +58,7 @@ static void LoadOneFile(const CTFileName &fnm)
 
     // count number of lines
     INDEX ctLines = 0;
-    while(!strm.AtEOF()) {
+    while (!strm.AtEOF()) {
       CTString strLine;
       strm.GetLine_t(strLine);
       ctLines++;
@@ -68,7 +68,7 @@ static void LoadOneFile(const CTFileName &fnm)
     // allocate that much
     CTString *astr = _astrCredits.Push(ctLines);
     // load all lines
-    for(INDEX iLine = 0; iLine<ctLines && !strm.AtEOF(); iLine++) {
+    for (INDEX iLine = 0; iLine<ctLines && !strm.AtEOF(); iLine++) {
       strm.GetLine_t(astr[iLine]);
     }
 

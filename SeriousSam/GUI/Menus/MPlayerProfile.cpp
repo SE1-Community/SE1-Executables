@@ -103,47 +103,47 @@ void CPlayerProfileMenu::Initialize_t(void)
 
   TRIGGER_MG(gm_mgCrosshair, 4.0, gm_mgTeam, gm_mgWeaponSelect, TRANS("CROSSHAIR"), astrCrosshair);
   gm_mgCrosshair.mg_bVisual = TRUE;
-  gm_mgCrosshair.mg_boxOnScreen = BoxPlayerSwitch(5.0f);
+  gm_mgCrosshair.mg_boxOnScreen = BoxPlayerswitch (5.0f);
   gm_mgCrosshair.mg_iCenterI = -1;
   gm_mgCrosshair.mg_pOnTriggerChange = NULL;
 
   TRIGGER_MG(gm_mgWeaponSelect, 4.0, gm_mgCrosshair, gm_mgWeaponHide, TRANS("AUTO SELECT WEAPON"), astrWeapon);
-  gm_mgWeaponSelect.mg_boxOnScreen = BoxPlayerSwitch(6.0f);
+  gm_mgWeaponSelect.mg_boxOnScreen = BoxPlayerswitch (6.0f);
   gm_mgWeaponSelect.mg_iCenterI = -1;
   gm_mgWeaponSelect.mg_pOnTriggerChange = NULL;
 
   TRIGGER_MG(gm_mgWeaponHide, 4.0, gm_mgWeaponSelect, gm_mg3rdPerson, TRANS("HIDE WEAPON MODEL"), astrNoYes);
-  gm_mgWeaponHide.mg_boxOnScreen = BoxPlayerSwitch(7.0f);
+  gm_mgWeaponHide.mg_boxOnScreen = BoxPlayerswitch (7.0f);
   gm_mgWeaponHide.mg_iCenterI = -1;
   gm_mgWeaponHide.mg_pOnTriggerChange = NULL;
 
   TRIGGER_MG(gm_mg3rdPerson, 4.0, gm_mgWeaponHide, gm_mgQuotes, TRANS("PREFER 3RD PERSON VIEW"), astrNoYes);
-  gm_mg3rdPerson.mg_boxOnScreen = BoxPlayerSwitch(8.0f);
+  gm_mg3rdPerson.mg_boxOnScreen = BoxPlayerswitch (8.0f);
   gm_mg3rdPerson.mg_iCenterI = -1;
   gm_mg3rdPerson.mg_pOnTriggerChange = NULL;
 
   TRIGGER_MG(gm_mgQuotes, 4.0, gm_mg3rdPerson, gm_mgAutoSave, TRANS("VOICE QUOTES"), astrNoYes);
-  gm_mgQuotes.mg_boxOnScreen = BoxPlayerSwitch(9.0f);
+  gm_mgQuotes.mg_boxOnScreen = BoxPlayerswitch (9.0f);
   gm_mgQuotes.mg_iCenterI = -1;
   gm_mgQuotes.mg_pOnTriggerChange = NULL;
 
   TRIGGER_MG(gm_mgAutoSave, 4.0, gm_mgQuotes, gm_mgCompDoubleClick, TRANS("AUTO SAVE"), astrNoYes);
-  gm_mgAutoSave.mg_boxOnScreen = BoxPlayerSwitch(10.0f);
+  gm_mgAutoSave.mg_boxOnScreen = BoxPlayerswitch (10.0f);
   gm_mgAutoSave.mg_iCenterI = -1;
   gm_mgAutoSave.mg_pOnTriggerChange = NULL;
 
   TRIGGER_MG(gm_mgCompDoubleClick, 4.0, gm_mgAutoSave, gm_mgSharpTurning, TRANS("INVOKE COMPUTER"), astrComputerInvoke);
-  gm_mgCompDoubleClick.mg_boxOnScreen = BoxPlayerSwitch(11.0f);
+  gm_mgCompDoubleClick.mg_boxOnScreen = BoxPlayerswitch (11.0f);
   gm_mgCompDoubleClick.mg_iCenterI = -1;
   gm_mgCompDoubleClick.mg_pOnTriggerChange = NULL;
 
   TRIGGER_MG(gm_mgSharpTurning, 4.0, gm_mgCompDoubleClick, gm_mgViewBobbing, TRANS("SHARP TURNING"), astrNoYes);
-  gm_mgSharpTurning.mg_boxOnScreen = BoxPlayerSwitch(12.0f);
+  gm_mgSharpTurning.mg_boxOnScreen = BoxPlayerswitch (12.0f);
   gm_mgSharpTurning.mg_iCenterI = -1;
   gm_mgSharpTurning.mg_pOnTriggerChange = NULL;
 
   TRIGGER_MG(gm_mgViewBobbing, 4.0, gm_mgSharpTurning, gm_mgCustomizeControls, TRANS("VIEW BOBBING"), astrNoYes);
-  gm_mgViewBobbing.mg_boxOnScreen = BoxPlayerSwitch(13.0f);
+  gm_mgViewBobbing.mg_boxOnScreen = BoxPlayerswitch (13.0f);
   gm_mgViewBobbing.mg_iCenterI = -1;
   gm_mgViewBobbing.mg_pOnTriggerChange = NULL;
 

@@ -25,7 +25,7 @@ INDEX _ctLines;
 CTString GetNonEmptyLine_t(CTStream &strm)
 {
   FOREVER {
-   if(strm.AtEOF()) {
+   if (strm.AtEOF()) {
      ThrowF_t(TRANS("Unexpected end of file"));
    }
    CTString str;
@@ -129,7 +129,7 @@ void ParseCFG_t(CTStream &strm)
       CheckPVS_t(pvs);
       strLine.TrimSpacesLeft();
       strLine.TrimSpacesRight();
-      if( strLine=="No") {
+      if (strLine=="No") {
         pvs->vs_bCanChangeInGame = FALSE;
       } else {
         ASSERT( strLine=="Yes");
@@ -177,7 +177,7 @@ void LoadVarSettings(const CTFileName &fnmCfg)
     CTString strValue = _pShell->GetValue(vs.vs_strVar);
     vs.vs_bCustom = TRUE;
     vs.vs_iOrgValue = vs.vs_iValue = -1;
-    for(INDEX iValue=0; iValue<ctValues; iValue++) {
+    for (INDEX iValue=0; iValue<ctValues; iValue++) {
       if (strValue == vs.vs_astrValues[iValue]) {
         vs.vs_iOrgValue = vs.vs_iValue = iValue;
         vs.vs_bCustom = FALSE;
@@ -200,7 +200,7 @@ void FlushVarSettings(BOOL bApply)
 
         if (vs.vs_strSchedule!="") {
           BOOL bSheduled = FALSE;
-          for(INDEX i=0; i<astrScheduled.Count(); i++) {
+          for (INDEX i=0; i<astrScheduled.Count(); i++) {
             if (astrScheduled[i]==vs.vs_strSchedule) {
               bSheduled = TRUE;
               break;
@@ -218,7 +218,7 @@ void FlushVarSettings(BOOL bApply)
     delete &*itvs;
   }}
 
-  for(INDEX i=0; i<astrScheduled.Count(); i++) {
+  for (INDEX i=0; i<astrScheduled.Count(); i++) {
     CTString strCmd;
     strCmd.PrintF("include \"%s\"", astrScheduled[i]);
     _pShell->Execute(strCmd);

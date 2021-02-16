@@ -202,7 +202,7 @@ static BOOL _bInputEnabled = FALSE;
 void UpdateInputEnabledState(void)
 {
   // do nothing if window is invalid
-  if( _hwndMain==NULL) return;
+  if (_hwndMain==NULL) return;
 
   // input should be enabled if application is active
   // and no menu is active and no console is active
@@ -211,13 +211,13 @@ void UpdateInputEnabledState(void)
                        || _bDefiningKey;
 
   // if should be turned off
-  if( (!bShouldBeEnabled && _bInputEnabled) || _bReconsiderInput) {
+  if ((!bShouldBeEnabled && _bInputEnabled) || _bReconsiderInput) {
     // disable it and remember new state
     _pInput->DisableInput();
     _bInputEnabled = FALSE;
   }
   // if should be turned on
-  if( bShouldBeEnabled && !_bInputEnabled) {
+  if (bShouldBeEnabled && !_bInputEnabled) {
     // enable it and remember new state
     _pInput->EnableInput(_hwndMain);
     _bInputEnabled = TRUE;
@@ -248,12 +248,12 @@ void LimitFrameRate(void)
   sam_iMaxFPSActive   = ClampDn( (INDEX)sam_iMaxFPSActive,   1L);
   sam_iMaxFPSInactive = ClampDn( (INDEX)sam_iMaxFPSInactive, 1L);
   INDEX iMaxFPS = sam_iMaxFPSActive;
-  if( IsIconic(_hwndMain)) iMaxFPS = sam_iMaxFPSInactive;
-  if(_pGame->gm_CurrentSplitScreenCfg==CGame::SSC_DEDICATED) {
+  if (IsIconic(_hwndMain)) iMaxFPS = sam_iMaxFPSInactive;
+  if (_pGame->gm_CurrentSplitScreenCfg==CGame::SSC_DEDICATED) {
     iMaxFPS = ClampDn(iMaxFPS, 60L); // never go very slow if dedicated server
   }
   TIME tmWantedDelta = 1.0f / iMaxFPS;
-  if( tmCurrentDelta<tmWantedDelta) Sleep( (tmWantedDelta-tmCurrentDelta)*1000.0f);
+  if (tmCurrentDelta<tmWantedDelta) Sleep( (tmWantedDelta-tmCurrentDelta)*1000.0f);
   
   // remember new time
   tvLast = _pTimer->GetHighPrecisionTimer();
@@ -268,7 +268,7 @@ void StartNextDemo(void)
   }
 
   // skip if no demos
-  if(_lhAutoDemos.IsEmpty()) {
+  if (_lhAutoDemos.IsEmpty()) {
     _bInAutoPlayLoop = FALSE;
     return;
   }
@@ -311,7 +311,7 @@ void StartNextDemo(void)
     // play the demo
     _pGame->gm_strNetworkProvider = "Local";
     _gmRunningGameMode = GM_NONE;
-    if( _pGame->StartDemoPlay( pli->li_fnLevel)) {
+    if (_pGame->StartDemoPlay( pli->li_fnLevel)) {
       _gmRunningGameMode = GM_DEMO;
       CON_DiscardLastLineTimes();
     }
@@ -360,7 +360,7 @@ void LoadAndForceTexture(CTextureObject &to, CTextureObject *&pto, const CTFileN
     CTextureData *ptd = (CTextureData*)to.GetData();
     ptd->Force( TEX_CONSTANT);
     ptd = ptd->td_ptdBaseTexture;
-    if( ptd!=NULL) ptd->Force( TEX_CONSTANT);
+    if (ptd!=NULL) ptd->Force( TEX_CONSTANT);
     pto = &to;
   } catch( char *pchrError) {
     (void*)pchrError;
@@ -482,7 +482,7 @@ BOOL Init( HINSTANCE hInstance, int nCmdShow, CTString strCmdLine)
 
   LCDInit();
 
-  if( sam_bFirstStarted) {
+  if (sam_bFirstStarted) {
     InfoMessage("%s", TRANS(
       "SeriousSam is starting for the first time.\n"
       "If you experience any problems, please consult\n"
@@ -535,7 +535,7 @@ BOOL Init( HINSTANCE hInstance, int nCmdShow, CTString strCmdLine)
                 (enum DisplayDepth)sam_iDisplayDepth, sam_bFullScreenActive);
 
   // set default mode reporting
-  if( sam_bFirstStarted) {
+  if (sam_bFirstStarted) {
     _iDisplayModeChangeFlag = 0;
     sam_bFirstStarted = FALSE;
   }
@@ -626,7 +626,7 @@ void PrintDisplayModeInfo(void)
   // cache some general vars
   SLONG slDPWidth  = pdp->GetWidth();
   SLONG slDPHeight = pdp->GetHeight();
-  if( pdp->IsDualHead()) slDPWidth/=2;
+  if (pdp->IsDualHead()) slDPWidth/=2;
 
   CDisplayMode dm;
   dm.dm_pixSizeI = slDPWidth;
@@ -638,20 +638,20 @@ void PrintDisplayModeInfo(void)
   CTString strRes;
   extern CTString _strPreferencesDescription;
   strRes.PrintF( "%dx%dx%s", slDPWidth, slDPHeight, _pGfx->gl_dmCurrentDisplayMode.DepthString());
-  if( dm.IsDualHead())   strRes += TRANS(" DualMonitor");
-  if( dm.IsWideScreen()) strRes += TRANS(" WideScreen");
-       if( _pGfx->gl_eCurrentAPI==GAT_OGL) strRes += " (OpenGL)";
+  if (dm.IsDualHead())   strRes += TRANS(" DualMonitor");
+  if (dm.IsWideScreen()) strRes += TRANS(" WideScreen");
+       if (_pGfx->gl_eCurrentAPI==GAT_OGL) strRes += " (OpenGL)";
 #ifdef SE1_D3D
-  else if( _pGfx->gl_eCurrentAPI==GAT_D3D) strRes += " (Direct3D)";
+  else if (_pGfx->gl_eCurrentAPI==GAT_D3D) strRes += " (Direct3D)";
 #endif // SE1_D3D
 
   CTString strDescr;
   strDescr.PrintF("\n%s (%s)\n", _strPreferencesDescription, RenderingPreferencesDescription(sam_iVideoSetup));
   strRes+=strDescr;
   // tell if application is started for the first time, or failed to set mode
-  if( _iDisplayModeChangeFlag==0) {
+  if (_iDisplayModeChangeFlag==0) {
     strRes += TRANS("Display mode set by default!");
-  } else if( _iDisplayModeChangeFlag==2) {
+  } else if (_iDisplayModeChangeFlag==2) {
     strRes += TRANS("Last mode set failed!");
   }
 
@@ -666,9 +666,9 @@ void PrintDisplayModeInfo(void)
 void DoGame(void)
 {
   // set flag if not in game
-  if( !_pGame->gm_bGameOn) _gmRunningGameMode = GM_NONE;
+  if (!_pGame->gm_bGameOn) _gmRunningGameMode = GM_NONE;
 
-  if( _gmRunningGameMode==GM_DEMO  && _pNetwork->IsDemoPlayFinished()
+  if (_gmRunningGameMode==GM_DEMO  && _pNetwork->IsDemoPlayFinished()
     ||_gmRunningGameMode==GM_INTRO && _pNetwork->IsGameFinished()) {
     _pGame->StopGame();
     _gmRunningGameMode = GM_NONE;
@@ -682,7 +682,7 @@ void DoGame(void)
   }
 
   // do the main game loop
-  if( _gmRunningGameMode != GM_NONE) {
+  if (_gmRunningGameMode != GM_NONE) {
     _pGame->GameMainLoop();
   // if game is not started
   } else {
@@ -698,15 +698,15 @@ void DoGame(void)
     Credits_Off();
     sam_iStartCredits = 0;
   }
-  if( _gmRunningGameMode==GM_NONE) {
+  if (_gmRunningGameMode==GM_NONE) {
     Credits_Off();
     sam_iStartCredits = 0;
   }
 
   // redraw the view
-  if( !IsIconic(_hwndMain) && pdp!=NULL && pdp->Lock())
+  if (!IsIconic(_hwndMain) && pdp!=NULL && pdp->Lock())
   {
-    if( _gmRunningGameMode!=GM_NONE && !bMenuActive ) {
+    if (_gmRunningGameMode!=GM_NONE && !bMenuActive ) {
       // handle pretouching of textures and shadowmaps
       pdp->Unlock();
       _pGame->GameRedrawView( pdp, (_pGame->gm_csConsoleState!=CS_OFF || bMenuActive)?0:GRV_SHOWEXTRAS);
@@ -725,7 +725,7 @@ void DoGame(void)
     }
 
     // do menu
-    if( bMenuRendering) {
+    if (bMenuRendering) {
       // clear z-buffer
       pdp->FillZBuffer( ZBUF_BACK);
       // remember if we should render menus next tick
@@ -742,7 +742,7 @@ void DoGame(void)
     pdp->Unlock();
 
     // clear upper and lower parts of screen if in wide screen mode
-    if( pdp==pdpWideScreen && pdpNormal->Lock()) {
+    if (pdp==pdpWideScreen && pdpNormal->Lock()) {
       const PIX pixWidth  = pdpWideScreen->GetWidth();
       const PIX pixHeight = (pdpNormal->GetHeight() - pdpWideScreen->GetHeight()) /2;
       const PIX pixJOfs   = pixHeight + pdpWideScreen->GetHeight()-1;
@@ -770,7 +770,7 @@ void RenderStarfield(CDrawPort *pdp, FLOAT fStrength)
 {
   CTextureData *ptd = (CTextureData *)_toStarField.GetData();
   // skip if no texture
-  if(ptd==NULL) return;
+  if (ptd==NULL) return;
 
   PIX pixSizeI = pdp->GetWidth();
   PIX pixSizeJ = pdp->GetHeight();
@@ -826,9 +826,9 @@ void QuitScreenLoop(void)
     _pSound->UpdateSounds();
     // while there are any messages in the message queue
     MSG msg;
-    while(PeekMessage(&msg, NULL, 0, 0, PM_REMOVE)) {
+    while (PeekMessage(&msg, NULL, 0, 0, PM_REMOVE)) {
       // if it is not a keyboard or mouse message
-      if(msg.message==WM_LBUTTONDOWN||
+      if (msg.message==WM_LBUTTONDOWN||
          msg.message==WM_RBUTTONDOWN||
          msg.message==WM_KEYDOWN) {
         return;
@@ -843,7 +843,7 @@ int SubMain( HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLine, int 
 {
   (void)hPrevInstance;
 
-  if( !Init( hInstance, nCmdShow, lpCmdLine )) return FALSE;
+  if (!Init( hInstance, nCmdShow, lpCmdLine )) return FALSE;
 
   // initialy, application is running and active, console and menu are off
   _bRunning    = TRUE;
@@ -853,15 +853,15 @@ int SubMain( HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLine, int 
 //  bMenuActive    = FALSE;
 //  bMenuRendering = FALSE;
   // while it is still running
-  while( _bRunning && _fnmModToLoad=="")
+  while (_bRunning && _fnmModToLoad=="")
   {
     // while there are any messages in the message queue
     MSG msg;
-    while( PeekMessage( &msg, NULL, 0, 0, PM_REMOVE)) {
+    while (PeekMessage( &msg, NULL, 0, 0, PM_REMOVE)) {
       // if it is not a mouse message
-      if( !(msg.message>=WM_MOUSEFIRST && msg.message<=WM_MOUSELAST) ) {
+      if (!(msg.message>=WM_MOUSEFIRST && msg.message<=WM_MOUSELAST) ) {
         // if not system key messages
-        if( !(msg.message==WM_KEYDOWN && msg.wParam==VK_F10
+        if (!(msg.message==WM_KEYDOWN && msg.wParam==VK_F10
             ||msg.message==WM_SYSKEYDOWN)) {
           // dispatch it
           TranslateMessage(&msg);
@@ -870,21 +870,21 @@ int SubMain( HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLine, int 
       }
 
       // system commands (also send by the application itself)
-      if( msg.message==WM_SYSCOMMAND)
+      if (msg.message==WM_SYSCOMMAND)
       {
-        switch( msg.wParam & ~0x0F) {
+        switch (msg.wParam & ~0x0F) {
         // if should minimize
         case SC_MINIMIZE:
-          if( _bWindowChanging) break;
+          if (_bWindowChanging) break;
           _bWindowChanging  = TRUE;
           _bReconsiderInput = TRUE;
           // if allowed, not already paused and only in single player game mode
-          if( sam_bPauseOnMinimize && !_pNetwork->IsPaused() && _gmRunningGameMode==GM_SINGLE_PLAYER) {
+          if (sam_bPauseOnMinimize && !_pNetwork->IsPaused() && _gmRunningGameMode==GM_SINGLE_PLAYER) {
             // pause game
             _pNetwork->TogglePause();
           }
           // if in full screen
-          if( sam_bFullScreenActive) {
+          if (sam_bFullScreenActive) {
             // reset display mode and minimize window
             _pGfx->ResetDisplayMode();
             ShowWindow(_hwndMain, SW_MINIMIZE);
@@ -896,11 +896,11 @@ int SubMain( HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLine, int 
           break;
         // if should restore
         case SC_RESTORE:
-          if( _bWindowChanging) break;
+          if (_bWindowChanging) break;
           _bWindowChanging  = TRUE;
           _bReconsiderInput = TRUE;
           // if in full screen
-          if( sam_bFullScreenActive) {
+          if (sam_bFullScreenActive) {
             ShowWindow(_hwndMain, SW_SHOWNORMAL);
             // set the display mode once again
             StartNewMode( (GfxAPIType)sam_iGfxAPI, sam_iDisplayAdapter, sam_iScreenSizeI, sam_iScreenSizeJ,
@@ -913,7 +913,7 @@ int SubMain( HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLine, int 
           break;
         // if should maximize
         case SC_MAXIMIZE:
-          if( _bWindowChanging) break;
+          if (_bWindowChanging) break;
           _bWindowChanging  = TRUE;
           _bReconsiderInput = TRUE;
           // go to full screen
@@ -925,33 +925,33 @@ int SubMain( HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLine, int 
       }
 
       // toggle full-screen on alt-enter
-      if( msg.message==WM_SYSKEYDOWN && msg.wParam==VK_RETURN && !IsIconic(_hwndMain)) {
+      if (msg.message==WM_SYSKEYDOWN && msg.wParam==VK_RETURN && !IsIconic(_hwndMain)) {
         StartNewMode( (GfxAPIType)sam_iGfxAPI, sam_iDisplayAdapter, sam_iScreenSizeI, sam_iScreenSizeJ,
                       (enum DisplayDepth)sam_iDisplayDepth, !sam_bFullScreenActive);
       }
 
       // if application should stop
-      if( msg.message==WM_QUIT || msg.message==WM_CLOSE) {
+      if (msg.message==WM_QUIT || msg.message==WM_CLOSE) {
         // stop running
         _bRunning = FALSE;
         _bQuitScreen = FALSE;
       }
 
       // if application is deactivated or minimized
-      if( (msg.message==WM_ACTIVATE && (LOWORD(msg.wParam)==WA_INACTIVE || HIWORD(msg.wParam)))
+      if ((msg.message==WM_ACTIVATE && (LOWORD(msg.wParam)==WA_INACTIVE || HIWORD(msg.wParam)))
        ||  msg.message==WM_CANCELMODE
        ||  msg.message==WM_KILLFOCUS
        || (msg.message==WM_ACTIVATEAPP && !msg.wParam)) {
         // if application is running and in full screen mode
-        if( !_bWindowChanging && _bRunning) {
+        if (!_bWindowChanging && _bRunning) {
           // minimize if in full screen 
-          if( sam_bFullScreenActive) PostMessage(NULL, WM_SYSCOMMAND, SC_MINIMIZE, 0);
+          if (sam_bFullScreenActive) PostMessage(NULL, WM_SYSCOMMAND, SC_MINIMIZE, 0);
           // just disable input if not in full screen 
           else _pInput->DisableInput();
         }
       }
       // if application is activated or minimized
-      else if( (msg.message==WM_ACTIVATE && (LOWORD(msg.wParam)==WA_ACTIVE || LOWORD(msg.wParam)==WA_CLICKACTIVE))
+      else if ((msg.message==WM_ACTIVATE && (LOWORD(msg.wParam)==WA_ACTIVE || LOWORD(msg.wParam)==WA_CLICKACTIVE))
             ||  msg.message==WM_SETFOCUS
             || (msg.message==WM_ACTIVATEAPP && msg.wParam)) {
         // enable input back again if needed
@@ -973,10 +973,10 @@ int SubMain( HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLine, int 
         (_pGame->gm_csConsoleState==CS_OFF || _pGame->gm_csConsoleState==CS_TURNINGOFF));
       BOOL bMenuToggle = (msg.message==WM_KEYDOWN && msg.wParam==VK_ESCAPE 
         && (_pGame->gm_csComputerState==CS_OFF || _pGame->gm_csComputerState==CS_ONINBACKGROUND));
-      if( !bMenuActive) {
-        if( bMenuForced || bMenuToggle) {
+      if (!bMenuActive) {
+        if (bMenuForced || bMenuToggle) {
           // if console is active
-          if( _pGame->gm_csConsoleState==CS_ON || _pGame->gm_csConsoleState==CS_TURNINGON) {
+          if (_pGame->gm_csConsoleState==CS_ON || _pGame->gm_csConsoleState==CS_TURNINGON) {
             // deactivate it
             _pGame->gm_csConsoleState = CS_TURNINGOFF;
             _iAddonExecState = 0;
@@ -1028,7 +1028,7 @@ int SubMain( HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLine, int 
           }
         } else if (msg.message==WM_KEYUP) {
           // special handler for talk (not to invoke return key bind)
-          if( msg.wParam==VK_RETURN && _pGame->gm_csConsoleState==CS_TALK) _pGame->gm_csConsoleState = CS_OFF;
+          if (msg.wParam==VK_RETURN && _pGame->gm_csConsoleState==CS_TALK) _pGame->gm_csConsoleState = CS_OFF;
         } else if (msg.message==WM_CHAR) {
           _pGame->ConsoleChar(msg);
         }
@@ -1044,9 +1044,9 @@ int SubMain( HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLine, int 
         }
       }
       // if menu is active and no input on
-      if( bMenuActive && !_pInput->IsInputEnabled()) {
+      if (bMenuActive && !_pInput->IsInputEnabled()) {
         // pass keyboard/mouse messages to menu
-        if(msg.message==WM_KEYDOWN) {
+        if (msg.message==WM_KEYDOWN) {
           MenuOnKeyDown( msg.wParam);
         } else if (msg.message==WM_LBUTTONDOWN || msg.message==WM_LBUTTONDBLCLK) {
           MenuOnKeyDown(VK_LBUTTON);
@@ -1073,21 +1073,21 @@ int SubMain( HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLine, int 
       BOOL bConsoleKey = sam_bToggleConsole || msg.message==WM_KEYDOWN && 
         (MapVirtualKey(msg.wParam, 0)==41 // scan code for '~'
         || msg.wParam==VK_F1 || (msg.wParam==VK_ESCAPE && _iAddonExecState==3));
-      if(bConsoleKey && !_bDefiningKey)
+      if (bConsoleKey && !_bDefiningKey)
       {
         sam_bToggleConsole = FALSE;
-        if( _iAddonExecState==3) _iAddonExecState = 0;
+        if (_iAddonExecState==3) _iAddonExecState = 0;
         // if it is up, or pulling up
-        if( _pGame->gm_csConsoleState==CS_OFF || _pGame->gm_csConsoleState==CS_TURNINGOFF) {
+        if (_pGame->gm_csConsoleState==CS_OFF || _pGame->gm_csConsoleState==CS_TURNINGOFF) {
           // start it moving down and disable menu
           _pGame->gm_csConsoleState = CS_TURNINGON;
           // stop all IFeel effects
           IFeel_StopEffect(NULL);
-          if( bMenuActive) {
+          if (bMenuActive) {
             StopMenus(FALSE);
           }
         // if it is down, or dropping down
-        } else if( _pGame->gm_csConsoleState==CS_ON || _pGame->gm_csConsoleState==CS_TURNINGON) {
+        } else if (_pGame->gm_csConsoleState==CS_ON || _pGame->gm_csConsoleState==CS_TURNINGON) {
           // start it moving up
           _pGame->gm_csConsoleState = CS_TURNINGOFF;
         }
@@ -1153,7 +1153,7 @@ int SubMain( HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLine, int 
     _bWindowChanging = FALSE;
 
     // get real cursor position
-    if( _pGame->gm_csComputerState!=CS_OFF && _pGame->gm_csComputerState!=CS_ONINBACKGROUND) {
+    if (_pGame->gm_csComputerState!=CS_OFF && _pGame->gm_csComputerState!=CS_ONINBACKGROUND) {
       POINT pt;
       ::GetCursorPos(&pt);
       ::ScreenToClient(_hwndMain, &pt);
@@ -1217,7 +1217,7 @@ int SubMain( HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLine, int 
 	}
   }
   // invoke quit screen if needed
-  if( _bQuitScreen && _fnmModToLoad=="") QuitScreenLoop();
+  if (_bQuitScreen && _fnmModToLoad=="") QuitScreenLoop();
   
   End();
   return TRUE;
@@ -1297,7 +1297,7 @@ BOOL TryToSetDisplayMode( enum GfxAPIType eGfxAPI, INDEX iAdapter, PIX pixSizeI,
   
   // destroy canvas if existing
   _pGame->DisableLoadingHook();
-  if( pvpViewPort!=NULL) {
+  if (pvpViewPort!=NULL) {
     _pGfx->DestroyWindowCanvas( pvpViewPort);
     pvpViewPort = NULL;
     pdpNormal = NULL;
@@ -1308,25 +1308,25 @@ BOOL TryToSetDisplayMode( enum GfxAPIType eGfxAPI, INDEX iAdapter, PIX pixSizeI,
 
   // try to set new display mode
   BOOL bSuccess;
-  if( bFullScreenMode) {
+  if (bFullScreenMode) {
 #ifdef SE1_D3D
-    if( eGfxAPI==GAT_D3D) OpenMainWindowFullScreen( pixSizeI, pixSizeJ);
+    if (eGfxAPI==GAT_D3D) OpenMainWindowFullScreen( pixSizeI, pixSizeJ);
 #endif // SE1_D3D
     bSuccess = _pGfx->SetDisplayMode( eGfxAPI, iAdapter, pixSizeI, pixSizeJ, eColorDepth);
-    if( bSuccess && eGfxAPI==GAT_OGL) OpenMainWindowFullScreen( pixSizeI, pixSizeJ);
+    if (bSuccess && eGfxAPI==GAT_OGL) OpenMainWindowFullScreen( pixSizeI, pixSizeJ);
   } else {
 #ifdef SE1_D3D
-    if( eGfxAPI==GAT_D3D) OpenMainWindowNormal( pixSizeI, pixSizeJ);
+    if (eGfxAPI==GAT_D3D) OpenMainWindowNormal( pixSizeI, pixSizeJ);
 #endif // SE1_D3D
     bSuccess = _pGfx->ResetDisplayMode( eGfxAPI);
-    if( bSuccess && eGfxAPI==GAT_OGL) OpenMainWindowNormal( pixSizeI, pixSizeJ);
+    if (bSuccess && eGfxAPI==GAT_OGL) OpenMainWindowNormal( pixSizeI, pixSizeJ);
 #ifdef SE1_D3D
-    if( bSuccess && eGfxAPI==GAT_D3D) ResetMainWindowNormal();
+    if (bSuccess && eGfxAPI==GAT_D3D) ResetMainWindowNormal();
 #endif // SE1_D3D
   }
 
   // if new mode was set
-  if( bSuccess) {
+  if (bSuccess) {
     // create canvas
     ASSERT( pvpViewPort==NULL);
     ASSERT( pdpNormal==NULL);
@@ -1334,7 +1334,7 @@ BOOL TryToSetDisplayMode( enum GfxAPIType eGfxAPI, INDEX iAdapter, PIX pixSizeI,
 
     // erase context of both buffers (for the sake of wide-screen)
     pdp = pdpNormal;
-    if( pdp!=NULL && pdp->Lock()) {
+    if (pdp!=NULL && pdp->Lock()) {
       pdp->Fill(C_BLACK|CT_OPAQUE);
       pdp->Unlock();
       pvpViewPort->SwapBuffers();
@@ -1350,11 +1350,11 @@ BOOL TryToSetDisplayMode( enum GfxAPIType eGfxAPI, INDEX iAdapter, PIX pixSizeI,
     const PIX pixXEnd    = pdp->GetWidth();
     pdpWideScreen = new CDrawPort( pdp, PIXaabbox2D( PIX2D(0,pixYBegAdj), PIX2D(pixXEnd, pixYEndAdj)));
     pdpWideScreen->dp_fWideAdjustment = 9.0f / 12.0f;
-    if( sam_bWideScreen) pdp = pdpWideScreen;
+    if (sam_bWideScreen) pdp = pdpWideScreen;
 
     // initial screen fill and swap, just to get context running
     BOOL bSuccess = FALSE;
-    if( pdp!=NULL && pdp->Lock()) {
+    if (pdp!=NULL && pdp->Lock()) {
       pdp->Fill( LCDGetColor( C_dGREEN|CT_OPAQUE, "bcg fill"));
       pdp->Unlock();
       pvpViewPort->SwapBuffers();
@@ -1363,11 +1363,11 @@ BOOL TryToSetDisplayMode( enum GfxAPIType eGfxAPI, INDEX iAdapter, PIX pixSizeI,
     _pGame->EnableLoadingHook(pdp);
 
     // if the mode is not working, or is not accelerated
-    if( !bSuccess || !_pGfx->IsCurrentModeAccelerated())
+    if (!bSuccess || !_pGfx->IsCurrentModeAccelerated())
     { // report error
       CPrintF( TRANS("This mode does not support hardware acceleration.\n"));
       // destroy canvas if existing
-      if( pvpViewPort!=NULL) {
+      if (pvpViewPort!=NULL) {
         _pGame->DisableLoadingHook();
         _pGfx->DestroyWindowCanvas( pvpViewPort);
         pvpViewPort = NULL;
@@ -1423,7 +1423,7 @@ void StartNewMode( enum GfxAPIType eGfxAPI, INDEX iAdapter, PIX pixSizeI, PIX pi
   BOOL bSuccess = TryToSetDisplayMode( eGfxAPI, iAdapter, pixSizeI, pixSizeJ, eColorDepth, bFullScreenMode);
 
   // if failed
-  if( !bSuccess)
+  if (!bSuccess)
   {
     // report failure and reset to default resolution
     _iDisplayModeChangeFlag = 2;  // failure
@@ -1432,16 +1432,16 @@ void StartNewMode( enum GfxAPIType eGfxAPI, INDEX iAdapter, PIX pixSizeI, PIX pi
     pixSizeJ = 480;
     bFullScreenMode = TRUE;
     // try to revert to one of recovery modes
-    for( INDEX iMode=0; iMode<ctDefaultModes; iMode++) {
+    for (INDEX iMode=0; iMode<ctDefaultModes; iMode++) {
       eColorDepth = (DisplayDepth)aDefaultModes[iMode][0];
       eGfxAPI     = (GfxAPIType)  aDefaultModes[iMode][1];
       iAdapter    =               aDefaultModes[iMode][2];
       CPrintF(TRANS("\nTrying recovery mode %d...\n"), iMode);
       bSuccess = TryToSetDisplayMode( eGfxAPI, iAdapter, pixSizeI, pixSizeJ, eColorDepth, bFullScreenMode);
-      if( bSuccess) break;
+      if (bSuccess) break;
     }
     // if all failed
-    if( !bSuccess) {
+    if (!bSuccess) {
       FatalError(TRANS(
         "Cannot set display mode!\n"
         "Serious Sam was unable to find display mode with hardware acceleration.\n"

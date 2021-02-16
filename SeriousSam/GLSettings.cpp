@@ -82,7 +82,7 @@ void InitGLSettings(void)
       strmFile.GetLine_t( achrLine, 1024);
       sscanf( achrLine,
         "\"%1024[^\"]\"%*[^\"]\"%1024[^\"]\"%*[^\"]\"%1024[^\"]\"", achrRenderer, achrDesc, achrScript);
-      if( achrRenderer[0]==0) continue;
+      if (achrRenderer[0]==0) continue;
 
       CSettingsEntry &se = *new CSettingsEntry;
       se.se_strRenderer    = achrRenderer;
@@ -90,7 +90,7 @@ void InitGLSettings(void)
       se.se_fnmScript      = CTString(achrScript);
       _lhSettings.AddTail( se.se_lnNode);
     }
-  	while( !strmFile.AtEOF());
+  	while (!strmFile.AtEOF());
   }
 
   // ignore errors
@@ -111,7 +111,7 @@ CSettingsEntry *GetGLSettings( const CTString &strRenderer)
   FOREACHINLIST(CSettingsEntry, se_lnNode, _lhSettings, itse)
   { // return the one that matches
     CSettingsEntry &se = *itse;
-    if( se.Matches(strRenderer)) return &se;
+    if (se.Matches(strRenderer)) return &se;
   }
   // none found
   return NULL;
@@ -140,7 +140,7 @@ extern void ApplyGLSettings(BOOL bForce)
 
   if (!bForce) {
     // if same as last
-    if( pse->se_strDescription==_strLastRenderer && sam_iVideoSetup==_iLastPreferences) {
+    if (pse->se_strDescription==_strLastRenderer && sam_iVideoSetup==_iLastPreferences) {
       // do nothing
       CPrintF(TRANS("Similar to last, keeping same preferences.\n"));
       return;

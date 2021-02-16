@@ -234,7 +234,7 @@ int qsort_CompareFileInfos_FileDn(const void *elem1, const void *elem2)
   return -strcmp(fi1.fi_fnFile, fi2.fi_fnFile);
 }
 
-INDEX APIToSwitch(enum GfxAPIType gat)
+INDEX APIToswitch (enum GfxAPIType gat)
 {
   switch (gat) {
   case GAT_OGL: return 0;
@@ -256,7 +256,7 @@ enum GfxAPIType SwitchToAPI(INDEX i)
   }
 }
 
-INDEX DepthToSwitch(enum DisplayDepth dd)
+INDEX DepthToswitch (enum DisplayDepth dd)
 {
   switch (dd) {
   case DD_DEFAULT: return 0;
