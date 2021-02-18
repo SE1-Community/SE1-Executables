@@ -17,7 +17,7 @@ with this program; if not, write to the Free Software Foundation, Inc.,
 #include <Game/Game.h>
 #define DECL_DLL
 
-#if 0  /* rcg10042001 Doesn't seem to exist. */
+#if 0  // rcg10042001 Doesn't seem to exist.
 #include <Entities/Global.h>
 #endif
 
