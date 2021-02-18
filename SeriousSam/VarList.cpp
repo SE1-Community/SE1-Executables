@@ -1,4 +1,4 @@
-/* Copyright (c) 2002-2012 Croteam Ltd. 
+/* Copyright (c) 2002-2012 Croteam Ltd.
 This program is free software; you can redistribute it and/or modify
 it under the terms of version 2 of the GNU General Public License as published by
 the Free Software Foundation
@@ -22,28 +22,26 @@ CListHead _lhVarSettings;
 CTString _strFile;
 INDEX _ctLines;
 
-CTString GetNonEmptyLine_t(CTStream &strm)
-{
+CTString GetNonEmptyLine_t(CTStream &strm) {
   FOREVER {
-   if (strm.AtEOF()) {
-     ThrowF_t(TRANS("Unexpected end of file"));
-   }
-   CTString str;
-   _ctLines++;
-   strm.GetLine_t(str);
-   str.TrimSpacesLeft();
-   if (str.RemovePrefix("//")) {  // skip comments
-     continue;
-   }
-   if (str != "") {
-     str.TrimSpacesRight();
-     return str;
-   }
+    if (strm.AtEOF()) {
+      ThrowF_t(TRANS("Unexpected end of file"));
+    }
+    CTString str;
+    _ctLines++;
+    strm.GetLine_t(str);
+    str.TrimSpacesLeft();
+    if (str.RemovePrefix("//")) { // skip comments
+      continue;
+    }
+    if (str != "") {
+      str.TrimSpacesRight();
+      return str;
+    }
   }
 }
 
-void TranslateLine(CTString &str)
-{
+void TranslateLine(CTString &str) {
   str.TrimSpacesLeft();
   if (str.RemovePrefix("TTRS")) {
     str.TrimSpacesLeft();
@@ -52,24 +50,21 @@ void TranslateLine(CTString &str)
   str.TrimSpacesLeft();
 }
 
-void FixupFileName_t(CTString &strFnm)
-{
+void FixupFileName_t(CTString &strFnm) {
   strFnm.TrimSpacesLeft();
   strFnm.TrimSpacesRight();
-  if (!strFnm.RemovePrefix(CTString("TF") +"NM ")) {  // must not directly have ids in code
+  if (!strFnm.RemovePrefix(CTString("TF") + "NM ")) { // must not directly have ids in code
     ThrowF_t(TRANS("Expected %s%s before filename"), "TF", "NM");
   }
 }
 
-void CheckPVS_t(CVarSetting *pvs)
-{
+void CheckPVS_t(CVarSetting *pvs) {
   if (pvs == NULL) {
     ThrowF_t("Gadget expected");
   }
 }
 
-void ParseCFG_t(CTStream &strm)
-{
+void ParseCFG_t(CTStream &strm) {
   CVarSetting *pvs = NULL;
 
   // repeat
@@ -132,7 +127,7 @@ void ParseCFG_t(CTStream &strm)
       if (strLine == "No") {
         pvs->vs_bCanChangeInGame = FALSE;
       } else {
-        ASSERT( strLine == "Yes");
+        ASSERT(strLine == "Yes");
         pvs->vs_bCanChangeInGame = TRUE;
       }
     } else if (strLine.RemovePrefix("String:")) {
@@ -152,9 +147,7 @@ void ParseCFG_t(CTStream &strm)
   }
 }
 
-
-void LoadVarSettings(const CTFileName &fnmCfg)
-{
+void LoadVarSettings(const CTFileName &fnmCfg) {
   FlushVarSettings(FALSE);
 
   try {
@@ -164,8 +157,8 @@ void LoadVarSettings(const CTFileName &fnmCfg)
     _strFile = fnmCfg;
     ParseCFG_t(strm);
 
-  } catch (char* strError) {
-    CPrintF("%s (%d) : %s\n", (const char*)_strFile, _ctLines, strError);
+  } catch (char *strError) {
+    CPrintF("%s (%d) : %s\n", (const char *)_strFile, _ctLines, strError);
   }
 
   FOREACHINLIST(CVarSetting, vs_lnNode, _lhVarSettings, itvs) {
@@ -177,7 +170,7 @@ void LoadVarSettings(const CTFileName &fnmCfg)
     CTString strValue = _pShell->GetValue(vs.vs_strVar);
     vs.vs_bCustom = TRUE;
     vs.vs_iOrgValue = vs.vs_iValue = -1;
-    for (INDEX iValue=0; iValue<ctValues; iValue++) {
+    for (INDEX iValue = 0; iValue < ctValues; iValue++) {
       if (strValue == vs.vs_astrValues[iValue]) {
         vs.vs_iOrgValue = vs.vs_iValue = iValue;
         vs.vs_bCustom = FALSE;
@@ -187,8 +180,7 @@ void LoadVarSettings(const CTFileName &fnmCfg)
   }
 }
 
-void FlushVarSettings(BOOL bApply)
-{
+void FlushVarSettings(BOOL bApply) {
   CStaticStackArray<CTString> astrScheduled;
 
   if (bApply) {
@@ -200,7 +192,7 @@ void FlushVarSettings(BOOL bApply)
 
         if (vs.vs_strSchedule != "") {
           BOOL bSheduled = FALSE;
-          for (INDEX i=0; i<astrScheduled.Count(); i++) {
+          for (INDEX i = 0; i < astrScheduled.Count(); i++) {
             if (astrScheduled[i] == vs.vs_strSchedule) {
               bSheduled = TRUE;
               break;
@@ -214,24 +206,24 @@ void FlushVarSettings(BOOL bApply)
     }
   }
 
-  {FORDELETELIST(CVarSetting, vs_lnNode, _lhVarSettings, itvs) {
-    delete &*itvs;
-  }}
+  {
+    FORDELETELIST(CVarSetting, vs_lnNode, _lhVarSettings, itvs) {
+      delete &*itvs;
+    }
+  }
 
-  for (INDEX i=0; i<astrScheduled.Count(); i++) {
+  for (INDEX i = 0; i < astrScheduled.Count(); i++) {
     CTString strCmd;
     strCmd.PrintF("include \"%s\"", astrScheduled[i]);
     _pShell->Execute(strCmd);
   }
 }
 
-CVarSetting::CVarSetting()
-{
+CVarSetting::CVarSetting() {
   Clear();
 }
 
-void CVarSetting::Clear()
-{
+void CVarSetting::Clear() {
   vs_iOrgValue = 0;
   vs_iValue = 0;
   vs_ctValues = 0;
@@ -246,8 +238,7 @@ void CVarSetting::Clear()
   vs_bCustom = FALSE;
 }
 
-BOOL CVarSetting::Validate(void)
-{
+BOOL CVarSetting::Validate(void) {
   if (vs_bSeparator) {
     return TRUE;
   }
@@ -258,7 +249,7 @@ BOOL CVarSetting::Validate(void)
     return FALSE;
   }
   if (!vs_bCustom) {
-    vs_iValue = Clamp(vs_iValue, 0L, vs_ctValues-1L);
+    vs_iValue = Clamp(vs_iValue, 0L, vs_ctValues - 1L);
   }
   return TRUE;
 }

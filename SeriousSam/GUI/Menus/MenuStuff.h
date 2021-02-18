@@ -16,7 +16,7 @@ with this program; if not, write to the Free Software Foundation, Inc.,
 #ifndef SE_INCL_MENU_STUFF_H
 #define SE_INCL_MENU_STUFF_H
 #ifdef PRAGMA_ONCE
-  #pragma once
+#pragma once
 #endif
 
 #include "FileInfo.h"
@@ -31,7 +31,6 @@ with this program; if not, write to the Free Software Foundation, Inc.,
   mg.mg_iSelected = 0; \
   mg.mg_strLabel = text; \
   mg.mg_strValue = astr[0];
-
 
 extern INDEX ctGameTypeRadioTexts;
 
@@ -60,12 +59,12 @@ int qsort_CompareFileInfos_NameDn(const void *elem1, const void *elem2);
 int qsort_CompareFileInfos_FileUp(const void *elem1, const void *elem2);
 int qsort_CompareFileInfos_FileDn(const void *elem1, const void *elem2);
 
-INDEX APIToswitch (enum GfxAPIType gat);
+INDEX APIToswitch(enum GfxAPIType gat);
 enum GfxAPIType SwitchToAPI(INDEX i);
-INDEX DepthToswitch (enum DisplayDepth dd);
+INDEX DepthToswitch(enum DisplayDepth dd);
 enum DisplayDepth SwitchToDepth(INDEX i);
 
 void ControlsMenuOn();
 void ControlsMenuOff();
 
-#endif  /* include-once check. */
+#endif /* include-once check. */

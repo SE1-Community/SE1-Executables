@@ -1,4 +1,4 @@
-/* Copyright (c) 2002-2012 Croteam Ltd. 
+/* Copyright (c) 2002-2012 Croteam Ltd.
 This program is free software; you can redistribute it and/or modify
 it under the terms of version 2 of the GNU General Public License as published by
 the Free Software Foundation
@@ -21,14 +21,11 @@ with this program; if not, write to the Free Software Foundation, Inc.,
 
 extern INDEX sam_bWideScreen;
 
-
-CMGModel::CMGModel(void)
-{
+CMGModel::CMGModel(void) {
   mg_fFloorY = 0;
 }
 
-void CMGModel::Render(CDrawPort *pdp)
-{
+void CMGModel::Render(CDrawPort *pdp) {
   // if no model
   if (mg_moModel.GetData() == NULL) {
     // just render text
@@ -53,10 +50,7 @@ void CMGModel::Render(CDrawPort *pdp)
   CRenderModel rmRenderModel;
   CPerspectiveProjection3D pr;
   pr.FOVL() = sam_bWideScreen ? AngleDeg(45.0f) : AngleDeg(30.0f);
-  pr.ScreenBBoxL() = FLOATaabbox2D(
-    FLOAT2D(0.0f, 0.0f),
-    FLOAT2D((float)dpModel.GetWidth(), (float)dpModel.GetHeight())
-    );
+  pr.ScreenBBoxL() = FLOATaabbox2D(FLOAT2D(0.0f, 0.0f), FLOAT2D((float)dpModel.GetWidth(), (float)dpModel.GetHeight()));
   pr.AspectRatioL() = 1.0f;
   pr.FrontClipDistanceL() = 0.3f;
   pr.ViewerPlacementL() = CPlacement3D(FLOAT3D(0.0f, 0.0f, 0.0f), ANGLE3D(0.0f, 0.0f, 0.0f));
@@ -95,13 +89,10 @@ void CMGModel::Render(CDrawPort *pdp)
   rmRenderModel.rm_colLight = LerpColor(C_BLACK, C_WHITE, 0.4f) | CT_OPAQUE;
   rmRenderModel.rm_colAmbient = LerpColor(C_BLACK, C_WHITE, 0.2f) | CT_OPAQUE;
   mg_moModel.SetupModelRendering(rmRenderModel);
-  FLOATplane3D plFloorPlane = FLOATplane3D(FLOAT3D(0.0f, 1.0f, 0.0f),
-    mg_plModel.pl_PositionVector(2) + mg_fFloorY);
+  FLOATplane3D plFloorPlane = FLOATplane3D(FLOAT3D(0.0f, 1.0f, 0.0f), mg_plModel.pl_PositionVector(2) + mg_fFloorY);
   FLOAT3D vShadowLightDir = FLOAT3D(-0.2f, -0.4f, -0.6f);
   CPlacement3D plLightPlacement = CPlacement3D(
-    mg_plModel.pl_PositionVector +
-    vShadowLightDir*mg_plModel.pl_PositionVector(3) * 5,
-    ANGLE3D(0.0f, 0.0f, 0.0f));
+    mg_plModel.pl_PositionVector + vShadowLightDir * mg_plModel.pl_PositionVector(3) * 5, ANGLE3D(0.0f, 0.0f, 0.0f));
   mg_moModel.RenderShadow(rmRenderModel, plLightPlacement, 200.0f, 200.0f, 1.0f, plFloorPlane);
   mg_moModel.RenderModel(rmRenderModel);
   EndModelRenderingView();

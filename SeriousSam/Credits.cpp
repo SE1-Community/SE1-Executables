@@ -1,4 +1,4 @@
-/* Copyright (c) 2002-2012 Croteam Ltd. 
+/* Copyright (c) 2002-2012 Croteam Ltd.
 This program is free software; you can redistribute it and/or modify
 it under the terms of version 2 of the GNU General Public License as published by
 the Free Software Foundation
@@ -16,7 +16,6 @@ with this program; if not, write to the Free Software Foundation, Inc.,
 #include "stdh.h"
 #include <Engine/CurrentVersion.h>
 #include "Credits.h"
-
 
 static CStaticStackArray<CTString> _astrCredits;
 static BOOL _bCreditsOn = FALSE;
@@ -41,16 +40,14 @@ FLOAT GetTime(void) {
   return (_pTimer->GetHighPrecisionTimer() - _tvStart).GetSeconds();
 }
 
-void PrintOneLine(CDrawPort *pdp, const CTString &strText) 
-{
-  pdp->SetTextScaling( fResolutionScaling);
-  pdp->SetTextAspect( 1.0f);
-  pdp->PutTextC( strText, pixW/2, pixJ, C_WHITE|255);
-  pixJ+=pixLineHeight;
+void PrintOneLine(CDrawPort *pdp, const CTString &strText) {
+  pdp->SetTextScaling(fResolutionScaling);
+  pdp->SetTextAspect(1.0f);
+  pdp->PutTextC(strText, pixW / 2, pixJ, C_WHITE | 255);
+  pixJ += pixLineHeight;
 }
 
-static void LoadOneFile(const CTFileName &fnm)
-{
+static void LoadOneFile(const CTFileName &fnm) {
   try {
     // open the file
     CTFileStream strm;
@@ -68,7 +65,7 @@ static void LoadOneFile(const CTFileName &fnm)
     // allocate that much
     CTString *astr = _astrCredits.Push(ctLines);
     // load all lines
-    for (INDEX iLine = 0; iLine<ctLines && !strm.AtEOF(); iLine++) {
+    for (INDEX iLine = 0; iLine < ctLines && !strm.AtEOF(); iLine++) {
       strm.GetLine_t(astr[iLine]);
     }
 
@@ -81,14 +78,13 @@ static void LoadOneFile(const CTFileName &fnm)
 }
 
 // turn credits on
-void Credits_On(INDEX iType)
-{
+void Credits_On(INDEX iType) {
   if (_bCreditsOn) {
     Credits_Off();
   }
 
   _astrCredits.PopAll();
-  
+
   if (iType == 1) {
     _fSpeed = 1.0f;
     LoadOneFile(CTFILENAME("Data\\Intro.txt"));
@@ -119,8 +115,7 @@ void Credits_On(INDEX iType)
 }
 
 // turn credits off
-void Credits_Off(void)
-{
+void Credits_Off(void) {
   if (!_bCreditsOn) {
     return;
   }
@@ -129,8 +124,7 @@ void Credits_Off(void)
 }
 
 // render credits to given drawport
-FLOAT Credits_Render(CDrawPort *pdp)
-{
+FLOAT Credits_Render(CDrawPort *pdp) {
   if (!_bCreditsOn) {
     return 0;
   }
@@ -141,28 +135,28 @@ FLOAT Credits_Render(CDrawPort *pdp)
   dpWide.Lock();
 
   FLOAT fTime = GetTime();
-  
+
   pixW = dpWide.GetWidth();
   pixH = dpWide.GetHeight();
   fResolutionScaling = (FLOAT)pixW / 640.0f;
-  dpWide.SetFont( _pfdDisplayFont);
-  pixLineHeight = floor(20*fResolutionScaling);
+  dpWide.SetFont(_pfdDisplayFont);
+  pixLineHeight = floor(20 * fResolutionScaling);
 
   const FLOAT fLinesPerSecond = _fSpeed;
-  FLOAT fOffset = fTime*fLinesPerSecond;
-  INDEX ctLinesOnScreen = pixH/pixLineHeight;
+  FLOAT fOffset = fTime * fLinesPerSecond;
+  INDEX ctLinesOnScreen = pixH / pixLineHeight;
   INDEX iLine1 = fOffset;
 
-  pixJ = iLine1*pixLineHeight-fOffset*pixLineHeight;
-  iLine1-=ctLinesOnScreen;
+  pixJ = iLine1 * pixLineHeight - fOffset * pixLineHeight;
+  iLine1 -= ctLinesOnScreen;
 
   INDEX ctLines = _astrCredits.Count();
   BOOL bOver = TRUE;
 
-  for (INDEX i = iLine1; i<iLine1+ctLinesOnScreen+1; i++) {
+  for (INDEX i = iLine1; i < iLine1 + ctLinesOnScreen + 1; i++) {
     CTString *pstr = &strEmpty;
     INDEX iLine = i;
-    if (iLine >= 0 && iLine<ctLines) {
+    if (iLine >= 0 && iLine < ctLines) {
       pstr = &_astrCredits[iLine];
       bOver = FALSE;
     }
@@ -174,8 +168,8 @@ FLOAT Credits_Render(CDrawPort *pdp)
 
   if (bOver) {
     return 0;
-  } else if (ctLines-iLine1<ctLinesOnScreen) {
-    return FLOAT(ctLines-iLine1)/ctLinesOnScreen;
+  } else if (ctLines - iLine1 < ctLinesOnScreen) {
+    return FLOAT(ctLines - iLine1) / ctLinesOnScreen;
   } else {
     return 1;
   }

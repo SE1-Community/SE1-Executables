@@ -1,4 +1,4 @@
-/* Copyright (c) 2002-2012 Croteam Ltd. 
+/* Copyright (c) 2002-2012 Croteam Ltd.
 This program is free software; you can redistribute it and/or modify
 it under the terms of version 2 of the GNU General Public License as published by
 the Free Software Foundation
@@ -22,30 +22,25 @@ CListHead _lhAllLevels;
 CListHead _lhFilteredLevels;
 extern INDEX sam_bShowAllLevels;
 
-
-CLevelInfo::CLevelInfo(void)
-{
+CLevelInfo::CLevelInfo(void) {
   li_fnLevel = CTString("Levels\\Default.wld");
   li_strName = TRANS("<invalid level>");
   li_ulSpawnFlags = 0x0;
 }
-CLevelInfo::CLevelInfo(const CLevelInfo &li)
-{
-  li_fnLevel      = li.li_fnLevel;    
-  li_strName      = li.li_strName;    
+CLevelInfo::CLevelInfo(const CLevelInfo &li) {
+  li_fnLevel = li.li_fnLevel;
+  li_strName = li.li_strName;
   li_ulSpawnFlags = li.li_ulSpawnFlags;
 }
 
-void CLevelInfo::operator=(const CLevelInfo &li)
-{
-  li_fnLevel      = li.li_fnLevel;    
-  li_strName      = li.li_strName;    
+void CLevelInfo::operator=(const CLevelInfo &li) {
+  li_fnLevel = li.li_fnLevel;
+  li_strName = li.li_strName;
   li_ulSpawnFlags = li.li_ulSpawnFlags;
 }
 
 // get level info for given filename
-BOOL GetLevelInfo(CLevelInfo &li, const CTFileName &fnm)
-{
+BOOL GetLevelInfo(CLevelInfo &li, const CTFileName &fnm) {
   // try to
   try {
     // open the world file
@@ -54,7 +49,7 @@ BOOL GetLevelInfo(CLevelInfo &li, const CTFileName &fnm)
     // skip initial chunk ids
     strm.ExpectID_t("BUIV"); // 'build version'
     INDEX iDummy;
-    strm >> iDummy; // the version number
+    strm >> iDummy;          // the version number
     strm.ExpectID_t("WRLD"); // 'world'
     strm.ExpectID_t("WLIF"); // 'world info'
     if (strm.PeekID_t() == CChunkID("DTRS")) {
@@ -80,34 +75,32 @@ BOOL GetLevelInfo(CLevelInfo &li, const CTFileName &fnm)
     // succeed
     return TRUE;
 
-  // if failed
+    // if failed
   } catch (char *strError) {
-    (void) strError;
-    //CPrintF("Invalid world file '%s': %s\n", (const char*) fnm, strError);
+    (void)strError;
+    // CPrintF("Invalid world file '%s': %s\n", (const char*) fnm, strError);
     // set dummy info
     li = CLevelInfo();
     // fail
     return FALSE;
   }
 }
-int qsort_CompareLevels(const void *elem1, const void *elem2 )
-{
+int qsort_CompareLevels(const void *elem1, const void *elem2) {
   const CLevelInfo &li1 = **(CLevelInfo **)elem1;
   const CLevelInfo &li2 = **(CLevelInfo **)elem2;
   return strcmp(li1.li_fnLevel, li2.li_fnLevel);
 }
 
 // init level-info subsystem
-void LoadLevelsList(void)
-{
+void LoadLevelsList(void) {
   CPrintF(TRANS("Reading levels directory...\n"));
 
   // list the levels directory with subdirs
   CDynamicStackArray<CTFileName> afnmDir;
-  MakeDirList(afnmDir, CTString("Levels\\"), "*.wld", DLI_RECURSIVE|DLI_SEARCHCD);
+  MakeDirList(afnmDir, CTString("Levels\\"), "*.wld", DLI_RECURSIVE | DLI_SEARCHCD);
 
   // for each file in the directory
-  for (INDEX i=0; i<afnmDir.Count(); i++) {
+  for (INDEX i = 0; i < afnmDir.Count(); i++) {
     CTFileName fnm = afnmDir[i];
 
     CPrintF(TRANS("  file '%s' : "), (const char *)fnm);
@@ -131,8 +124,7 @@ void LoadLevelsList(void)
 }
 
 // cleanup level-info subsystem
-void ClearLevelsList(void)
-{
+void ClearLevelsList(void) {
   // delete list of levels
   FORDELETELIST(CLevelInfo, li_lnNode, _lhAllLevels, itli) {
     delete &itli.Current();
@@ -140,12 +132,13 @@ void ClearLevelsList(void)
 }
 
 // find all levels that match given flags
-void FilterLevels(ULONG ulSpawnFlags)
-{
+void FilterLevels(ULONG ulSpawnFlags) {
   // delete list of filtered levels
-  {FORDELETELIST(CLevelInfo, li_lnNode, _lhFilteredLevels, itli) {
-    delete &itli.Current();
-  }}
+  {
+    FORDELETELIST(CLevelInfo, li_lnNode, _lhFilteredLevels, itli) {
+      delete &itli.Current();
+    }
+  }
 
   // for each level in main list
   FOREACHINLIST(CLevelInfo, li_lnNode, _lhAllLevels, itli) {
@@ -156,13 +149,13 @@ void FilterLevels(ULONG ulSpawnFlags)
     // if all levels are shown, it is visible
     if (sam_bShowAllLevels) {
       bVisible = TRUE;
-    // if it satisfies the spawn flags
-    } else if (li.li_ulSpawnFlags&ulSpawnFlags) {
+      // if it satisfies the spawn flags
+    } else if (li.li_ulSpawnFlags & ulSpawnFlags) {
       // if spawn flags include single player
-      if (ulSpawnFlags&SPF_SINGLEPLAYER) {
+      if (ulSpawnFlags & SPF_SINGLEPLAYER) {
         // visibile only if visited already
-        bVisible = FileExists(li.li_fnLevel.NoExt()+".vis");
-      // if not single player
+        bVisible = FileExists(li.li_fnLevel.NoExt() + ".vis");
+        // if not single player
       } else {
         // it is visibile
         bVisible = TRUE;
@@ -181,39 +174,39 @@ void FilterLevels(ULONG ulSpawnFlags)
 }
 
 // if level doesn't support given flags, find one that does
-void ValidateLevelForFlags(CTString &fnm, ULONG ulSpawnFlags)
-{
+void ValidateLevelForFlags(CTString &fnm, ULONG ulSpawnFlags) {
   // for each level in main list
-  {FOREACHINLIST(CLevelInfo, li_lnNode, _lhAllLevels, itli) {
-    CLevelInfo &li = *itli;
-    // if found
-    if (li.li_fnLevel == fnm) {
-      // if it satisfies the flags
-      if (li.li_ulSpawnFlags&ulSpawnFlags) {
-        // all ok
-        return;
-      }
+  {FOREACHINLIST(CLevelInfo, li_lnNode, _lhAllLevels, itli) {CLevelInfo &li = *itli;
+  // if found
+  if (li.li_fnLevel == fnm) {
+    // if it satisfies the flags
+    if (li.li_ulSpawnFlags & ulSpawnFlags) {
+      // all ok
+      return;
     }
-  }}
-  
-  // for each level in main list
-  {FOREACHINLIST(CLevelInfo, li_lnNode, _lhAllLevels, itli) {
+  }
+}
+}
+
+// for each level in main list
+{
+  FOREACHINLIST(CLevelInfo, li_lnNode, _lhAllLevels, itli) {
     CLevelInfo &li = *itli;
     // if it satisfies the flags
-    if (li.li_ulSpawnFlags&ulSpawnFlags) {
+    if (li.li_ulSpawnFlags & ulSpawnFlags) {
       // use that one
       fnm = li.li_fnLevel;
       return;
     }
-  }}
+  }
+}
 
-  // if nothing found, use default invalid level
-  fnm = CLevelInfo().li_fnLevel;
+// if nothing found, use default invalid level
+fnm = CLevelInfo().li_fnLevel;
 }
 
 // get level info for its filename
-CLevelInfo FindLevelByFileName(const CTFileName &fnm)
-{
+CLevelInfo FindLevelByFileName(const CTFileName &fnm) {
   // for each level in main list
   FOREACHINLIST(CLevelInfo, li_lnNode, _lhAllLevels, itli) {
     CLevelInfo &li = *itli;
@@ -227,16 +220,14 @@ CLevelInfo FindLevelByFileName(const CTFileName &fnm)
   return CLevelInfo();
 }
 
-int qsort_CompareDemos(const void *elem1, const void *elem2 )
-{
+int qsort_CompareDemos(const void *elem1, const void *elem2) {
   const CLevelInfo &li1 = **(CLevelInfo **)elem1;
   const CLevelInfo &li2 = **(CLevelInfo **)elem2;
   return strcmp(li1.li_fnLevel, li2.li_fnLevel);
 }
 
 // init list of autoplay demos
-void LoadDemosList(void)
-{
+void LoadDemosList(void) {
   CPrintF(TRANS("Reading demos directory...\n"));
 
   // list the levels directory with subdirs
@@ -244,7 +235,7 @@ void LoadDemosList(void)
   MakeDirList(afnmDir, CTString("Demos\\"), "Demos\\Auto-*.dem", DLI_RECURSIVE);
 
   // for each file in the directory
-  for (INDEX i=0; i<afnmDir.Count(); i++) {
+  for (INDEX i = 0; i < afnmDir.Count(); i++) {
     CTFileName fnm = afnmDir[i];
     // create new info for that file
     CLevelInfo *pli = new CLevelInfo;
@@ -268,8 +259,7 @@ void LoadDemosList(void)
 }
 
 // clear list of autoplay demos
-void ClearDemosList(void)
-{
+void ClearDemosList(void) {
   // delete list of levels
   FORDELETELIST(CLevelInfo, li_lnNode, _lhAllLevels, itli) {
     delete &itli.Current();

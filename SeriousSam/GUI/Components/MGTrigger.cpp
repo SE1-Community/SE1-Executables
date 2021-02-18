@@ -1,4 +1,4 @@
-/* Copyright (c) 2002-2012 Croteam Ltd. 
+/* Copyright (c) 2002-2012 Croteam Ltd.
 This program is free software; you can redistribute it and/or modify
 it under the terms of version 2 of the GNU General Public License as published by
 the Free Software Foundation
@@ -19,38 +19,32 @@ with this program; if not, write to the Free Software Foundation, Inc.,
 #include <Game/LCDDrawing.h>
 #include "MGTrigger.h"
 
-
-INDEX GetNewLoopValue(int iVKey, INDEX iCurrent, INDEX ctMembers)
-{
+INDEX GetNewLoopValue(int iVKey, INDEX iCurrent, INDEX ctMembers) {
   INDEX iPrev = (iCurrent + ctMembers - 1) % ctMembers;
   INDEX iNext = (iCurrent + 1) % ctMembers;
   // return and right arrow set new text
-  if (iVKey == VK_RETURN || iVKey == VK_LBUTTON || iVKey == VK_RIGHT)
-  {
+  if (iVKey == VK_RETURN || iVKey == VK_LBUTTON || iVKey == VK_RIGHT) {
     return iNext;
-  // left arrow and backspace sets prev text
+    // left arrow and backspace sets prev text
   } else if ((iVKey == VK_BACK || iVKey == VK_RBUTTON) || (iVKey == VK_LEFT)) {
     return iPrev;
   }
   return iCurrent;
 }
 
-CMGTrigger::CMGTrigger(void)
-{
+CMGTrigger::CMGTrigger(void) {
   mg_pPreTriggerChange = NULL;
   mg_pOnTriggerChange = NULL;
   mg_iCenterI = 0;
   mg_bVisual = FALSE;
 }
 
-void CMGTrigger::ApplyCurrentSelection(void)
-{
+void CMGTrigger::ApplyCurrentSelection(void) {
   mg_iSelected = Clamp(mg_iSelected, 0L, mg_ctTexts - 1L);
   mg_strValue = mg_astrTexts[mg_iSelected];
 }
 
-void CMGTrigger::OnSetNextInList(int iVKey)
-{
+void CMGTrigger::OnSetNextInList(int iVKey) {
   if (mg_pPreTriggerChange != NULL) {
     mg_pPreTriggerChange(mg_iSelected);
   }
@@ -63,28 +57,24 @@ void CMGTrigger::OnSetNextInList(int iVKey)
   }
 }
 
-BOOL CMGTrigger::OnKeyDown(int iVKey)
-{
-  if ((iVKey == VK_RETURN || iVKey == VK_LBUTTON) ||
-    (iVKey == VK_LEFT) ||
-    (iVKey == VK_BACK || iVKey == VK_RBUTTON) ||
-    (iVKey == VK_RIGHT))
-  {
+BOOL CMGTrigger::OnKeyDown(int iVKey) {
+  if ((iVKey == VK_RETURN || iVKey == VK_LBUTTON) || (iVKey == VK_LEFT) || (iVKey == VK_BACK || iVKey == VK_RBUTTON)
+      || (iVKey == VK_RIGHT)) {
     // key is handled
-    if (mg_bEnabled) OnSetNextInList(iVKey);
+    if (mg_bEnabled)
+      OnSetNextInList(iVKey);
     return TRUE;
   }
   // key is not handled
   return FALSE;
 }
 
-void CMGTrigger::Render(CDrawPort *pdp)
-{
+void CMGTrigger::Render(CDrawPort *pdp) {
   SetFontMedium(pdp);
 
   PIXaabbox2D box = FloatBoxToPixBox(pdp, mg_boxOnScreen);
-  PIX pixIL = box.Min()(1) + box.Size()(1)*0.45f;
-  PIX pixIR = box.Min()(1) + box.Size()(1)*0.55f;
+  PIX pixIL = box.Min()(1) + box.Size()(1) * 0.45f;
+  PIX pixIR = box.Min()(1) + box.Size()(1) * 0.55f;
   PIX pixJ = box.Min()(2);
 
   COLOR col = GetCurrentColor();
@@ -111,9 +101,10 @@ void CMGTrigger::Render(CDrawPort *pdp)
       PIX pixSize = box.Size()(2);
       PIX pixCX = box.Max()(1) - pixSize / 2;
       PIX pixCY = box.Center()(2);
-      pdp->PutTexture(&to, PIXaabbox2D(
-        PIX2D(pixCX - pixSize / 2, pixCY - pixSize / 2),
-        PIX2D(pixCX - pixSize / 2 + pixSize, pixCY - pixSize / 2 + pixSize)), C_WHITE | 255);
+      pdp->PutTexture(&to,
+                      PIXaabbox2D(PIX2D(pixCX - pixSize / 2, pixCY - pixSize / 2),
+                                  PIX2D(pixCX - pixSize / 2 + pixSize, pixCY - pixSize / 2 + pixSize)),
+                      C_WHITE | 255);
     } catch (char *strError) {
       CPrintF("%s\n", strError);
     }

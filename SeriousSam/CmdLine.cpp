@@ -1,4 +1,4 @@
-/* Copyright (c) 2002-2012 Croteam Ltd. 
+/* Copyright (c) 2002-2012 Croteam Ltd.
 This program is free software; you can redistribute it and/or modify
 it under the terms of version 2 of the GNU General Public License as published by
 the Free Software Foundation
@@ -18,21 +18,20 @@ with this program; if not, write to the Free Software Foundation, Inc.,
 #include <Engine/CurrentVersion.h>
 #include "CmdLine.h"
 
-extern CTString cmd_strWorld = "";  // world to load
-extern INDEX cmd_iGoToMarker = -1;  // marker to go to
-extern CTString cmd_strScript = ""; // script to execute
-extern CTString cmd_strServer = ""; // server to connect to
-extern INDEX cmd_iPort = -1;     // port to connect to
+extern CTString cmd_strWorld = "";    // world to load
+extern INDEX cmd_iGoToMarker = -1;    // marker to go to
+extern CTString cmd_strScript = "";   // script to execute
+extern CTString cmd_strServer = "";   // server to connect to
+extern INDEX cmd_iPort = -1;          // port to connect to
 extern CTString cmd_strPassword = ""; // network password
-extern CTString cmd_strOutput = ""; // output from parsing command line
-extern BOOL cmd_bServer = FALSE;  // set to run as server
-extern BOOL cmd_bQuickJoin = FALSE; // do not ask for players and network settings
+extern CTString cmd_strOutput = "";   // output from parsing command line
+extern BOOL cmd_bServer = FALSE;      // set to run as server
+extern BOOL cmd_bQuickJoin = FALSE;   // do not ask for players and network settings
 
 static CTString _strCmd;
 
 // get first next word or quoted string
-CTString GetNextParam(void)
-{
+CTString GetNextParam(void) {
   // strip leading spaces/tabs
   _strCmd.TrimSpacesLeft();
   // if nothing left
@@ -44,16 +43,16 @@ CTString GetNextParam(void)
   // if the first char is quote
   if (_strCmd[0] == '"') {
     // find first next quote
-    const char *pchClosingQuote = strchr(_strCmd+1, '"');
+    const char *pchClosingQuote = strchr(_strCmd + 1, '"');
     // if not found
     if (pchClosingQuote == NULL) {
       // error in command line
-      cmd_strOutput+=CTString(0, TRANS("Command line error!\n"));
+      cmd_strOutput += CTString(0, TRANS("Command line error!\n"));
       // finish parsing
       _strCmd = "";
       return "";
     }
-    INDEX iQuote = pchClosingQuote-_strCmd;
+    INDEX iQuote = pchClosingQuote - _strCmd;
 
     // get the quoted string
     CTString strWord;
@@ -66,12 +65,12 @@ CTString GetNextParam(void)
     _strCmd = strRest;
     return strWord;
 
-  // if the first char is not quote
+    // if the first char is not quote
   } else {
     // find first next space
     INDEX iSpace;
     INDEX ctChars = strlen(_strCmd);
-    for (iSpace=0; iSpace<ctChars; iSpace++) {
+    for (iSpace = 0; iSpace < ctChars; iSpace++) {
       if (isspace(_strCmd[iSpace])) {
         break;
       }
@@ -89,10 +88,9 @@ CTString GetNextParam(void)
 }
 
 // parse command line parameters and set results to static variables
-void ParseCommandLine(CTString strCmd)
-{
+void ParseCommandLine(CTString strCmd) {
   cmd_strOutput = "";
-  cmd_strOutput+=CTString(0, TRANS("Command line: '%s'\n"), strCmd);
+  cmd_strOutput += CTString(0, TRANS("Command line: '%s'\n"), strCmd);
   // if no command line
   if (strlen(strCmd) == 0) {
     // do nothing
@@ -103,7 +101,7 @@ void ParseCommandLine(CTString strCmd)
   FOREVER {
     CTString strWord = GetNextParam();
     if (strWord == "") {
-      cmd_strOutput+="\n";
+      cmd_strOutput += "\n";
       return;
     } else if (strWord == "+level") {
       cmd_strWorld = GetNextParam();
@@ -114,7 +112,7 @@ void ParseCommandLine(CTString strCmd)
     } else if (strWord == "+game") {
       CTString strMod = GetNextParam();
       if (strMod != "SeriousSam") { // (we ignore default mod - always use base dir in that case)
-        _fnmMod = "Mods\\"+strMod+"\\";
+        _fnmMod = "Mods\\" + strMod + "\\";
       }
     } else if (strWord == "+cdpath") {
       _fnmCDPath = GetNextParam();
@@ -126,7 +124,7 @@ void ParseCommandLine(CTString strCmd)
       if (pcColon != NULL) {
         CTString strServer;
         CTString strPort;
-        cmd_strServer.Split(pcColon-cmd_strServer, strServer, strPort);
+        cmd_strServer.Split(pcColon - cmd_strServer, strServer, strPort);
         cmd_strServer = strServer;
         strPort.ScanF(":%d", &cmd_iPort);
       }
@@ -137,8 +135,7 @@ void ParseCommandLine(CTString strCmd)
     } else if (strWord == "+logfile") {
       _strLogFile = GetNextParam();
     } else {
-      cmd_strOutput+=CTString(0, TRANS("  Unknown option: '%s'\n"), strWord);
+      cmd_strOutput += CTString(0, TRANS("  Unknown option: '%s'\n"), strWord);
     }
   }
 }
-

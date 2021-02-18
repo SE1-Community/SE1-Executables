@@ -1,4 +1,4 @@
-/* Copyright (c) 2002-2012 Croteam Ltd. 
+/* Copyright (c) 2002-2012 Croteam Ltd.
 This program is free software; you can redistribute it and/or modify
 it under the terms of version 2 of the GNU General Public License as published by
 the Free Software Foundation
@@ -31,9 +31,7 @@ static char THIS_FILE[] = __FILE__;
 /////////////////////////////////////////////////////////////////////////////
 // CRConDlg dialog
 
-CRConDlg::CRConDlg(CWnd* pParent /*=NULL*/)
-  : CDialog(CRConDlg::IDD, pParent)
-{
+CRConDlg::CRConDlg(CWnd* pParent /*=NULL*/) : CDialog(CRConDlg::IDD, pParent) {
   //{{AFX_DATA_INIT(CRConDlg)
   m_strLog = _T("");
   //}}AFX_DATA_INIT
@@ -41,61 +39,56 @@ CRConDlg::CRConDlg(CWnd* pParent /*=NULL*/)
   m_hIcon = AfxGetApp()->LoadIcon(IDR_MAINFRAME);
 }
 
-void CRConDlg::DoDataExchange(CDataExchange* pDX)
-{
+void CRConDlg::DoDataExchange(CDataExchange* pDX) {
   CDialog::DoDataExchange(pDX);
   //{{AFX_DATA_MAP(CRConDlg)
   DDX_Text(pDX, IDC_LOG, m_strLog);
   //}}AFX_DATA_MAP
 
   // keep the last line visible
-  CEdit *pctrlLog = (CEdit *) (GetDlgItem(IDC_LOG));
-  if (pctrlLog != NULL)
-  {
-    int iLines=pctrlLog->GetLineCount();
+  CEdit* pctrlLog = (CEdit*)(GetDlgItem(IDC_LOG));
+  if (pctrlLog != NULL) {
+    int iLines = pctrlLog->GetLineCount();
     pctrlLog->LineScroll(iLines);
   }
 }
 
 BEGIN_MESSAGE_MAP(CRConDlg, CDialog)
-  //{{AFX_MSG_MAP(CRConDlg)
-  ON_WM_PAINT()
-  ON_WM_QUERYDRAGICON()
-  ON_WM_CLOSE()
-  ON_WM_TIMER()
-  //}}AFX_MSG_MAP
+//{{AFX_MSG_MAP(CRConDlg)
+ON_WM_PAINT()
+ON_WM_QUERYDRAGICON()
+ON_WM_CLOSE()
+ON_WM_TIMER()
+//}}AFX_MSG_MAP
 END_MESSAGE_MAP()
 
 /////////////////////////////////////////////////////////////////////////////
 // CRConDlg message handlers
 
-BOOL CRConDlg::OnInitDialog()
-{
+BOOL CRConDlg::OnInitDialog() {
   CDialog::OnInitDialog();
 
   // Set the icon for this dialog.  The framework does this automatically
   //  when the application's main window is not a dialog
-  SetIcon(m_hIcon, TRUE);      // Set big icon
-  SetIcon(m_hIcon, FALSE);    // Set small icon
-  
+  SetIcon(m_hIcon, TRUE);  // Set big icon
+  SetIcon(m_hIcon, FALSE); // Set small icon
+
   // TODO: Add extra initialization here
 
   SetTimer(0, 10, NULL);
-  
-  return TRUE;  // return TRUE  unless you set the focus to a control
+
+  return TRUE; // return TRUE  unless you set the focus to a control
 }
 
 // If you add a minimize button to your dialog, you will need the code below
 //  to draw the icon.  For MFC applications using the document/view model,
 //  this is automatically done for you by the framework.
 
-void CRConDlg::OnPaint() 
-{
-  if (IsIconic())
-  {
+void CRConDlg::OnPaint() {
+  if (IsIconic()) {
     CPaintDC dc(this); // device context for painting
 
-    SendMessage(WM_ICONERASEBKGND, (WPARAM) dc.GetSafeHdc(), 0);
+    SendMessage(WM_ICONERASEBKGND, (WPARAM)dc.GetSafeHdc(), 0);
 
     // Center icon in client rectangle
     int cxIcon = GetSystemMetrics(SM_CXICON);
@@ -107,66 +100,56 @@ void CRConDlg::OnPaint()
 
     // Draw the icon
     dc.DrawIcon(x, y, m_hIcon);
-  }
-  else
-  {
+  } else {
     CDialog::OnPaint();
   }
 }
 
 // The system calls this to obtain the cursor to display while the user drags
 //  the minimized window.
-HCURSOR CRConDlg::OnQueryDragIcon()
-{
-  return (HCURSOR) m_hIcon;
+HCURSOR CRConDlg::OnQueryDragIcon() {
+  return (HCURSOR)m_hIcon;
 }
 
-BOOL CRConDlg::PreTranslateMessage(MSG* pMsg) 
-{
+BOOL CRConDlg::PreTranslateMessage(MSG* pMsg) {
   // if we caught key down message
-  if (pMsg->message == WM_KEYDOWN)
-  {
-    if ((int)pMsg->wParam == VK_RETURN)
-    {
+  if (pMsg->message == WM_KEYDOWN) {
+    if ((int)pMsg->wParam == VK_RETURN) {
       UpdateData(TRUE);
-      CWnd *pwndCommand = GetDlgItem(IDC_COMMAND);
+      CWnd* pwndCommand = GetDlgItem(IDC_COMMAND);
       if (pwndCommand == CWnd::GetFocus()) {
         CString strCommand;
         pwndCommand->GetWindowText(strCommand);
 
         // send chat string to user(s)
-        m_strLog += ">"+strCommand+"\r\n";
+        m_strLog += ">" + strCommand + "\r\n";
         pwndCommand->SetWindowText(L"");
         UpdateData(FALSE);
 
         CNetworkMessage nm(MSG_EXTRA);
-        nm << CTString(0, "rcmd %u \"%s\" %s\n", theApp.m_ulCode, (const char*)theApp.m_strPass, (const char*)CStringA(strCommand));
+        nm << CTString(0, "rcmd %u \"%s\" %s\n", theApp.m_ulCode, (const char*)theApp.m_strPass,
+                       (const char*)CStringA(strCommand));
         _pNetwork->SendBroadcast(nm, theApp.m_ulHost, theApp.m_uwPort);
         _cmiComm.Client_Update();
       }
     }
   }
-  
+
   return CDialog::PreTranslateMessage(pMsg);
 }
 
-void CRConDlg::OnCancel() 
-{
+void CRConDlg::OnCancel() {
   MinimizeApp();
 }
 
-void CRConDlg::OnOK() 
-{
-}
+void CRConDlg::OnOK() {}
 
-void CRConDlg::OnClose() 
-{
+void CRConDlg::OnClose() {
   PostMessage(WM_QUIT);
   CDialog::OnClose();
 }
 
-void CRConDlg::OnTimer(UINT nIDEvent) 
-{
+void CRConDlg::OnTimer(UINT nIDEvent) {
   // repeat
   BOOL bChanged = FALSE;
   FOREVER {
@@ -210,7 +193,6 @@ void CRConDlg::OnTimer(UINT nIDEvent)
   if (bChanged) {
     UpdateData(FALSE);
   }
-  
+
   CDialog::OnTimer(nIDEvent);
 }
-

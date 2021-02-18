@@ -1,4 +1,4 @@
-/* Copyright (c) 2002-2012 Croteam Ltd. 
+/* Copyright (c) 2002-2012 Croteam Ltd.
 This program is free software; you can redistribute it and/or modify
 it under the terms of version 2 of the GNU General Public License as published by
 the Free Software Foundation
@@ -26,41 +26,41 @@ with this program; if not, write to the Free Software Foundation, Inc.,
 /////////////////////////////////////////////////////////////////////////////
 // CRConDlg dialog
 
-class CRConDlg : public CDialog
-{
-// Construction
-public:
-  CRConDlg(CWnd* pParent = NULL);  // standard constructor
+class CRConDlg : public CDialog {
+  // Construction
+  public:
+    CRConDlg(CWnd* pParent = NULL); // standard constructor
 
-// Dialog Data
-  //{{AFX_DATA(CRConDlg)
-  enum { IDD = IDD_RCON_DIALOG };
-  CString  m_strLog;
-  //}}AFX_DATA
+    // Dialog Data
+    //{{AFX_DATA(CRConDlg)
+    enum { IDD = IDD_RCON_DIALOG };
+    CString m_strLog;
+    //}}AFX_DATA
 
   // ClassWizard generated virtual function overrides
   //{{AFX_VIRTUAL(CRConDlg)
   public:
-  virtual BOOL PreTranslateMessage(MSG* pMsg);
+    virtual BOOL PreTranslateMessage(MSG* pMsg);
+
   protected:
-  virtual void DoDataExchange(CDataExchange* pDX);  // DDX/DDV support
-  //}}AFX_VIRTUAL
+    virtual void DoDataExchange(CDataExchange* pDX); // DDX/DDV support
+    //}}AFX_VIRTUAL
 
-// Implementation
-protected:
-  HICON m_hIcon;
+  // Implementation
+  protected:
+    HICON m_hIcon;
 
-  // Generated message map functions
-  //{{AFX_MSG(CRConDlg)
-  virtual BOOL OnInitDialog();
-  virtual void OnOK();
-  virtual void OnCancel();
-  afx_msg void OnPaint();
-  afx_msg HCURSOR OnQueryDragIcon();
-  afx_msg void OnClose();
-  afx_msg void OnTimer(UINT nIDEvent);
-  //}}AFX_MSG
-  DECLARE_MESSAGE_MAP()
+    // Generated message map functions
+    //{{AFX_MSG(CRConDlg)
+    virtual BOOL OnInitDialog();
+    virtual void OnOK();
+    virtual void OnCancel();
+    afx_msg void OnPaint();
+    afx_msg HCURSOR OnQueryDragIcon();
+    afx_msg void OnClose();
+    afx_msg void OnTimer(UINT nIDEvent);
+    //}}AFX_MSG
+    DECLARE_MESSAGE_MAP()
 };
 
 //{{AFX_INSERT_LOCATION}}

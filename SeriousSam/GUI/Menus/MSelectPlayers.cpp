@@ -19,7 +19,7 @@ with this program; if not, write to the Free Software Foundation, Inc.,
 #include "MenuStuff.h"
 #include "MSelectPlayers.h"
 
-#define ADD_GADGET( gd, box, up, dn, lf, rt, txt) \
+#define ADD_GADGET(gd, box, up, dn, lf, rt, txt) \
   gd.mg_boxOnScreen = box; \
   gd.mg_pmgUp = up; \
   gd.mg_pmgDown = dn; \
@@ -33,8 +33,7 @@ extern CTString astrSplitScreenRadioTexts[4];
 extern void SelectPlayersFillMenu(void);
 extern void SelectPlayersApplyMenu(void);
 
-void CSelectPlayersMenu::Initialize_t(void)
-{
+void CSelectPlayersMenu::Initialize_t(void) {
   // intialize split screen menu
   gm_mgTitle.mg_boxOnScreen = BoxTitle();
   gm_mgTitle.mg_strText = TRANS("SELECT PLAYERS");
@@ -61,10 +60,8 @@ void CSelectPlayersMenu::Initialize_t(void)
   gm_mgPlayer1Change.mg_boxOnScreen = BoxMediumMiddle(5);
   gm_mgPlayer2Change.mg_boxOnScreen = BoxMediumMiddle(6);
   gm_mgPlayer3Change.mg_boxOnScreen = BoxMediumMiddle(7);
-  gm_mgPlayer0Change.mg_strTip =
-    gm_mgPlayer1Change.mg_strTip =
-    gm_mgPlayer2Change.mg_strTip =
-    gm_mgPlayer3Change.mg_strTip = TRANS("select profile for this player");
+  gm_mgPlayer0Change.mg_strTip = gm_mgPlayer1Change.mg_strTip = gm_mgPlayer2Change.mg_strTip = gm_mgPlayer3Change.mg_strTip
+    = TRANS("select profile for this player");
   gm_lhGadgets.AddTail(gm_mgPlayer0Change.mg_lnNode);
   gm_lhGadgets.AddTail(gm_mgPlayer1Change.mg_lnNode);
   gm_lhGadgets.AddTail(gm_mgPlayer2Change.mg_lnNode);
@@ -104,15 +101,13 @@ void CSelectPlayersMenu::Initialize_t(void)
   gm_mgStart.mg_iCenterI = 0;
 }
 
-void CSelectPlayersMenu::StartMenu(void)
-{
+void CSelectPlayersMenu::StartMenu(void) {
   CGameMenu::StartMenu();
   SelectPlayersFillMenu();
   SelectPlayersApplyMenu();
 }
 
-void CSelectPlayersMenu::EndMenu(void)
-{
+void CSelectPlayersMenu::EndMenu(void) {
   SelectPlayersApplyMenu();
   CGameMenu::EndMenu();
 }

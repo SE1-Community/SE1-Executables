@@ -1,4 +1,4 @@
-/* Copyright (c) 2002-2012 Croteam Ltd. 
+/* Copyright (c) 2002-2012 Croteam Ltd.
 This program is free software; you can redistribute it and/or modify
 it under the terms of version 2 of the GNU General Public License as published by
 the Free Software Foundation
@@ -17,34 +17,29 @@ with this program; if not, write to the Free Software Foundation, Inc.,
 
 // list of settings data
 static CListHead _lhSettings;
-extern INDEX sam_iVideoSetup;  // 0 == speed, 1 == normal, 2 == quality, 3 == custom
+extern INDEX sam_iVideoSetup; // 0 == speed, 1 == normal, 2 == quality, 3 == custom
 
 class CSettingsEntry {
-public:
-   CListNode se_lnNode;
+  public:
+    CListNode se_lnNode;
     CTString se_strRenderer;
     CTString se_strDescription;
-  CTFileName se_fnmScript;
-  // check if this entry matches given info
-  BOOL Matches( const CTString &strRenderer) const;
+    CTFileName se_fnmScript;
+    // check if this entry matches given info
+    BOOL Matches(const CTString &strRenderer) const;
 };
-
 
 // last valid settings info
 static CTString _strLastRenderer;
 extern CTString _strPreferencesDescription = "";
-extern INDEX    _iLastPreferences = 1;
-
+extern INDEX _iLastPreferences = 1;
 
 // check if this entry matches given info
-BOOL CSettingsEntry::Matches( const CTString &strRenderer) const
-{
+BOOL CSettingsEntry::Matches(const CTString &strRenderer) const {
   return strRenderer.Matches(se_strRenderer);
 }
 
-
-const char *RenderingPreferencesDescription(int iMode)
-{
+const char *RenderingPreferencesDescription(int iMode) {
   if (iMode == 0) {
     return TRANS("speed");
   } else if (iMode == 1) {
@@ -59,73 +54,65 @@ const char *RenderingPreferencesDescription(int iMode)
   }
 }
 
-void InitGLSettings(void)
-{
+void InitGLSettings(void) {
   ASSERT(_lhSettings.IsEmpty());
 
-  char achrLine    [1024];
+  char achrLine[1024];
   char achrRenderer[1024];
-  char achrDesc    [1024];
-  char achrScript  [1024];
+  char achrDesc[1024];
+  char achrScript[1024];
 
   CTFileStream strmFile;
-  try
-  {
-    strmFile.Open_t( CTString("Scripts\\GLSettings\\GLSettings.lst"), CTStream::OM_READ);
+  try {
+    strmFile.Open_t(CTString("Scripts\\GLSettings\\GLSettings.lst"), CTStream::OM_READ);
     INDEX iIndex = 0;
-    do
-    {
-      achrLine    [0] = 0;
+    do {
+      achrLine[0] = 0;
       achrRenderer[0] = 0;
-      achrDesc    [0] = 0;
-      achrScript  [0] = 0;
-      strmFile.GetLine_t( achrLine, 1024);
-      sscanf( achrLine,
-        "\"%1024[^\"]\"%*[^\"]\"%1024[^\"]\"%*[^\"]\"%1024[^\"]\"", achrRenderer, achrDesc, achrScript);
-      if (achrRenderer[0] == 0) continue;
+      achrDesc[0] = 0;
+      achrScript[0] = 0;
+      strmFile.GetLine_t(achrLine, 1024);
+      sscanf(achrLine, "\"%1024[^\"]\"%*[^\"]\"%1024[^\"]\"%*[^\"]\"%1024[^\"]\"", achrRenderer, achrDesc, achrScript);
+      if (achrRenderer[0] == 0)
+        continue;
 
       CSettingsEntry &se = *new CSettingsEntry;
-      se.se_strRenderer    = achrRenderer;
+      se.se_strRenderer = achrRenderer;
       se.se_strDescription = achrDesc;
-      se.se_fnmScript      = CTString(achrScript);
-      _lhSettings.AddTail( se.se_lnNode);
-    }
-    while (!strmFile.AtEOF());
+      se.se_fnmScript = CTString(achrScript);
+      _lhSettings.AddTail(se.se_lnNode);
+    } while (!strmFile.AtEOF());
   }
 
   // ignore errors
-  catch (char *strError) { 
+  catch (char *strError) {
     WarningMessage(TRANS("unable to setup OpenGL settings list: %s"), strError);
   }
 
-  _strLastRenderer= "none";
+  _strLastRenderer = "none";
   _iLastPreferences = 1;
   _pShell->DeclareSymbol("persistent CTString sam_strLastRenderer;", &_strLastRenderer);
-  _pShell->DeclareSymbol("persistent INDEX    sam_iLastSetup;",      &_iLastPreferences);
+  _pShell->DeclareSymbol("persistent INDEX    sam_iLastSetup;", &_iLastPreferences);
 }
 
-
-CSettingsEntry *GetGLSettings( const CTString &strRenderer)
-{
+CSettingsEntry *GetGLSettings(const CTString &strRenderer) {
   // for each setting
-  FOREACHINLIST(CSettingsEntry, se_lnNode, _lhSettings, itse)
-  { // return the one that matches
+  FOREACHINLIST(CSettingsEntry, se_lnNode, _lhSettings, itse) { // return the one that matches
     CSettingsEntry &se = *itse;
-    if (se.Matches(strRenderer)) return &se;
+    if (se.Matches(strRenderer))
+      return &se;
   }
   // none found
   return NULL;
 }
 
-
-extern void ApplyGLSettings(BOOL bForce)
-{
-  CPrintF( TRANS("\nAutomatic 3D-board preferences adjustment...\n"));
+extern void ApplyGLSettings(BOOL bForce) {
+  CPrintF(TRANS("\nAutomatic 3D-board preferences adjustment...\n"));
   CDisplayAdapter &da = _pGfx->gl_gaAPI[_pGfx->gl_eCurrentAPI].ga_adaAdapter[_pGfx->gl_iCurrentAdapter];
-  CPrintF( TRANS("Detected: %s - %s - %s\n"), da.da_strVendor, da.da_strRenderer, da.da_strVersion);
+  CPrintF(TRANS("Detected: %s - %s - %s\n"), da.da_strVendor, da.da_strRenderer, da.da_strVersion);
 
   // get new settings
-  CSettingsEntry *pse = GetGLSettings( da.da_strRenderer);
+  CSettingsEntry *pse = GetGLSettings(da.da_strRenderer);
 
   // if none found
   if (pse == NULL) {
@@ -148,13 +135,13 @@ extern void ApplyGLSettings(BOOL bForce)
     CPrintF(TRANS("Different than last, applying new preferences.\n"));
   } else {
     CPrintF(TRANS("Applying new preferences.\n"));
-  } 
+  }
 
   // clamp rendering preferences (just to be on the safe side)
-  sam_iVideoSetup = Clamp( sam_iVideoSetup, 0L, 3L);
+  sam_iVideoSetup = Clamp(sam_iVideoSetup, 0L, 3L);
   CPrintF(TRANS("Mode: %s\n"), RenderingPreferencesDescription(sam_iVideoSetup));
   // if not in custom mode
-  if (sam_iVideoSetup<3) {
+  if (sam_iVideoSetup < 3) {
     // execute the script
     CTString strCmd;
     strCmd.PrintF("include \"Scripts\\GLSettings\\%s\"", CTString(pse->se_fnmScript));
@@ -166,6 +153,6 @@ extern void ApplyGLSettings(BOOL bForce)
   CPrintF(TRANS("Done.\n\n"));
 
   // remember settings
-  _strLastRenderer = pse->se_strDescription; 
+  _strLastRenderer = pse->se_strDescription;
   _iLastPreferences = sam_iVideoSetup;
 }

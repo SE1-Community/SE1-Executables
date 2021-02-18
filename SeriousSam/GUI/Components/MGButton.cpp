@@ -1,4 +1,4 @@
-/* Copyright (c) 2002-2012 Croteam Ltd. 
+/* Copyright (c) 2002-2012 Croteam Ltd.
 This program is free software; you can redistribute it and/or modify
 it under the terms of version 2 of the GNU General Public License as published by
 the Free Software Foundation
@@ -25,9 +25,7 @@ extern CSoundData *_psdPress;
 
 extern CMenuGadget *_pmgLastActivatedGadget;
 
-
-CMGButton::CMGButton(void)
-{
+CMGButton::CMGButton(void) {
   mg_pActivatedFunction = NULL;
   mg_iIndex = 0;
   mg_iCenterI = 0;
@@ -40,17 +38,12 @@ CMGButton::CMGButton(void)
   mg_bHighlighted = FALSE;
 }
 
-
-void CMGButton::SetText(CTString strNew)
-{
+void CMGButton::SetText(CTString strNew) {
   mg_strText = strNew;
 }
 
-
-void CMGButton::OnActivate(void)
-{
-  if (mg_pActivatedFunction != NULL && mg_bEnabled)
-  {
+void CMGButton::OnActivate(void) {
+  if (mg_pActivatedFunction != NULL && mg_bEnabled) {
     PlayMenuSound(_psdPress);
     IFeel_PlayEffect("Menu_press");
     _pmgLastActivatedGadget = this;
@@ -58,9 +51,7 @@ void CMGButton::OnActivate(void)
   }
 }
 
-
-void CMGButton::Render(CDrawPort *pdp)
-{
+void CMGButton::Render(CDrawPort *pdp) {
   if (mg_bfsFontSize == BFS_LARGE) {
     SetFontBig(pdp);
   } else if (mg_bfsFontSize == BFS_MEDIUM) {
@@ -93,11 +84,11 @@ void CMGButton::Render(CDrawPort *pdp)
 
     FLOAT tmTime = _pTimer->GetHighPrecisionTimer().GetSeconds();
     FLOAT fFactor = 1;
-    if (tmTime>0.1f) {
+    if (tmTime > 0.1f) {
       tmTime = fmod(tmTime, tmTotal);
       fFactor = CalculateRatio(tmTime, 0, tmExist, tmFade / tmExist, tmFade / tmExist);
     }
-    col = (col&~0xFF) | INDEX(0xFF * fFactor);
+    col = (col & ~0xFF) | INDEX(0xFF * fFactor);
   }
 
   if (mg_bRectangle) {
@@ -116,19 +107,18 @@ void CMGButton::Render(CDrawPort *pdp)
     PIX pixWidth = box.Size()(1) + 1;
     PIX pixHeight = box.Size()(2);
     if (mg_strLabel != "") {
-      pixLeft = box.Min()(1) + box.Size()(1)*0.55f;
-      pixWidth = box.Size()(1)*0.45f + 1;
+      pixLeft = box.Min()(1) + box.Size()(1) * 0.55f;
+      pixWidth = box.Size()(1) * 0.45f + 1;
     }
     pdp->Fill(pixLeft, pixUp, pixWidth, pixHeight, LCDGetColor(C_dGREEN | 0x40, "edit fill"));
   }
-
 
   INDEX iCursor = mg_iCursorPos;
 
   // print text
   if (mg_strLabel != "") {
-    PIX pixIL = box.Min()(1) + box.Size()(1)*0.45f;
-    PIX pixIR = box.Min()(1) + box.Size()(1)*0.55f;
+    PIX pixIL = box.Min()(1) + box.Size()(1) * 0.45f;
+    PIX pixIR = box.Min()(1) + box.Size()(1) * 0.55f;
     PIX pixJ = box.Min()(2);
 
     pdp->PutTextR(mg_strLabel, pixIL, pixJ, col);
@@ -147,16 +137,19 @@ void CMGButton::Render(CDrawPort *pdp)
         str.TrimRight(iMaxLen);
       }
     }
-    if (mg_iCenterI == -1) pdp->PutText(str, box.Min()(1), box.Min()(2), col);
-    else if (mg_iCenterI == +1) pdp->PutTextR(str, box.Max()(1), box.Min()(2), col);
-    else                      pdp->PutTextC(str, box.Center()(1), box.Min()(2), col);
+    if (mg_iCenterI == -1)
+      pdp->PutText(str, box.Min()(1), box.Min()(2), col);
+    else if (mg_iCenterI == +1)
+      pdp->PutTextR(str, box.Max()(1), box.Min()(2), col);
+    else
+      pdp->PutTextC(str, box.Center()(1), box.Min()(2), col);
   }
 
   // put cursor if editing
   if (mg_bEditing && (((ULONG)(CTimer::InSeconds(_pTimer->GetTimeTick()) * 2)) & 1)) {
     PIX pixX = box.Min()(1) + GetCharOffset(pdp, iCursor);
     if (mg_strLabel != "") {
-      pixX += box.Size()(1)*0.55f;
+      pixX += box.Size()(1) * 0.55f;
     }
 
     PIX pixY = box.Min()(2);
@@ -167,11 +160,9 @@ void CMGButton::Render(CDrawPort *pdp)
   }
 }
 
-
-PIX CMGButton::GetCharOffset(CDrawPort *pdp, INDEX iCharNo)
-{
+PIX CMGButton::GetCharOffset(CDrawPort *pdp, INDEX iCharNo) {
   if (pdp->dp_FontData->fd_bFixedWidth) {
-    return (pdp->dp_FontData->fd_pixCharWidth + pdp->dp_pixTextCharSpacing)*(iCharNo - 0.5f);
+    return (pdp->dp_FontData->fd_pixCharWidth + pdp->dp_pixTextCharSpacing) * (iCharNo - 0.5f);
   }
   CTString strCut(mg_strText);
   strCut.TrimLeft(strlen(mg_strText) - iCharNo);
