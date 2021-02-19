@@ -206,11 +206,9 @@ void FlushVarSettings(BOOL bApply) {
     }
   }
 
-  {
-    FORDELETELIST(CVarSetting, vs_lnNode, _lhVarSettings, itvs) {
-      delete &*itvs;
-    }
-  }
+  {FORDELETELIST(CVarSetting, vs_lnNode, _lhVarSettings, itvs) {
+    delete &*itvs;
+  }}
 
   for (INDEX i = 0; i < astrScheduled.Count(); i++) {
     CTString strCmd;

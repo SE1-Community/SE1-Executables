@@ -96,12 +96,11 @@ extern CMGButton mgServerColumn[7];
 extern CMGEdit mgServerFilter[7];
 
 void SortAndFilterServers(void) {
-  {FORDELETELIST(CNetworkSession, ns_lnNode, _lhServers, itns) {delete &*itns;
-}
-}
+  {FORDELETELIST(CNetworkSession, ns_lnNode, _lhServers, itns) {
+    delete &*itns;
+  }}
 
-{
-  FOREACHINLIST(CNetworkSession, ns_lnNode, _pNetwork->ga_lhEnumeratedSessions, itns) {
+  {FOREACHINLIST(CNetworkSession, ns_lnNode, _pNetwork->ga_lhEnumeratedSessions, itns) {
     CNetworkSession &ns = *itns;
     extern CTString _strServerFilter[7];
     if (_strServerFilter[0] != "" && !ns.ns_strSession.Matches("*" + _strServerFilter[0] + "*"))
@@ -148,10 +147,9 @@ void SortAndFilterServers(void) {
     CNetworkSession *pnsNew = new CNetworkSession;
     pnsNew->Copy(*itns);
     _lhServers.AddTail(pnsNew->ns_lnNode);
-  }
-}
+  }}
 
-_lhServers.Sort(CompareSessions, offsetof(CNetworkSession, ns_lnNode));
+  _lhServers.Sort(CompareSessions, offsetof(CNetworkSession, ns_lnNode));
 }
 
 void CMGServerList::Render(CDrawPort *pdp) {

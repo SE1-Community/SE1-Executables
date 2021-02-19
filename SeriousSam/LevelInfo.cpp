@@ -134,11 +134,9 @@ void ClearLevelsList(void) {
 // find all levels that match given flags
 void FilterLevels(ULONG ulSpawnFlags) {
   // delete list of filtered levels
-  {
-    FORDELETELIST(CLevelInfo, li_lnNode, _lhFilteredLevels, itli) {
-      delete &itli.Current();
-    }
-  }
+  {FORDELETELIST(CLevelInfo, li_lnNode, _lhFilteredLevels, itli) {
+    delete &itli.Current();
+  }}
 
   // for each level in main list
   FOREACHINLIST(CLevelInfo, li_lnNode, _lhAllLevels, itli) {
@@ -176,33 +174,33 @@ void FilterLevels(ULONG ulSpawnFlags) {
 // if level doesn't support given flags, find one that does
 void ValidateLevelForFlags(CTString &fnm, ULONG ulSpawnFlags) {
   // for each level in main list
-  {FOREACHINLIST(CLevelInfo, li_lnNode, _lhAllLevels, itli) {CLevelInfo &li = *itli;
-  // if found
-  if (li.li_fnLevel == fnm) {
-    // if it satisfies the flags
-    if (li.li_ulSpawnFlags & ulSpawnFlags) {
-      // all ok
-      return;
-    }
-  }
-}
-}
-
-// for each level in main list
-{
-  FOREACHINLIST(CLevelInfo, li_lnNode, _lhAllLevels, itli) {
+  {FOREACHINLIST(CLevelInfo, li_lnNode, _lhAllLevels, itli) {
     CLevelInfo &li = *itli;
+
+    // if found
+    if (li.li_fnLevel == fnm) {
+      // if it satisfies the flags
+      if (li.li_ulSpawnFlags & ulSpawnFlags) {
+        // all ok
+        return;
+      }
+    }
+  }}
+
+  // for each level in main list
+  {FOREACHINLIST(CLevelInfo, li_lnNode, _lhAllLevels, itli) {
+    CLevelInfo &li = *itli;
+
     // if it satisfies the flags
     if (li.li_ulSpawnFlags & ulSpawnFlags) {
       // use that one
       fnm = li.li_fnLevel;
       return;
     }
-  }
-}
+  }}
 
-// if nothing found, use default invalid level
-fnm = CLevelInfo().li_fnLevel;
+  // if nothing found, use default invalid level
+  fnm = CLevelInfo().li_fnLevel;
 }
 
 // get level info for its filename
