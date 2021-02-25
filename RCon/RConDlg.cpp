@@ -28,7 +28,6 @@ with this program; if not, write to the Free Software Foundation, Inc.,
 static char THIS_FILE[] = __FILE__;
 #endif
 
-/////////////////////////////////////////////////////////////////////////////
 // CRConDlg dialog
 
 CRConDlg::CRConDlg(CWnd* pParent /*=NULL*/) : CDialog(CRConDlg::IDD, pParent) {
@@ -47,6 +46,7 @@ void CRConDlg::DoDataExchange(CDataExchange* pDX) {
 
   // keep the last line visible
   CEdit* pctrlLog = (CEdit*)(GetDlgItem(IDC_LOG));
+
   if (pctrlLog != NULL) {
     int iLines = pctrlLog->GetLineCount();
     pctrlLog->LineScroll(iLines);
@@ -62,7 +62,6 @@ ON_WM_TIMER()
 //}}AFX_MSG_MAP
 END_MESSAGE_MAP()
 
-/////////////////////////////////////////////////////////////////////////////
 // CRConDlg message handlers
 
 BOOL CRConDlg::OnInitDialog() {
@@ -93,13 +92,16 @@ void CRConDlg::OnPaint() {
     // Center icon in client rectangle
     int cxIcon = GetSystemMetrics(SM_CXICON);
     int cyIcon = GetSystemMetrics(SM_CYICON);
+
     CRect rect;
     GetClientRect(&rect);
+
     int x = (rect.Width() - cxIcon + 1) / 2;
     int y = (rect.Height() - cyIcon + 1) / 2;
 
     // Draw the icon
     dc.DrawIcon(x, y, m_hIcon);
+
   } else {
     CDialog::OnPaint();
   }
@@ -116,7 +118,9 @@ BOOL CRConDlg::PreTranslateMessage(MSG* pMsg) {
   if (pMsg->message == WM_KEYDOWN) {
     if ((int)pMsg->wParam == VK_RETURN) {
       UpdateData(TRUE);
+
       CWnd* pwndCommand = GetDlgItem(IDC_COMMAND);
+
       if (pwndCommand == CWnd::GetFocus()) {
         CString strCommand;
         pwndCommand->GetWindowText(strCommand);
@@ -127,8 +131,8 @@ BOOL CRConDlg::PreTranslateMessage(MSG* pMsg) {
         UpdateData(FALSE);
 
         CNetworkMessage nm(MSG_EXTRA);
-        nm << CTString(0, "rcmd %u \"%s\" %s\n", theApp.m_ulCode, (const char*)theApp.m_strPass,
-                       (const char*)CStringA(strCommand));
+        nm << CTString(0, "rcmd %u \"%s\" %s\n", theApp.m_ulCode, (const char*)theApp.m_strPass, (const char*)CStringA(strCommand));
+
         _pNetwork->SendBroadcast(nm, theApp.m_ulHost, theApp.m_uwPort);
         _cmiComm.Client_Update();
       }
@@ -152,6 +156,7 @@ void CRConDlg::OnClose() {
 void CRConDlg::OnTimer(UINT nIDEvent) {
   // repeat
   BOOL bChanged = FALSE;
+
   FOREVER {
     CNetworkMessage nmReceived;
 
@@ -159,6 +164,7 @@ void CRConDlg::OnTimer(UINT nIDEvent) {
     ULONG ulFrom;
     UWORD uwPort;
     BOOL bHasMsg = _pNetwork->ReceiveBroadcast(nmReceived, ulFrom, uwPort);
+
     // if there are no more messages
     if (!bHasMsg) {
       // finish
@@ -170,6 +176,7 @@ void CRConDlg::OnTimer(UINT nIDEvent) {
       // skip it
       continue;
     }
+
     // get the string from the message
     CTString strMsg;
     nmReceived >> strMsg;
@@ -178,18 +185,22 @@ void CRConDlg::OnTimer(UINT nIDEvent) {
     if (!strMsg.RemovePrefix("log ")) {
       continue;
     }
+
     ULONG ulCode;
     INDEX iLine;
     char strLine[256];
     strMsg.ScanF("%u %d %256[^\n]", &ulCode, &iLine, strLine);
+
     if (ulCode != theApp.m_ulCode) {
       continue;
     }
 
     m_strLog += (const char*)strLine;
     m_strLog += "\r\n";
+
     bChanged = TRUE;
   }
+
   if (bChanged) {
     UpdateData(FALSE);
   }

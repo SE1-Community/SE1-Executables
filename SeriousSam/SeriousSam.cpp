@@ -349,11 +349,12 @@ void LoadAndForceTexture(CTextureObject &to, CTextureObject *&pto, const CTFileN
 
 void InitializeGame(void) {
   try {
-#ifndef NDEBUG
-#define GAMEDLL (_fnmApplicationExe.FileDir() + "GameD.dll")
-#else
-#define GAMEDLL (_fnmApplicationExe.FileDir() + "Game.dll")
-#endif
+    #ifndef NDEBUG
+    #define GAMEDLL (_fnmApplicationExe.FileDir() + "GameD.dll")
+    #else
+    #define GAMEDLL (_fnmApplicationExe.FileDir() + "Game.dll")
+    #endif
+
     CTFileName fnmExpanded;
     ExpandFilePath(EFP_READ, CTString(GAMEDLL), fnmExpanded);
 
@@ -612,16 +613,23 @@ void PrintDisplayModeInfo(void) {
   CTString strRes;
   extern CTString _strPreferencesDescription;
   strRes.PrintF("%dx%dx%s", slDPWidth, slDPHeight, _pGfx->gl_dmCurrentDisplayMode.DepthString());
-  if (dm.IsDualHead())
+
+  if (dm.IsDualHead()) {
     strRes += TRANS(" DualMonitor");
-  if (dm.IsWideScreen())
+  }
+
+  if (dm.IsWideScreen()) {
     strRes += TRANS(" WideScreen");
-  if (_pGfx->gl_eCurrentAPI == GAT_OGL)
+  }
+
+  if (_pGfx->gl_eCurrentAPI == GAT_OGL) {
     strRes += " (OpenGL)";
-#ifdef SE1_D3D
-  else if (_pGfx->gl_eCurrentAPI == GAT_D3D)
+  }
+  #ifdef SE1_D3D
+  else if (_pGfx->gl_eCurrentAPI == GAT_D3D) {
     strRes += " (Direct3D)";
-#endif // SE1_D3D
+  }
+  #endif // SE1_D3D
 
   CTString strDescr;
   strDescr.PrintF("\n%s (%s)\n", _strPreferencesDescription, RenderingPreferencesDescription(sam_iVideoSetup));
@@ -1261,26 +1269,35 @@ BOOL TryToSetDisplayMode(enum GfxAPIType eGfxAPI, INDEX iAdapter, PIX pixSizeI, 
 
   // try to set new display mode
   BOOL bSuccess;
+
   if (bFullScreenMode) {
-#ifdef SE1_D3D
-    if (eGfxAPI == GAT_D3D)
+    #ifdef SE1_D3D
+    if (eGfxAPI == GAT_D3D) {
       OpenMainWindowFullScreen(pixSizeI, pixSizeJ);
-#endif // SE1_D3D
+    }
+    #endif // SE1_D3D
     bSuccess = _pGfx->SetDisplayMode(eGfxAPI, iAdapter, pixSizeI, pixSizeJ, eColorDepth);
-    if (bSuccess && eGfxAPI == GAT_OGL)
+    if (bSuccess && eGfxAPI == GAT_OGL) {
       OpenMainWindowFullScreen(pixSizeI, pixSizeJ);
+    }
+
   } else {
-#ifdef SE1_D3D
-    if (eGfxAPI == GAT_D3D)
+    #ifdef SE1_D3D
+    if (eGfxAPI == GAT_D3D) {
       OpenMainWindowNormal(pixSizeI, pixSizeJ);
-#endif // SE1_D3D
+    }
+    #endif // SE1_D3D
+
     bSuccess = _pGfx->ResetDisplayMode(eGfxAPI);
-    if (bSuccess && eGfxAPI == GAT_OGL)
+    if (bSuccess && eGfxAPI == GAT_OGL) {
       OpenMainWindowNormal(pixSizeI, pixSizeJ);
-#ifdef SE1_D3D
-    if (bSuccess && eGfxAPI == GAT_D3D)
+    }
+
+    #ifdef SE1_D3D
+    if (bSuccess && eGfxAPI == GAT_D3D) {
       ResetMainWindowNormal();
-#endif // SE1_D3D
+    }
+    #endif // SE1_D3D
   }
 
   // if new mode was set
@@ -1360,9 +1377,9 @@ BOOL TryToSetDisplayMode(enum GfxAPIType eGfxAPI, INDEX iAdapter, PIX pixSizeI, 
 const INDEX aDefaultModes[][3] = {
   // color, API, adapter
   {DD_DEFAULT, GAT_OGL, 0}, {DD_16BIT, GAT_OGL, 0}, {DD_16BIT, GAT_OGL, 1}, // 3dfx Voodoo2
-#ifdef SE1_D3D
+  #ifdef SE1_D3D
   {DD_DEFAULT, GAT_D3D, 0}, {DD_16BIT, GAT_D3D, 0}, {DD_16BIT, GAT_D3D, 1},
-#endif // SE1_D3D
+  #endif // SE1_D3D
 };
 const INDEX ctDefaultModes = ARRAYCOUNT(aDefaultModes);
 

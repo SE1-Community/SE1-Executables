@@ -194,9 +194,9 @@ int qsort_CompareFileInfos_FileDn(const void *elem1, const void *elem2) {
 INDEX APIToswitch(enum GfxAPIType gat) {
   switch (gat) {
     case GAT_OGL: return 0;
-#ifdef SE1_D3D
+    #ifdef SE1_D3D
     case GAT_D3D: return 1;
-#endif // SE1_D3D
+    #endif // SE1_D3D
     default: ASSERT(FALSE); return 0;
   }
 }
@@ -204,9 +204,9 @@ INDEX APIToswitch(enum GfxAPIType gat) {
 enum GfxAPIType SwitchToAPI(INDEX i) {
   switch (i) {
     case 0: return GAT_OGL;
-#ifdef SE1_D3D
+    #ifdef SE1_D3D
     case 1: return GAT_D3D;
-#endif // SE1_D3D
+    #endif // SE1_D3D
     default: ASSERT(FALSE); return GAT_OGL;
   }
 }

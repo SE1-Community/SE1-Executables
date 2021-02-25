@@ -631,12 +631,14 @@ extern void UpdateVideoOptionsButtons(INDEX iSelected) {
   const BOOL _bVideoOptionsChanged = (iSelected != -1);
 
   const BOOL bOGLEnabled = _pGfx->HasAPI(GAT_OGL);
-#ifdef SE1_D3D
+  #ifdef SE1_D3D
   const BOOL bD3DEnabled = _pGfx->HasAPI(GAT_D3D);
   ASSERT(bOGLEnabled || bD3DEnabled);
-#else //
+  #else
+  // [Cecil] 2021-02-20: D3D doesn't exist
+  const BOOL bD3DEnabled = FALSE;
   ASSERT(bOGLEnabled);
-#endif // SE1_D3D
+  #endif // SE1_D3D
 
   CDisplayAdapter &da = _pGfx->gl_gaAPI[SwitchToAPI(gmCurrent.gm_mgDisplayAPITrigger.mg_iSelected)]
                           .ga_adaAdapter[gmCurrent.gm_mgDisplayAdaptersTrigger.mg_iSelected];
@@ -650,11 +652,7 @@ extern void UpdateVideoOptionsButtons(INDEX iSelected) {
   FillAdaptersList();
 
   // show or hide buttons
-  gmCurrent.gm_mgDisplayAPITrigger.mg_bEnabled = bOGLEnabled
-#ifdef SE1_D3D
-                                                 && bD3DEnabled
-#endif // SE1_D3D
-    ;
+  gmCurrent.gm_mgDisplayAPITrigger.mg_bEnabled = bOGLEnabled && bD3DEnabled;
   gmCurrent.gm_mgDisplayAdaptersTrigger.mg_bEnabled = _ctAdapters > 1;
   gmCurrent.gm_mgApply.mg_bEnabled = _bVideoOptionsChanged;
   // determine which should be visible

@@ -27,7 +27,6 @@ with this program; if not, write to the Free Software Foundation, Inc.,
 static char THIS_FILE[] = __FILE__;
 #endif
 
-/////////////////////////////////////////////////////////////////////////////
 // CRConApp
 
 BEGIN_MESSAGE_MAP(CRConApp, CWinApp)
@@ -38,7 +37,6 @@ BEGIN_MESSAGE_MAP(CRConApp, CWinApp)
 ON_COMMAND(ID_HELP, CWinApp::OnHelp)
 END_MESSAGE_MAP()
 
-/////////////////////////////////////////////////////////////////////////////
 // CRConApp construction
 
 CRConApp::CRConApp() {
@@ -46,12 +44,10 @@ CRConApp::CRConApp() {
   // Place all significant initialization in InitInstance
 }
 
-/////////////////////////////////////////////////////////////////////////////
 // The one and only CRConApp object
 
 CRConApp theApp;
 
-/////////////////////////////////////////////////////////////////////////////
 // CRConApp initialization
 
 BOOL CRConApp::SubInitInstance() {
@@ -78,6 +74,7 @@ BOOL CRConApp::SubInitInstance() {
 
   CRConDlg dlg;
   m_pMainWnd = &dlg;
+
   dlg.m_strLog = (const char*)CTString(0, "Serious Sam RCON v1.0\r\nServer: %s:%d\r\nReady for commands...\r\n", strHost, ulPort);
   int nResponse = dlg.DoModal();
 
@@ -88,10 +85,10 @@ BOOL CRConApp::SubInitInstance() {
 
 BOOL CRConApp::InitInstance() {
   BOOL bResult;
+
   CTSTREAM_BEGIN {
     bResult = SubInitInstance();
-  }
-  CTSTREAM_END;
+  } CTSTREAM_END;
 
   return bResult;
 }

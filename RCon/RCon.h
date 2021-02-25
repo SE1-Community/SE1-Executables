@@ -29,7 +29,6 @@ with this program; if not, write to the Free Software Foundation, Inc.,
 
 #include "resource.h" // main symbols
 
-/////////////////////////////////////////////////////////////////////////////
 // CRConApp:
 // See RCon.cpp for the implementation of this class
 //
@@ -63,8 +62,6 @@ class CRConApp : public CWinApp {
 extern CRConApp theApp;
 void MinimizeApp(void);
 void RestoreApp(void);
-
-/////////////////////////////////////////////////////////////////////////////
 
 //{{AFX_INSERT_LOCATION}}
 // Microsoft Visual C++ will insert additional declarations immediately before the previous line.
