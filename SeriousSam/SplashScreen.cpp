@@ -33,6 +33,7 @@ static long FAR PASCAL SplashWindowProc(HWND hWnd, UINT message, WPARAM wParam, 
       HDC hdcMem = CreateCompatibleDC(ps.hdc);
       SelectObject(hdcMem, _hbmSplashMask);
       BitBlt(ps.hdc, 0, 0, _bmSplash.bmWidth, _bmSplash.bmHeight, hdcMem, 0, 0, SRCAND);
+
       SelectObject(hdcMem, _hbmSplash);
       BitBlt(ps.hdc, 0, 0, _bmSplash.bmWidth, _bmSplash.bmHeight, hdcMem, 0, 0, SRCPAINT);
 
@@ -41,23 +42,31 @@ static long FAR PASCAL SplashWindowProc(HWND hWnd, UINT message, WPARAM wParam, 
 
       return 0;
     } break;
-    case WM_ERASEBKGND: return 1; break;
+
+    case WM_ERASEBKGND:
+      return 1;
+      break;
   }
+
   return DefWindowProc(hWnd, message, wParam, lParam);
 }
 
 void ShowSplashScreen(HINSTANCE hInstance) {
   _hbmSplash = LoadBitmapA(hInstance, (char*)IDB_SPLASH);
+
   if (_hbmSplash == NULL) {
     return;
   }
+
   _hbmSplashMask = LoadBitmapA(hInstance, (char*)IDB_SPLASHMASK);
+
   if (_hbmSplashMask == NULL) {
     return;
   }
 
   GetObject(_hbmSplash, sizeof(BITMAP), (LPSTR)&_bmSplash);
   GetObject(_hbmSplashMask, sizeof(BITMAP), (LPSTR)&_bmSplashMask);
+
   if (_bmSplashMask.bmWidth != _bmSplash.bmWidth || _bmSplashMask.bmHeight != _bmSplash.bmHeight) {
     return;
   }
@@ -78,9 +87,7 @@ void ShowSplashScreen(HINSTANCE hInstance) {
   wc.lpszClassName = NAME;
   RegisterClassA(&wc);
 
-  /*
-   * create a window
-   */
+  // create a window
   hwnd = CreateWindowExA(WS_EX_TRANSPARENT | WS_EX_TOOLWINDOW, NAME,
                          "SeriousSam loading...", // title
                          WS_POPUP, iScreenX / 2 - _bmSplash.bmWidth / 2, iScreenY / 2 - _bmSplash.bmHeight / 2, _bmSplash.bmWidth,
@@ -92,9 +99,11 @@ void ShowSplashScreen(HINSTANCE hInstance) {
   }
 
   ShowWindow(hwnd, SW_SHOW);
+
   RECT rect;
   GetClientRect(hwnd, &rect);
   InvalidateRect(hwnd, &rect, TRUE);
+
   UpdateWindow(hwnd);
 }
 
@@ -102,6 +111,7 @@ void HideSplashScreen(void) {
   if (hwnd == NULL) {
     return;
   }
+
   DestroyWindow(hwnd);
   DeleteObject(_hbmSplash);
   DeleteObject(_hbmSplashMask);

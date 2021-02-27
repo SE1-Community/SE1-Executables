@@ -24,10 +24,10 @@ static char achWindowTitle[256]; // current window title
 static HBITMAP _hbmSplash = NULL;
 static BITMAP _bmSplash;
 
-// for window reposition function
+// For window reposition function
 static PIX _pixLastSizeI, _pixLastSizeJ;
 
-// window procedure active while window changes are occuring
+// Window procedure active while window changes are occuring
 LRESULT WindowProc_WindowChanging(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam) {
   switch (message) {
     case WM_PAINT: {
@@ -37,6 +37,7 @@ LRESULT WindowProc_WindowChanging(HWND hWnd, UINT message, WPARAM wParam, LPARAM
 
       return 0;
     } break;
+
     case WM_ERASEBKGND: {
       PAINTSTRUCT ps;
       BeginPaint(hWnd, &ps);
@@ -46,19 +47,22 @@ LRESULT WindowProc_WindowChanging(HWND hWnd, UINT message, WPARAM wParam, LPARAM
       HDC hdcMem = CreateCompatibleDC(ps.hdc);
       SelectObject(hdcMem, _hbmSplash);
       BitBlt(ps.hdc, 0, 0, _bmSplash.bmWidth, _bmSplash.bmHeight, hdcMem, 0, 0, SRCCOPY);
-      //      StretchBlt(ps.hdc, 0, 0, rect.right, rect.bottom,
-      //        hdcMem, 0,0, _bmSplash.bmWidth, _bmSplash.bmHeight, SRCCOPY);
+      // StretchBlt(ps.hdc, 0, 0, rect.right, rect.bottom, hdcMem, 0,0, _bmSplash.bmWidth, _bmSplash.bmHeight, SRCCOPY);
 
       EndPaint(hWnd, &ps);
 
       return 1;
     } break;
-    case WM_CLOSE: return 0; break;
+
+    case WM_CLOSE:
+      return 0;
+      break;
   }
+
   return DefWindowProcA(hWnd, message, wParam, lParam);
 }
 
-// window procedure active normally
+// Window procedure active normally
 LRESULT WindowProc_Normal(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam) {
   switch (message) {
     // system commands
@@ -70,18 +74,22 @@ LRESULT WindowProc_Normal(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)
         case SC_MAXIMIZE:
           // relay to application
           PostMessage(NULL, message, wParam & ~0x0F, lParam);
+
           // do not allow automatic resizing
           return 0;
           break;
+
         // prevent screen saver and monitor power down
         case SC_SCREENSAVE:
         case SC_MONITORPOWER: return 0;
       }
     } break;
+
     // when close box is clicked
     case WM_CLOSE:
       // relay to application
       PostMessage(NULL, message, wParam, lParam);
+
       // do not pass to default wndproc
       return 0;
 
@@ -94,6 +102,7 @@ LRESULT WindowProc_Normal(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)
     case WM_ACTIVATEAPP:
       // relay to application
       PostMessage(NULL, message, wParam, lParam);
+
       // pass to default wndproc
       break;
   }
@@ -102,7 +111,7 @@ LRESULT WindowProc_Normal(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)
   return DefWindowProcA(hWnd, message, wParam, lParam);
 }
 
-// main window procedure
+// Main window procedure
 LRESULT CALLBACK WindowProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam) {
   // dispatch to proper window procedure
   if (_bWindowChanging) {
@@ -128,17 +137,21 @@ void MainWindow_Init(void) {
   wc.lpszMenuName = APPLICATION_NAME;
   wc.lpszClassName = APPLICATION_NAME;
   wc.hIconSm = NULL;
+
   if (0 == RegisterClassExA(&wc)) {
     DWORD dwError = GetLastError();
+
     CTString strErrorMessage(TRANS("Cannot open main window!"));
     CTString strError;
     strError.PrintF("%s Error %d", strErrorMessage, dwError);
+
     FatalError(strError);
   }
 
   // load bitmaps
   _hbmSplash = LoadBitmapA(_hInstance, (char*)IDB_SPLASH);
   ASSERT(_hbmSplash != NULL);
+
   GetObject(_hbmSplash, sizeof(BITMAP), (LPSTR)&_bmSplash);
   // here was loading and setting of no-windows-mouse-cursor
 }
@@ -159,14 +172,17 @@ void CloseMainWindow(void) {
 
 void ResetMainWindowNormal(void) {
   ShowWindow(_hwndMain, SW_HIDE);
+
   // add edges and title bar to window size so client area would have size that we requested
   RECT rWindow, rClient;
   GetClientRect(_hwndMain, &rClient);
   GetWindowRect(_hwndMain, &rWindow);
+
   const PIX pixWidth = _pixLastSizeI + (rWindow.right - rWindow.left) - (rClient.right - rClient.left);
   const PIX pixHeight = _pixLastSizeJ + (rWindow.bottom - rWindow.top) - (rClient.bottom - rClient.top);
   const PIX pixPosX = (::GetSystemMetrics(SM_CXSCREEN) - pixWidth) / 2;
   const PIX pixPosY = (::GetSystemMetrics(SM_CYSCREEN) - pixHeight) / 2;
+
   // set new window size and show it
   SetWindowPos(_hwndMain, NULL, pixPosX, pixPosY, pixWidth, pixHeight, SWP_NOZORDER);
   ShowWindow(_hwndMain, SW_SHOW);
@@ -177,62 +193,71 @@ void OpenMainWindowNormal(PIX pixSizeI, PIX pixSizeJ) {
   ASSERT(_hwndMain == NULL);
 
   // create a window, invisible initially
-  _hwndMain
-    = CreateWindowExA(WS_EX_APPWINDOW, APPLICATION_NAME,
-                      "",                                                                                          // title
-                      WS_OVERLAPPED | WS_CAPTION | WS_MINIMIZEBOX | WS_MAXIMIZEBOX | WS_SYSMENU, 10, 10, 100, 100, // window size
-                      NULL, NULL, _hInstance, NULL);
-  // didn't make it?
-  if (_hwndMain == NULL)
+  _hwndMain = CreateWindowExA(WS_EX_APPWINDOW, APPLICATION_NAME, "", // title
+                              WS_OVERLAPPED | WS_CAPTION | WS_MINIMIZEBOX | WS_MAXIMIZEBOX | WS_SYSMENU, 10, 10, 100, 100, // window size
+                              NULL, NULL, _hInstance, NULL);
+  // didn't make it
+  if (_hwndMain == NULL) {
     FatalError(TRANS("Cannot open main window!"));
+  }
+
   SE_UpdateWindowHandle(_hwndMain);
 
   // set window title
   sprintf(achWindowTitle, TRANS("Serious Sam (Window %dx%d)"), pixSizeI, pixSizeJ);
   SetWindowTextA(_hwndMain, achWindowTitle);
+
   _pixLastSizeI = pixSizeI;
   _pixLastSizeJ = pixSizeJ;
+
   ResetMainWindowNormal();
 }
 
-// open the main application window for fullscreen mode
+// Open the main application window for fullscreen mode
 void OpenMainWindowFullScreen(PIX pixSizeI, PIX pixSizeJ) {
   ASSERT(_hwndMain == NULL);
+
   // create a window, invisible initially
-  _hwndMain = CreateWindowExA(WS_EX_TOPMOST | WS_EX_APPWINDOW, APPLICATION_NAME,
-                              "",                                 // title
+  _hwndMain = CreateWindowExA(WS_EX_TOPMOST | WS_EX_APPWINDOW, APPLICATION_NAME, "", // title
                               WS_POPUP, 0, 0, pixSizeI, pixSizeJ, // window size
                               NULL, NULL, _hInstance, NULL);
-  // didn't make it?
-  if (_hwndMain == NULL)
+  // didn't make it
+  if (_hwndMain == NULL) {
     FatalError(TRANS("Cannot open main window!"));
+  }
+
   SE_UpdateWindowHandle(_hwndMain);
 
   // set window title and show it
   sprintf(achWindowTitle, TRANS("Serious Sam (FullScreen %dx%d)"), pixSizeI, pixSizeJ);
+
   SetWindowTextA(_hwndMain, achWindowTitle);
   ShowWindow(_hwndMain, SW_SHOWNORMAL);
 }
 
-// open the main application window invisible
+// Open the main application window invisible
 void OpenMainWindowInvisible(void) {
   ASSERT(_hwndMain == NULL);
+
   // create a window, invisible initially
-  _hwndMain = CreateWindowExA(WS_EX_APPWINDOW, APPLICATION_NAME,
-                              "",                     // title
+  _hwndMain = CreateWindowExA(WS_EX_APPWINDOW, APPLICATION_NAME, "", // title
                               WS_POPUP, 0, 0, 10, 10, // window size
                               NULL, NULL, _hInstance, NULL);
-  // didn't make it?
+  // didn't make it
   if (_hwndMain == NULL) {
     DWORD dwError = GetLastError();
+
     CTString strErrorMessage(TRANS("Cannot open main window!"));
     CTString strError;
     strError.PrintF("%s Error %d", strErrorMessage, dwError);
+
     FatalError(strError);
   }
+
   SE_UpdateWindowHandle(_hwndMain);
 
   // set window title
   sprintf(achWindowTitle, "Serious Sam");
+
   SetWindowTextA(_hwndMain, achWindowTitle);
 }
