@@ -101,7 +101,7 @@ static CTextureObject _toLogoMenuB;
   ltbmg.mg_iSelected = 0; \
   ltbmg.mg_strText = astr[ltbmg.mg_iSelected];
 
-#define PLACEMENT(x, y, z) CPlacement3D(FLOAT3D(x, y, z), ANGLE3D(AngleDeg(0.0f), AngleDeg(0.0f), AngleDeg(0.0f)))
+#define PLACEMENT(x, y, z) CPlacement3D(FLOAT3D(x, y, z), ANGLE3D(0.0f, 0.0f, 0.0f))
 
 // ptr to current menu
 CGameMenu *pgmCurrentMenu = NULL;
@@ -260,7 +260,7 @@ void InitializeMenus(void) {
   ((CTextureData *)_toLogoMenuB.GetData())->Force(TEX_CONSTANT);
 
   // menu's relative placement
-  CPlacement3D plRelative = CPlacement3D(FLOAT3D(0.0f, 0.0f, -9.0f), ANGLE3D(AngleDeg(0.0f), AngleDeg(0.0f), AngleDeg(0.0f)));
+  CPlacement3D plRelative = CPlacement3D(FLOAT3D(0.0f, 0.0f, -9.0f), ANGLE3D(0.0f, 0.0f, 0.0f));
   try {
     TRANSLATERADIOARRAY(astrNoYes);
     TRANSLATERADIOARRAY(astrComputerInvoke);
