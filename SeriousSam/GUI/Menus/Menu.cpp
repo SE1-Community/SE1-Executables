@@ -20,7 +20,7 @@ with this program; if not, write to the Free Software Foundation, Inc.,
 #include <io.h>
 #include "MainWindow.h"
 #include <Engine/CurrentVersion.h>
-#include <Engine/Templates/Stock_CSoundData.h>
+#include <Engine/Sound/SoundData.h>
 #include <Game/LCDDrawing.h>
 #include "MenuPrinting.h"
 #include "LevelInfo.h"
